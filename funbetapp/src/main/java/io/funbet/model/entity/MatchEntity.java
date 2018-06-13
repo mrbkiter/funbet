@@ -1,9 +1,13 @@
 package io.funbet.model.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity(name = "macth_bet")
+@Getter @Setter
 public class MatchEntity
 {
     @Id
