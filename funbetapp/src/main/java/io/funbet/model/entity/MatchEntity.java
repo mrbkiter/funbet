@@ -6,28 +6,29 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity(name = "macth_bet")
+@Entity
+@Table(name = "match")
 @Getter @Setter
 public class MatchEntity
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "UUID")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     String id;
 
     @Column(name = "tournament_id")
-    String tournamentId;
+    Integer tournamentId;
 
     @Column(name = "team_id_1")
-    String teamId1;
+    Integer teamId1;
 
     @Column(name = "team_id_2")
-    String teamId2;
+    Integer teamId2;
 
     @Column(name = "bet_score_1")
-    Integer betScore1;
+    Float betScore1;
 
     @Column(name = "bet_score_2")
-    Integer betScore2;
+    Float betScore2;
 
     @Column(name = "score_team_1")
     Integer score1;

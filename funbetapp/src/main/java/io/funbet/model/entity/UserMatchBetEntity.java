@@ -1,34 +1,29 @@
 package io.funbet.model.entity;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Entity(name = "user_match_bet")
+@Entity
+@Table(name = "user_match_bet")
 @Getter @Setter
 public class UserMatchBetEntity
 {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "UUID")
-    String id;
-
-    @Column(name = "user_id")
-    String userId;
-
-    @Column(name = "match_id")
-    @NonNull
-    String matchId;
+    @EmbeddedId
+    UserMatchBetId id;
 
     @Column(name = "team_id")
     @NonNull
-    String teamId;
+    Integer teamId;
 
     @Column(name = "bet_status")
     @Enumerated(EnumType.STRING)
     BetStatus betStatus;
+
+    @Column(name = "lose_money")
+    Integer losedMoney;
 
     @Column(name = "last_updated_timestamp")
     LocalDateTime lastUpdatedTimestamp;
@@ -36,5 +31,21 @@ public class UserMatchBetEntity
     enum BetStatus
     {
         WIN, LOSE, DRAW
+    }
+
+    @Embeddable
+    @Getter @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UserMatchBetId implements Serializable
+    {
+
+        @Column(name = "user_id")
+        Integer userId;
+
+        @Column(name = "match_id")
+        @NonNull
+        Integer matchId;
+
     }
 }

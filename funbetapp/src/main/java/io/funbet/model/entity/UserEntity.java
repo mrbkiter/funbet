@@ -9,13 +9,14 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "user")
+@Table(name = "user_account")
 @Getter @Setter
 public class UserEntity
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "UUID")
-    String id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    Integer id;
+
     @Enumerated(EnumType.STRING)
     @NotNull
     @Column(name = "role")
