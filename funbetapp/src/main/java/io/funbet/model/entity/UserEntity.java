@@ -7,7 +7,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@Entity(name = "user")
+
+@Entity
+@Table(name = "user")
 @Getter @Setter
 public class UserEntity
 {

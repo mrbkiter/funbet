@@ -1,9 +1,9 @@
 # create and drop tables and sequences, loads import.sql
 spring:
   datasource:
-    url: jdbc:postgresql://localhost/funbet
-    username: dbapplication_user
-    password: dbapplication_user
+    url: ${JDBC_URL:jdbc:postgresql://localhost/funbet}
+    username: ${USER_NAME:dbapplication_user}
+    password: ${PASSWORD:dbapplication_user}
     driver-class-name: org.postgresql.Driver
     jpa.database-platform: org.hibernate.dialect.PostgreSQL9Dialect
 
@@ -12,5 +12,7 @@ spring:
       maximum-pool-size: 15
 
 spring.flyway:
-  locations: db/migration
-  url: jdbc:postgresql://localhost/funbet
+  locations: classpath:/migration
+  url: ${JDBC_URL:jdbc:postgresql://localhost/funbet}
+  username: ${USER_NAME:dbapplication_user}
+  password: ${PASSWORD:dbapplication_user}
