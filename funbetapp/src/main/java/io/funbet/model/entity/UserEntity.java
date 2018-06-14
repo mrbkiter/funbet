@@ -27,7 +27,8 @@ public class UserEntity
     String name;
     @Column(name = "lock")
     boolean lock;
-
+    @Column(name = "password")
+    String password;
     @Column(name = "last_update_timestamp")
     LocalDateTime lastUpdateTimestamp;
 

@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS "user";
+
 CREATE TABLE IF NOT EXISTS user_account
 (
     id serial NOT NULL,
