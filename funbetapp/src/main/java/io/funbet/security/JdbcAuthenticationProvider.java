@@ -3,8 +3,8 @@ package io.funbet.security;
 import io.funbet.model.entity.UserEntity;
 import io.funbet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -20,15 +20,18 @@ public class JdbcAuthenticationProvider
     UserRepository userRepository;
 
     @Override
+    @Cacheable(value = "funbet",
+            key = "'user#' + #authentication.getName().hashCode() + '#' + #authentication.getCredentials().toString().hashCode()")
     public Authentication authenticate(Authentication authentication)
             throws AuthenticationException {
 
         String email = authentication.getName();
         String password = authentication.getCredentials().toString();
-        UserEntity user =  Optional.ofNullable(userRepository.findByEmail(email)).filter(u -> u.getPassword().equals(password))
-                .orElseThrow(() -> new BadCredentialsException("user not found"));
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(null, user);
-        token.setAuthenticated(true);
+        UsernamePasswordAuthenticationToken token =  Optional.ofNullable(userRepository.findByEmail(email.toLowerCase()))
+                .filter(u -> u.getPassword().equals(password))
+                .map(u -> new UsernamePasswordAuthenticationToken(null, u, null))
+                .orElse(new UsernamePasswordAuthenticationToken(null, new UserEntity()));
+
         return token;
     }
 
