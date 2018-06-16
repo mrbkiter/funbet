@@ -1,14 +1,12 @@
 package io.funbet.service;
 
+import io.funbet.exception.ResourceNotFoundException;
 import io.funbet.model.entity.UserEntity;
 import io.funbet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService
@@ -21,4 +19,13 @@ public class UserService
         return userRepository.findAll();
     }
 
+    public UserEntity findUserById(Integer id) throws ResourceNotFoundException
+    {
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(""));
+    }
+
+    public UserEntity saveUser(UserEntity user)
+    {
+        return userRepository.save(user);
+    }
 }

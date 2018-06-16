@@ -11,11 +11,13 @@ import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
-@Import(value = {DbConfig.class, SessionConfig.class, WebSecurityConfig.class})
+@Import(value = {DbConfig.class, SessionConfig.class, WebMvc.class, WebSecurityConfig.class})
 @ComponentScan(basePackageClasses = {Controller.class, Service.class, JdbcAuthenticationProvider.class})
 @EnableCaching
+@EnableWebMvc
 public class FunbetBoot
 {
     public static void main(String[] args)

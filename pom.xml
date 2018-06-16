@@ -22,7 +22,7 @@
         <main.basedir>${project.basedir}</main.basedir>
     </properties>
     <modules>
-        <module>funbet-backend</module>
         <module>funbet-frontend</module>
+        <module>funbet-backend</module>
     </modules>
 </project>

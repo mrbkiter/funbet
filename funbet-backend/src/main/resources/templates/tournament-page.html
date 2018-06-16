@@ -1,0 +1,33 @@
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="shortcut icon" href="about:blank">
+</head>
+<body>
+<div id="tournament-list">
+    <table>
+        <thead>
+        <tr>
+            <th>Tournament Name</th>
+            <th>Current default money bet</th>
+        </tr>
+        </thead>
+        <tbody v-for="t in tournaments">
+        <tr>
+            <td><a href="">{{t.name}}</a></td>
+            <td>{{t.default_money_bet}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div>
+        <label>Name: <input type="text" v-model="name" placeholder="Tournament name"/> </label>
+        <label>Default Money bet: <input type="number" v-model="default_money_bet"/></label>
+        <button v-on:click="saveTournament">Save</button>
+    </div>
+</div>
+<script src="/static/js/tournament.js"></script>
+</body>
+</html>
+
+

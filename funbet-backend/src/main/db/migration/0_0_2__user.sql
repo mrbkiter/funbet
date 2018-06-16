@@ -1,4 +1,11 @@
 DROP TABLE IF EXISTS "user";
+DROP TABLE IF EXISTS tournament_user;
+DROP TABLE IF EXISTS user_match_bet;
+DROP TABLE IF EXISTS match;
+DROP TABLE IF EXISTS tournament_team;
+DROP TABLE IF EXISTS tournament;
+DROP TABLE IF EXISTS team;
+DROP TABLE IF EXISTS user_account;
 
 CREATE TABLE IF NOT EXISTS user_account
 (
@@ -103,3 +110,8 @@ CREATE TABLE IF NOT EXISTS tournament_user
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
+DELETE FROM user_account WHERE email = 'sysadmin@funbet';
+INSERT INTO user_account(email, password, "name", "role") values ('sysadmin@funbet', 'password', 'Sys Admin', 'ADMIN');
+
+
+SELECT * FROM user_account;

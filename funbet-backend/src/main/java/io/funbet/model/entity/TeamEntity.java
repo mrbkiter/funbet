@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Table(name = "team")
 @Entity
@@ -15,6 +16,7 @@ public class TeamEntity
     Integer id;
 
     @Column(name = "name")
+    @NotEmpty
     String name;
 }
 

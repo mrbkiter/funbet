@@ -1,0 +1,41 @@
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="shortcut icon" href="about:blank">
+</head>
+<body>
+<div id="user-list">
+    <table>
+        <thead>
+        <tr>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody v-for="user in users">
+        <tr>
+            <td>{{user.name}}</a></td>
+            <td>{{user.email}}</td>
+            <td>{{user.role}}</td>
+            <td><button v-on:click="deleteUser">Delete</button> <button v-on:click="editUser">Edit</button></td>
+        </tr>
+        </tbody>
+
+    </table>
+    <br/><br/><br/>
+    <label>Add new user</label> <br/>
+    <div>
+        <label>Name: <input type="text" v-model="name" placeholder="Full Name"/> </label>
+        <label>Email: <input type="email" v-model="email" placeholder="email"/></label>
+        <label>Password: <input type="password" v-model="password" placeholder="password"></label>
+        <button v-on:click="saveUser">Save</button>
+    </div>
+</div>
+<script src="/static/js/user.js"></script>
+</body>
+</html>
+
+

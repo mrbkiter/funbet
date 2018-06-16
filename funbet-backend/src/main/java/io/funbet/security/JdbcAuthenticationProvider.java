@@ -5,10 +5,12 @@ import io.funbet.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.Optional;
 
@@ -21,7 +23,8 @@ public class JdbcAuthenticationProvider
 
     @Override
     @Cacheable(value = "funbet",
-            key = "'user#' + #authentication.getName().hashCode() + '#' + #authentication.getCredentials().toString().hashCode()")
+            key = "'user#' + #authentication.getName().hashCode() + '#' + #authentication.getCredentials().toString().hashCode()",
+    condition = "#authentication.getCredentials() != null")
     public Authentication authenticate(Authentication authentication)
             throws AuthenticationException {
 
@@ -29,8 +32,8 @@ public class JdbcAuthenticationProvider
         String password = authentication.getCredentials().toString();
         UsernamePasswordAuthenticationToken token =  Optional.ofNullable(userRepository.findByEmail(email.toLowerCase()))
                 .filter(u -> u.getPassword().equals(password))
-                .map(u -> new UsernamePasswordAuthenticationToken(null, u, null))
-                .orElse(new UsernamePasswordAuthenticationToken(null, new UserEntity()));
+                .map(u -> new UsernamePasswordAuthenticationToken(email, password, null))
+                .orElseThrow(() -> new BadCredentialsException("Authentication failed for user = " + email));
 
         return token;
     }

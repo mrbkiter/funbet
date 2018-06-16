@@ -1,5 +1,9 @@
 # create and drop tables and sequences, loads import.sql
 spring:
+  resources.static-locations: /static/**, /resources/static/**
+  devtools.restart:
+      exclude: static/**,public/**
+      enabled: true
   datasource:
     url: ${JDBC_URL:jdbc:postgresql://localhost/funbet}
     username: ${USER_NAME:dbapplication_user}
