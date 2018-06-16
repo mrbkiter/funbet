@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.savedrequest.NullRequestCache;
 
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter
@@ -23,13 +24,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests() //
-                .anyRequest().authenticated() //
+        http.authorizeRequests() //
                 .antMatchers("/static/**").permitAll()
+                .anyRequest().authenticated() //
                 .and()
-                .formLogin() //
-                ;
+                .requestCache().requestCache(new NullRequestCache()) //
+                .and().formLogin() //
+                .and().csrf().disable();
     }
 
     @Autowired
