@@ -18,10 +18,8 @@ public class TournamentEntity
 
     @Column(name = "name")
     @NotEmpty
-    @JsonProperty("name")
     String name;
 
     @Column(name = "default_money_bet")
-    @JsonProperty("default_money_bet")
     Integer defaultMoneyBet;
 }

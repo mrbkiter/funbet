@@ -32,9 +32,8 @@ public class JdbcAuthenticationProvider
         String password = authentication.getCredentials().toString();
         UsernamePasswordAuthenticationToken token =  Optional.ofNullable(userRepository.findByEmail(email.toLowerCase()))
                 .filter(u -> u.getPassword().equals(password))
-                .map(u -> new UsernamePasswordAuthenticationToken(email, password, null))
+                .map(u -> new UsernamePasswordAuthenticationToken(u, password, null))
                 .orElseThrow(() -> new BadCredentialsException("Authentication failed for user = " + email));
-
         return token;
     }
 

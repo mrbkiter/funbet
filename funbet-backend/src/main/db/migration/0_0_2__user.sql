@@ -52,25 +52,31 @@ CREATE TABLE IF NOT EXISTS tournament_team
     ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
+DROP TABLE IF EXISTS user_match_bet;
+DROP VIEW IF EXISTS match_view;
+DROP TABLE IF EXISTS match;
 CREATE TABLE IF NOT EXISTS match
 (
     id serial NOT NULL,
     tournament_id INTEGER,
     team_id_1 INTEGER,
     team_id_2 INTEGER,
-    bet_score_1 NUMERIC(1,1),
-    bet_score_2 NUMERIC(1,1),
+    bet_score_1 NUMERIC(3,1),
+    bet_score_2 NUMERIC(3,1),
     score_1 smallint,
     score_2 smallint,
-    start_timestamp TIMESTAMP WITH TIME ZONE,
+    start_timestamp TIMESTAMP WITHOUT TIME ZONE,
+    timezone VARCHAR(200),
+    system_start_timestamp TIMESTAMP WITH TIME ZONE,
     insert_timestamp TIMESTAMP WITH TIME ZONE DEFAULT now(),
     CONSTRAINT match_id__pk PRIMARY KEY (id),
+    bet_money INTEGER NOT NULL,
     CONSTRAINT match_tournament_id__fkey FOREIGN KEY (tournament_id)
       REFERENCES tournament (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION,
-    CONSTRAINT match_team_id_1__pk FOREIGN KEY (id) REFERENCES team(id) MATCH SIMPLE
+    CONSTRAINT match_team_id_1__pk FOREIGN KEY (team_id_1) REFERENCES team(id) MATCH SIMPLE
     ON UPDATE NO ACTION ON DELETE NO ACTION,
-    CONSTRAINT match_team_id_2__pk FOREIGN KEY (id) REFERENCES team(id) MATCH SIMPLE
+    CONSTRAINT match_team_id_2__pk FOREIGN KEY (team_id_2) REFERENCES team(id) MATCH SIMPLE
     ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
@@ -114,4 +120,4 @@ DELETE FROM user_account WHERE email = 'sysadmin@funbet';
 INSERT INTO user_account(email, password, "name", "role") values ('sysadmin@funbet', 'password', 'Sys Admin', 'ADMIN');
 
 
-SELECT * FROM user_account;
+SELECT * FROM "match";

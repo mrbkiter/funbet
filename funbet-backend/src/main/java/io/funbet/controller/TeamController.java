@@ -26,4 +26,10 @@ public class TeamController
     {
         return teamService.saveTeam(team);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteTeam(@PathVariable("id") Integer id)
+    {
+        teamService.deleteTeam(id);
+    }
 }

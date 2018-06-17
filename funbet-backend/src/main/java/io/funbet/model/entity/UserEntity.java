@@ -8,13 +8,14 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
 @Entity
 @Table(name = "user_account")
 @Getter @Setter
-public class UserEntity
+public class UserEntity implements Serializable
 {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -40,6 +41,9 @@ public class UserEntity
 
     @Column(name = "last_update_timestamp")
     LocalDateTime lastUpdateTimestamp;
+
+    @Transient
+    String timezone = "Asia/Saigon";
 
     public String getEmail() {
         return email.toLowerCase();

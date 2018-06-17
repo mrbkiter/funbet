@@ -1,0 +1,99 @@
+<html>
+<head>
+    <!-- Add this to <head> -->
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue2-datepicker/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <link rel="shortcut icon" href="about:blank">
+</head>
+<body>
+<div id="tournament-list">
+    <table>
+        <thead>
+        <tr>
+            <th>Tournament Name</th>
+            <th>Current default money bet</th>
+        </tr>
+        </thead>
+        <tbody v-for="t in tournaments">
+        <tr>
+            <td><a href="#" v-on:click="showTournamentDetail(t)">{{t.name}}</a></td>
+            <td>{{t.defaultMoneyBet}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div>
+        <label>Name: <input type="text" v-model="tournament.name" placeholder="Tournament name"/> </label>
+        <label>Default Money bet: <input type="number" v-model="tournament.defaultMoneyBet"/></label>
+        <button v-on:click="saveTournament">Save</button>
+    </div>
+</div>
+<div id="match-detail" v-if="showMatches">
+    <table>
+        <thead>
+        <tr>
+            <th>Team 1</th>
+            <th>Bet 1</th>
+            <th>Team 2</th>
+            <th>Bet 2</th>
+            <th>Bet Money</th>
+            <th>Start Time</th>
+            <th>Score</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody v-for="(t, index) in matches">
+        <tr>
+            <td>{{t.teamName1}}</td>
+            <td>{{t.betScore1}}</td>
+            <td>{{t.teamName2}}</td>
+            <td>{{t.betScore2}}</td>
+            <td>{{t.betMoney}}</td>
+            <td>{{t.startTime}}</td>
+            <td><span v-if="t.score1 != null">{{t.score1}} - {{t.score2}}</span></td>
+            <td>
+                <button v-on:click="showWriteScore">Write Score</button>
+                <div v-if="needWriteScore">
+                    <input type="number" placeholder="Score Team 1" v-model="t.score1"/>
+                    <input type="number" placeholder="Score Team 1" v-model="t.score2"/>
+                    <button v-on:click="writeScore(t)">Save</button>
+                </div>
+                <button v-on:click="editMatch(t)">Edit</button>
+                <button v-on:click="deleteMatch(t, index)">Delete</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br /><br />
+    <label>Add match (Ho Chi Minh, Bangkok (UTC +07))</label>
+    <div>
+        <input type="hidden" v-model="currentMatch.id" />
+        <label>Team 1: </label>
+        <select v-model="currentMatch.teamId1">
+                <option v-for="t1 in teams" :value="t1.id">
+                    {{ t1.name }}
+                </option>
+        </select>
+        <input type="number" placeholder="Bet 1" v-model="currentMatch.betScore1"/>
+        <label>Team 2: </label>
+        <select v-model="currentMatch.teamId2">
+                <option v-for="t2 in teams" v-bind:value="t2.id">
+                    {{ t2.name }}
+                </option>
+        </select>
+        <input type="number" placeholder="Bet 2" v-model="currentMatch.betScore2"/>
+        <label>Start time</label>
+        <input type="text" placeholder="2018-07-20 15:00" v-model="currentMatch.startTime" />
+        <input type="number" v-model="currentMatch.betMoney" placeholder="Bet money"/>
+        <button v-on:click="saveMatch">Save</button>
+    </div>
+</div>
+<script src="/static/js/admin-tournament.js"></script>
+</body>
+</html>
+
+

@@ -19,13 +19,24 @@ var teams = new Vue({
                 };
 
                 axios.post("/team", body).then(response => {
-                    teams.teams.push(body);
+                    teams.teams.push(response.data);
                       }
                  ).catch(function(e)
                  {
                     alert(e),
                     console.log(e)
                  })
+            },
+            deleteTeam: function(id, index)
+            {
+                var url = "/team/" + id;
+                axios.delete(url).then(response => {
+                    alert("DONE");
+                    teams.teams.splice(index, 1);
+                }).catch(function(e) {
+                    alert(e);
+                    console.log(e)
+                });
             }
         }
 });

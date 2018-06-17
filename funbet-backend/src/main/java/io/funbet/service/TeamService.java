@@ -22,4 +22,9 @@ public class TeamService
     {
         return teamRepository.save(team);
     }
+
+    public void deleteTeam(Integer teamId)
+    {
+        teamRepository.deleteById(teamId);
+    }
 }

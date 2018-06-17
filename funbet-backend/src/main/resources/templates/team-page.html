@@ -11,12 +11,14 @@
         <tr>
             <th>Index</th>
             <th>Team Name</th>
+            <th>Action</th>
         </tr>
         </thead>
         <tbody v-for="(t, index) in teams">
         <tr>
-            <td>{{index}}</td>
+            <td>{{index + 1}}</td>
             <td>{{t.name}}</td>
+            <td><button v-on:click="deleteTeam(t.id, index)">Delete</button></td>
         </tr>
         </tbody>
     </table>
