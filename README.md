@@ -12,8 +12,9 @@ How to deploy:
 - Build maven: mvn clean package
 - Set env: 
 
--- JDBC_URL. Default is jdbc:postgresql://localhost/funbet
--- USER_NAME. Default is dbapplication_user
--- PASSWORD. Default is dbapplication_user
--- SERVER_PORT. Default is 9111.
+JDBC_URL. Default is jdbc:postgresql://localhost/funbet <br />
+USER_NAME. Default is dbapplication_user <br />
+PASSWORD. Default is dbapplication_user <br />
+SERVER_PORT. Default is 9111. <br />
+
 - Run jar: java -jar <jar file>. 
