@@ -80,6 +80,7 @@ CREATE TABLE IF NOT EXISTS match
     ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
+--DROP TABLE user_match_bet;
 
 CREATE TABLE IF NOT EXISTS user_match_bet
 (
@@ -87,7 +88,6 @@ CREATE TABLE IF NOT EXISTS user_match_bet
     match_id INTEGER,
     team_id INTEGER,
     bet_status VARCHAR(50),
-    losed_money INTEGER,
     last_updated_timestamp TIMESTAMP WITH TIME ZONE DEFAULT now(),
     insert_timestamp TIMESTAMP WITH TIME ZONE DEFAULT now(),
     CONSTRAINT user_match_bet__pk PRIMARY KEY(user_id, match_id),
@@ -121,3 +121,7 @@ INSERT INTO user_account(email, password, "name", "role") values ('sysadmin@funb
 
 
 SELECT * FROM "match";
+
+select * from tournament;
+
+select * from user_match_bet;

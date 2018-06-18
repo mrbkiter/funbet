@@ -10,7 +10,11 @@ var tournaments = new Vue({
         mounted()
         {
           axios.get("/tournament").then(response => {
-            this.tournaments = response.data
+            this.tournaments = response.data;
+            if(this.tournaments.length == 1)
+            {
+                this.showTournamentDetail(this.tournaments[0]);
+            }
           })
         },
         methods:
@@ -18,9 +22,9 @@ var tournaments = new Vue({
             saveTournament: function(event)
             {
                 axios.post("/tournament", this.tournament).then(response => {
+
                     tournaments.tournaments.push(response.data);
-                    }
-                 ).catch(function(e)
+                 }).catch(function(e)
                  {
                     alert(e),
                     console.log(e)
@@ -32,7 +36,10 @@ var tournaments = new Vue({
                 matches.tournament = $tournament;
                 var url = '/tournament/' + $tournament.id + '/match';
                  axios.get(url).then(response => {
-                    matches.matches = response.data
+                    matches.matches = response.data;
+                    matches.matches.map(item => {
+                        Vue.set(item, 'needWriteScore', false)
+                    })
                   })
             }
         }
@@ -46,7 +53,6 @@ var matches = new Vue({
       matches: [],
       teams: [],
       showMatches: false,
-      needWriteScore: false,
       currentMatch: {
             id: null,
             teamId1: null,
@@ -70,9 +76,9 @@ var matches = new Vue({
     },
     methods:
     {
-        showWriteScore: function(_match)
+        showWriteScore: function(_match, index)
         {
-            this.needWriteScore = true;
+            Vue.set(_match, 'needWriteScore', true)
         },
         writeScore: function(_match)
         {
@@ -82,8 +88,7 @@ var matches = new Vue({
                "score2": _match.score2
             };
             axios.put(url, body).then(response => {
-                alert('DONE');
-                this.needWriteScore = false;
+                Vue.set(_match, 'needWriteScore', false)
             }).catch(function(e){
                 alert(e);
             });
@@ -96,7 +101,6 @@ var matches = new Vue({
         {
             var url = "/match/" + _match.id;
             axios.delete(url).then(response => {
-                alert("DONE");
                 matches.matches.splice(index, 1);
             }).catch(function(e) {
                 alert(e);

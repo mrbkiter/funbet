@@ -1,9 +1,8 @@
 package io.funbet.controller;
 
-import io.funbet.model.entity.MatchEntity;
-import io.funbet.model.entity.TournamentEntity;
-import io.funbet.model.entity.MatchView;
+import io.funbet.model.entity.*;
 import io.funbet.service.TournamentService;
+import io.funbet.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +32,14 @@ public class TournamentController {
     {
         return tournamentService.getMatches(id);
     }
+
+    @GetMapping("/{id}/match/bet")
+    public List<UserMatchView> getBetMatches(@PathVariable("id") Integer id)
+    {
+        UserEntity user = WebUtils.getLoggedInUser();
+        return tournamentService.getBetMatches(id, user.getId());
+    }
+
     @PostMapping("/{id}/match")
     public MatchView saveMatch(@PathVariable("id") Integer id, @Validated @RequestBody MatchEntity match)
     {

@@ -56,8 +56,8 @@
             <td>{{t.startTime}}</td>
             <td><span v-if="t.score1 != null">{{t.score1}} - {{t.score2}}</span></td>
             <td>
-                <button v-on:click="showWriteScore">Write Score</button>
-                <div v-if="needWriteScore">
+                <button v-on:click="showWriteScore(t)">Write Score</button>
+                <div v-if="t.needWriteScore == true">
                     <input type="number" placeholder="Score Team 1" v-model="t.score1"/>
                     <input type="number" placeholder="Score Team 1" v-model="t.score2"/>
                     <button v-on:click="writeScore(t)">Save</button>

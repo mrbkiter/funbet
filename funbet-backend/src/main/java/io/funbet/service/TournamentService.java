@@ -1,20 +1,15 @@
 package io.funbet.service;
 
-import io.funbet.model.entity.MatchEntity;
-import io.funbet.model.entity.TournamentEntity;
-import io.funbet.model.entity.MatchView;
-import io.funbet.model.entity.UserEntity;
+import io.funbet.model.entity.*;
 import io.funbet.repository.MatchRepository;
 import io.funbet.repository.MatchViewRepository;
 import io.funbet.repository.TournamentRepository;
+import io.funbet.repository.UserMatchViewRepository;
 import io.funbet.utils.TimezoneUtils;
 import io.funbet.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -29,6 +24,10 @@ public class TournamentService
     @Autowired
     MatchViewRepository matchViewRepository;
 
+
+    @Autowired
+    UserMatchViewRepository userMatchViewRepository;
+
     public List<TournamentEntity> getAll()
     {
         return tournamentRepository.findAll();
@@ -39,6 +38,10 @@ public class TournamentService
         return tournamentRepository.save(tournamentEntity);
     }
 
+    public List<UserMatchView> getBetMatches(Integer tournamentId, Integer userId)
+    {
+        return userMatchViewRepository.findByTournamentIdAndUserId(tournamentId, userId);
+    }
     public List<MatchView> getMatches(Integer tournamentId)
     {
         return matchViewRepository.findByTournamentIdOrderByStartTimeAsc(tournamentId);

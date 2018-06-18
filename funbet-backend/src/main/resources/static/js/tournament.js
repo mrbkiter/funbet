@@ -10,29 +10,26 @@ var tournaments = new Vue({
         mounted()
         {
           axios.get("/tournament").then(response => {
-            this.tournaments = response.data
+            this.tournaments = response.data;
+            if(this.tournaments.length == 1)
+               {
+                    this.showTournamentDetail(this.tournaments[0]);
+               }
           })
         },
         methods:
         {
-            saveTournament: function(event)
-            {
-                axios.post("/tournament", this.tournament).then(response => {
-                    tournaments.tournaments.push(response.data);
-                    }
-                 ).catch(function(e)
-                 {
-                    alert(e),
-                    console.log(e)
-                 })
-            },
             showTournamentDetail: function($tournament)
             {
                 matches.showMatches = true;
                 matches.tournament = $tournament;
-                var url = '/tournament/' + $tournament.id + '/match';
+                var url = '/tournament/' + $tournament.id + '/match/bet';
                  axios.get(url).then(response => {
-                    matches.matches = response.data
+                    matches.matches = response.data;
+                    matches.matches.map(item => {
+                        Vue.set(item, 'enableModified', item.enableModified);
+                        Vue.set(item, 'needChooseTeam', false);
+                    });
                   })
             }
         }
@@ -44,9 +41,7 @@ var matches = new Vue({
     {
       tournament: null,
       matches: [],
-      teams: [],
       showMatches: false,
-      needWriteScore: false,
       currentMatch: {
             id: null,
             teamId1: null,
@@ -54,68 +49,29 @@ var matches = new Vue({
           betScore1: null,
           betScore2: null,
           startTime: null,
-          moneyBet: null
+          moneyBet: null,
+          selectedTeamId: null
       }
-    },
-    mounted()
-    {
-        axios.get("/team").then(response => {
-            this.teams = response.data;
-         })
-         .catch(function(e)
-         {
-            alert(e),
-            console.log(e)
-         })
     },
     methods:
     {
-        showWriteScore: function(_match)
+        showSelectedTeam: function(_match)
         {
-            this.needWriteScore = true;
+            Vue.set(_match, 'needChooseTeam', true);
         },
-        writeScore: function(_match)
+        saveSelectedTeam: function(_match)
         {
-            var url = "/match/" + _match.id + "/score";
-            var body = {
-               "score1": _match.score1,
-               "score2": _match.score2
-            };
-            axios.put(url, body).then(response => {
+            var url = "/match/" + _match.id + "/team/" + _match.selectedTeamId + "/bet";
+            axios.put(url).then(response => {
                 alert('DONE');
-                this.needWriteScore = false;
+                Vue.set(_match, 'needChooseTeam', false);
             }).catch(function(e){
-                alert(e);
+                alert(e.response.data);
             });
         },
-        editMatch: function(_match)
+        seeOthers: function()
         {
-            this.currentMatch = _match;
-        },
-        deleteMatch: function(_match, index)
-        {
-            var url = "/match/" + _match.id;
-            axios.delete(url).then(response => {
-                alert("DONE");
-                matches.matches.splice(index, 1);
-            }).catch(function(e) {
-                alert(e);
-                console.log(e)
-            });
-        },
-        saveMatch: function(event)
-        {
-            var url = '/tournament/' + this.tournament.id + '/match';
-            //collect body
-            axios.post(url, this.currentMatch).then(response => {
-                if(this.currentMatch.id == null) //create new. Need push
-                    matches.matches.push(response.data);
-            })
-            .catch(function(e)
-             {
-                alert(e),
-                console.log(e)
-             })
+
         }
     }
 })

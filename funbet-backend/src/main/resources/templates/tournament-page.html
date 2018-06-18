@@ -37,6 +37,7 @@
             <th>Bet 2</th>
             <th>Bet Money</th>
             <th>Start Time</th>
+            <td>Selected Team</td>
             <th>Score</th>
             <th>Action</th>
         </tr>
@@ -49,16 +50,19 @@
             <td>{{t.betScore2}}</td>
             <td>{{t.betMoney}}</td>
             <td>{{t.startTime}}</td>
+            <td>{{t.selectedTeamName}}</td>
             <td><span v-if="t.score1 != null">{{t.score1}} - {{t.score2}}</span></td>
             <td>
-                <button v-on:click="showWriteScore">Choose Team</button>
-                <div v-if="needChooseTeam">
-                    <select v-model="t.selectedTeam">
-                        <option :value="t.teamId1">{{t.teamName1}}</option>
-                        <option :value="t.teamId2">{{t.teamName2}}</option>
-                        <option></option>
-                    </select>
-                    <button v-on:click="saveSelectedTeam(t)">Save</button>
+                <div>
+                    <button v-on:click="showSelectedTeam(t)">Choose Team</button>
+                    <div v-if="t.needChooseTeam">
+                        <select v-model="t.selectedTeamId">
+                            <option :value="t.teamId1">{{t.teamName1}}</option>
+                            <option :value="t.teamId2">{{t.teamName2}}</option>
+                            <option></option>
+                        </select>
+                        <button v-on:click="saveSelectedTeam(t)">Save</button>
+                    </div>
                 </div>
             </td>
         </tr>
