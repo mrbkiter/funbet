@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS match
     ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
---DROP TABLE user_match_bet;
+--DROP TABLE user_match_bet CASCADE;
 
 CREATE TABLE IF NOT EXISTS user_match_bet
 (
@@ -90,6 +90,7 @@ CREATE TABLE IF NOT EXISTS user_match_bet
     bet_status VARCHAR(50),
     last_updated_timestamp TIMESTAMP WITH TIME ZONE DEFAULT now(),
     insert_timestamp TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    paid boolean,
     CONSTRAINT user_match_bet__pk PRIMARY KEY(user_id, match_id),
     CONSTRAINT user_match_bet_team_id__fkey FOREIGN KEY (team_id)
       REFERENCES team (id) MATCH SIMPLE

@@ -22,10 +22,13 @@ public class UserMatchBetEntity
     @Enumerated(EnumType.STRING)
     BetStatus betStatus;
 
+    @Column(name = "paid")
+    Boolean paid;
+
     @Column(name = "last_updated_timestamp")
     LocalDateTime lastUpdatedTimestamp = LocalDateTime.now();
 
-    enum BetStatus
+    public enum BetStatus
     {
         WIN, LOSE, DRAW
     }

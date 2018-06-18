@@ -6,10 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -20,6 +17,9 @@ public class UserMatchView
 {
     @Id
     Integer id;
+
+    @Column(name = "match_id")
+    Integer matchId;
 
     @Column(name = "tournament_id")
     Integer tournamentId;
@@ -57,6 +57,7 @@ public class UserMatchView
     LocalDateTime startTime;
 
     @Column(name = "bet_status")
+    @Enumerated(EnumType.STRING)
     UserMatchBetEntity.BetStatus betStatus;
 
     @Column(name = "user_id")
@@ -67,4 +68,7 @@ public class UserMatchView
 
     @Column(name = "selected_team_name")
     String selectedTeamName;
+
+    @Column(name = "paid")
+    Boolean paid;
 }

@@ -43,7 +43,7 @@ var matches = new Vue({
       matches: [],
       showMatches: false,
       currentMatch: {
-            id: null,
+            matchId: null,
             teamId1: null,
           teamId2: null,
           betScore1: null,
@@ -61,17 +61,32 @@ var matches = new Vue({
         },
         saveSelectedTeam: function(_match)
         {
-            var url = "/match/" + _match.id + "/team/" + _match.selectedTeamId + "/bet";
+            var url = "/match/" + _match.matchId + "/team/" + _match.selectedTeamId + "/bet";
             axios.put(url).then(response => {
                 alert('DONE');
-                Vue.set(_match, 'needChooseTeam', false);
+                if(_match.selectedTeamId == _match.teamId1)
+                    _match.selectedTeamName = _match.teamName1;
+                else
+                    _match.selectedTeamName = _match.teamName2;
+
             }).catch(function(e){
                 alert(e.response.data);
+            }).finally(() => {
+                Vue.set(_match, 'needChooseTeam', false);
             });
         },
-        seeOthers: function()
+        seeAll: function()
         {
 
         }
     }
-})
+});
+
+var tableResult = new Vue({
+    el: "#match-user-board",
+    data: {
+        matchResult: []
+    },
+
+
+});

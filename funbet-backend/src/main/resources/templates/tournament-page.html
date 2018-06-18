@@ -32,10 +32,9 @@
         <thead>
         <tr>
             <th>Team 1</th>
-            <th>Bet 1</th>
+            <th>Match Betting</th>
             <th>Team 2</th>
-            <th>Bet 2</th>
-            <th>Bet Money</th>
+            <th>Stake</th>
             <th>Start Time</th>
             <td>Selected Team</td>
             <th>Score</th>
@@ -45,9 +44,8 @@
         <tbody v-for="(t, index) in matches">
         <tr>
             <td>{{t.teamName1}}</td>
-            <td>{{t.betScore1}}</td>
+            <td>{{t.betScore1}} - {{t.betScore2}}</td>
             <td>{{t.teamName2}}</td>
-            <td>{{t.betScore2}}</td>
             <td>{{t.betMoney}}</td>
             <td>{{t.startTime}}</td>
             <td>{{t.selectedTeamName}}</td>
@@ -62,12 +60,16 @@
                             <option></option>
                         </select>
                         <button v-on:click="saveSelectedTeam(t)">Save</button>
+                        <button v-on:click="seeAll(t)">See All</button>
                     </div>
                 </div>
             </td>
         </tr>
         </tbody>
     </table>
+</div>
+<div id="match-user-board">
+
 </div>
 <script src="/static/js/tournament.js"></script>
 </body>

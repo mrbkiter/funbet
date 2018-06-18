@@ -37,10 +37,9 @@
         <thead>
         <tr>
             <th>Team 1</th>
-            <th>Bet 1</th>
+            <th>Match Betting</th>
             <th>Team 2</th>
-            <th>Bet 2</th>
-            <th>Bet Money</th>
+            <th>Match Stake</th>
             <th>Start Time</th>
             <th>Score</th>
             <th>Action</th>
@@ -49,9 +48,8 @@
         <tbody v-for="(t, index) in matches">
         <tr>
             <td>{{t.teamName1}}</td>
-            <td>{{t.betScore1}}</td>
+            <td>{{t.betScore1}} - {{t.betScore2}}</td>
             <td>{{t.teamName2}}</td>
-            <td>{{t.betScore2}}</td>
             <td>{{t.betMoney}}</td>
             <td>{{t.startTime}}</td>
             <td><span v-if="t.score1 != null">{{t.score1}} - {{t.score2}}</span></td>
@@ -78,17 +76,17 @@
                     {{ t1.name }}
                 </option>
         </select>
-        <input type="number" placeholder="Bet 1" v-model="currentMatch.betScore1"/>
+        <input type="number" placeholder="Betting 1" v-model="currentMatch.betScore1"/>
         <label>Team 2: </label>
         <select v-model="currentMatch.teamId2">
                 <option v-for="t2 in teams" v-bind:value="t2.id">
                     {{ t2.name }}
                 </option>
         </select>
-        <input type="number" placeholder="Bet 2" v-model="currentMatch.betScore2"/>
+        <input type="number" placeholder="Betting 2" v-model="currentMatch.betScore2"/>
         <label>Start time</label>
         <input type="text" placeholder="2018-07-20 15:00" v-model="currentMatch.startTime" />
-        <input type="number" v-model="currentMatch.betMoney" placeholder="Bet money"/>
+        <input type="number" v-model="currentMatch.betMoney" placeholder="Stake"/>
         <button v-on:click="saveMatch">Save</button>
     </div>
 </div>
