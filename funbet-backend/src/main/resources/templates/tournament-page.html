@@ -38,6 +38,7 @@
             <th>Start Time</th>
             <td>Selected Team</td>
             <th>Score</th>
+            <th>Betting Status</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -50,6 +51,7 @@
             <td>{{t.startTime}}</td>
             <td>{{t.selectedTeamName}}</td>
             <td><span v-if="t.score1 != null">{{t.score1}} - {{t.score2}}</span></td>
+            <td>{{betStatus}}</td>
             <td>
                 <div>
                     <button v-on:click="showSelectedTeam(t)">Choose Team</button>
@@ -69,7 +71,19 @@
     </table>
 </div>
 <div id="match-user-board">
-
+    <table>
+        <thead>
+            <tr>
+                <td v-for="h in matchHeaders">{{h.name}}</td>
+            </tr>
+        </thead>
+        <tbody v-for="(r, idx1) in matchRows">
+            <tr v-for="(ele, idx2) in r">
+                <td>{{idx1}} - {{idx2}}</td>
+                <td>{{ele.selectedTeamName}} - {{ele.betStatus}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <script src="/static/js/tournament.js"></script>
 </body>

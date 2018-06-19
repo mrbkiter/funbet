@@ -85,8 +85,19 @@ var matches = new Vue({
 var tableResult = new Vue({
     el: "#match-user-board",
     data: {
-        matchResult: []
+        matchRows: [],
+        matchHeaders: []
     },
-
+    mounted()
+            {
+                var body = {
+                           	"userIds": [2,3],
+                           	"matchIds": [1,3]
+                           };
+              axios.post("/match/tableboard", body).then(response => {
+                this.matchRows = response.data.rows;
+                this.matchHeaders = response.data.headers;
+              })
+            },
 
 });

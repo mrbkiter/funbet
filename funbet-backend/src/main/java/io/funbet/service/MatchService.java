@@ -1,12 +1,13 @@
 package io.funbet.service;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import io.funbet.exception.ResourceNotFoundException;
 import io.funbet.exception.TimestampNotAllowedException;
+import io.funbet.model.Table;
 import io.funbet.model.dto.ScoreRequest;
-import io.funbet.model.entity.MatchEntity;
-import io.funbet.model.entity.UserEntity;
-import io.funbet.model.entity.UserMatchBetEntity;
-import io.funbet.model.entity.UserMatchView;
+import io.funbet.model.entity.*;
 import io.funbet.repository.MatchRepository;
 import io.funbet.repository.UserMatchBetRepository;
 import io.funbet.repository.UserMatchViewRepository;
@@ -14,12 +15,13 @@ import io.funbet.repository.UserRepository;
 import io.funbet.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class MatchService
@@ -129,5 +131,46 @@ public class MatchService
     public List<UserMatchView> getMatchResultTable(Integer matchId)
     {
         return userMatchViewRepository.findByMatchIdOrderByBetStatusAsc(matchId);
+    }
+
+    public Collection<List<UserMatchView>> getMatchResultTable(List<Integer> matchIds, List<Integer> userIds)
+    {
+        Map<Integer, List<UserMatchView>> tableBoard = Maps.newHashMap();
+        if(CollectionUtils.isEmpty(matchIds) || CollectionUtils.isEmpty(userIds))
+            return Lists.newArrayList();
+
+
+        List<UserMatchView> matches = userMatchViewRepository.findByMatchIdAndUserId(matchIds, userIds);
+        matches.stream().forEach(m -> {
+            List<UserMatchView> row = tableBoard.getOrDefault(m.getMatchId(), Lists.newArrayList());
+            row.add(m);
+            tableBoard.put(m.getMatchId(), row);
+        });
+
+
+        return tableBoard.values();
+    }
+
+    public Table<SummaryUserView, UserMatchView> getMatchResultTable2(List<Integer> matchIds, List<Integer> userIds)
+    {
+        if(CollectionUtils.isEmpty(matchIds) || CollectionUtils.isEmpty(userIds))
+            return new Table<>(0, 0);
+
+        Table<SummaryUserView, UserMatchView> table = new Table<>(userIds.size(), matchIds.size());
+
+        Map<Integer, Integer> matchIndexMappings = new HashMap<>();
+        Map<Integer, Integer> headerIndexMappings = new HashMap<>();
+        IntStream.range(0, matchIds.size())
+                .forEach(idx -> matchIndexMappings.put(matchIds.get(idx), idx));
+        IntStream.range(0, userIds.size()).forEach(idx -> headerIndexMappings.put(userIds.get(idx), idx));
+
+        List<UserMatchView> matches = userMatchViewRepository.findByMatchIdAndUserId(matchIds, userIds);
+        matches.stream().forEach(m -> {
+            table.setElement(matchIndexMappings.get(m.getMatchId()), headerIndexMappings.get(m.getUserId()), m);
+        });
+
+        List<SummaryUserView> userViews = userRepository.findUsers(userIds);
+        table.setHeaders(userViews);
+        return table;
     }
 }

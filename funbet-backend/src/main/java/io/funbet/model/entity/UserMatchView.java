@@ -71,4 +71,10 @@ public class UserMatchView
 
     @Column(name = "paid")
     Boolean paid;
+
+    @Column(name = "email")
+    String email;
+
+    @Column(name = "name")
+    String name;
 }

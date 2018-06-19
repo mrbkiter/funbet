@@ -16,4 +16,9 @@ public interface UserMatchViewRepository extends ReadOnlyRepository<UserMatchVie
     List<UserMatchView> findByTournamentIdAndUserId(@Param("tournamentId") Integer tournamentId, @Param("userId") Integer userId);
 
     List<UserMatchView> findByMatchIdOrderByBetStatusAsc(Integer matchId);
+
+    @Query(value = "select um FROM UserMatchView um WHERE um.matchId IN (:matchIds) " +
+            "AND um.userId IN (:userIds) ORDER BY um.matchId ASC, um.userId ASC")
+    List<UserMatchView> findByMatchIdAndUserId(@Param("matchIds") List<Integer> matchIds,
+                                                   @Param("userIds") List<Integer> userIds);
 }
