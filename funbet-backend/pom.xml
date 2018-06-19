@@ -23,6 +23,7 @@
         </dependencies>
     </dependencyManagement>-->
 
+
     <dependencies>
         <!--<dependency>
             <groupId>io.projectreactor</groupId>
@@ -136,6 +137,23 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+		<groupId>com.spotify</groupId>
+		<artifactId>docker-maven-plugin</artifactId>
+		<version>0.4.13</version>
+		<configuration>
+			<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+			<dockerDirectory>funbet-backend/src/main/docker</dockerDirectory>
+			<resources>
+				<resource>
+					<targetPath>/</targetPath>
+					<directory>${project.build.directory}</directory>
+					<include>funbet-app.jar</include>
+					<!-- <include>newrelic*</include> -->
+				</resource>
+			</resources>
+		</configuration>
+	    </plugin>
             <!--<plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
