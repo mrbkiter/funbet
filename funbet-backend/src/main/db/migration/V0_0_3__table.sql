@@ -52,9 +52,9 @@ CREATE TABLE IF NOT EXISTS tournament_team
     ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
-DROP TABLE IF EXISTS user_match_bet;
-DROP VIEW IF EXISTS match_view;
-DROP TABLE IF EXISTS match;
+--DROP TABLE IF EXISTS user_match_bet;
+--DROP VIEW IF EXISTS match_view;
+--DROP TABLE IF EXISTS match;
 CREATE TABLE IF NOT EXISTS match
 (
     id serial NOT NULL,
@@ -121,8 +121,8 @@ DELETE FROM user_account WHERE email = 'sysadmin@funbet';
 INSERT INTO user_account(email, password, "name", "role") values ('sysadmin@funbet', 'password', 'Sys Admin', 'ADMIN');
 
 
-SELECT * FROM "match";
+--SELECT * FROM "match";
 
-select * from tournament;
+--select * from tournament;
 
 select * from user_match_bet;

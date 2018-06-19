@@ -1,4 +1,4 @@
-DROP VIEW IF EXISTS match_view;
+--DROP VIEW IF EXISTS match_view;
 CREATE OR REPLACE VIEW match_view AS
 SELECT m."id" AS id, m.tournament_id AS tournament_id,
  m.team_id_1 AS team_id_1, m.team_id_2 AS team_id_2, m.bet_score_1 AS bet_score_1,
@@ -8,7 +8,7 @@ FROM "match" m
 JOIN team te1 ON m.team_id_1 = te1."id"
 JOIN team te2 ON m.team_id_2 = te2."id";
 
-DROP VIEW IF EXISTS user_match_view;
+--DROP VIEW IF EXISTS user_match_view;
 CREATE OR REPLACE VIEW user_match_view AS
 SELECT row_number() OVER () as id, m."id" AS match_id, m.tournament_id AS tournament_id,
  m.team_id_1 AS team_id_1, m.team_id_2 AS team_id_2, m.bet_score_1 AS bet_score_1,
@@ -22,4 +22,25 @@ JOIN team te1 ON m.team_id_1 = te1."id"
 JOIN team te2 ON m.team_id_2 = te2."id"
 JOIN user_account ua ON um.user_id = ua.id;
 
-select * from user_match_view;
+--DROP VIEW IF EXISTS finance_user_match_view cascade;
+CREATE OR REPLACE VIEW finance_user_match_view AS
+SELECT m.tournament_id, m."id" AS match_id, m.bet_money, ua.id AS user_id, ua."name" AS name,
+ua.email AS email, um.bet_status, um.paid
+FROM user_account ua
+LEFT JOIN  user_match_bet um ON ua."id" = um.user_id
+LEFT JOIN "match" m ON  um.match_id = m."id";
+
+CREATE OR REPLACE VIEW finance_tournament_report_view AS
+SELECT tournament_id, user_id, email, name,
+SUM(CASE WHEN bet_status = 'LOSE' AND (paid = false OR paid is null) THEN bet_money ELSE 0 END) AS remaining_debt,
+SUM(CASE WHEN bet_status = 'LOSE' AND paid = true THEN bet_money ELSE 0 END) AS contribution
+FROM finance_user_match_view
+GROUP BY tournament_id, user_id, email, name;
+
+
+--select * from finance_user_match_view
+--WHERE paid is null;
+
+--select * from user_match_bet;
+
+--update user_match_bet SET paid = null;

@@ -65,7 +65,8 @@ var matches = new Vue({
           startTime: null,
           moneyBet: null,
           selectedTeamId: null
-      }
+      },
+      selectedMatches: []
     },
     methods:
     {
@@ -88,49 +89,107 @@ var matches = new Vue({
             }).finally(() => {
                 Vue.set(_match, 'needChooseTeam', false);
             });
-        },
-        seeAll: function()
-        {
-
         }
-    }
-});
+    },
+    computed: {
+                selectAllMatches: {
+                    get: function () {
+                        return this.matches ? this.selectedMatches.length == this.matches.length : false;
+                    },
+                    set: function (value) {
+                        var selectedMatches = [];
+
+                        if (value) {
+                            this.matches.forEach(function (m) {
+                                selectedMatches.push(m.matchId);
+                            });
+                        }
+
+                        this.selectedMatches = selectedMatches;
+                    }
+                }
+            }
+        }
+    );
 
 var userReport = new Vue({
     el: "#match-user-board",
     data: {
-        matchRows: [],
-        matchHeaders: [],
+        matchReport: {
+            matchRows: [],
+            matchHeaders: []
+        },
         showReport: false,
         users: [],
         matches: [],
         selectedUsers: [],
         selectedMatches: [],
-        tournament: null
+        tournament: null,
+        financeReport: []
     },
-    mounted()
-            {
-                          /*
-                var body = {
-                           	"userIds": [2,3],
-                           	"matchIds": [1,3]
-                           };
-              axios.post("/match/tableboard", body).then(response => {
-                this.matchRows = response.data.rows;
-                this.matchHeaders = response.data.headers;
-              })*/
-            },
     methods: {
         buildReportDashboard: function(event){
+            this.selectedMatches = matches.selectedMatches;
             var body = {
                 "userIds": this.selectedUsers,
                 "matchIds": this.selectedMatches
                };
               axios.post("/match/tableboard", body).then(response => {
-                this.matchRows = response.data.rows;
-                this.matchHeaders = response.data.headers;
-              })
+                this.matchReport.matchRows = response.data.rows;
+                this.matchReport.matchHeaders = response.data.headers;
+              });
+              this.buildFinanceReport();
+        },
+        buildFinanceReport()
+        {
+            var url = '/tournament/' + this.tournament.id + '/finance/report';
+                          axios.post(url, this.selectedUsers).then(response => {
+                            this.financeReport = response.data;
+                          })
+        },
+        clearAllDebt: function(event) {
+            var url = '/tournament/' + this.tournament.id + '/finance/debt/clear';
+            axios.put(url, this.selectedUsers).then(response =>
+            {
+                alert('DONE');
+                this.buildFinanceReport();
+            }).catch(function(e){
+                alert(e);
+            });
+        },
+        clearDebt: function(userId)
+        {
+            var body = [
+                userId
+            ];
+
+            var url = '/tournament/' + this.tournament.id + '/finance/debt/clear';
+            axios.put(url, body).then(response =>
+            {
+                alert('DONE');
+                this.buildFinanceReport();
+            }).catch(function(e){
+                alert(e);
+            });
         }
-    }
+    },
+     computed: {
+            selectAllUsers: {
+                get: function () {
+                    return this.users ? this.selectedUsers.length == this.users.length : false;
+                },
+                set: function (value) {
+                    var selectedUsers = [];
+
+                    if (value) {
+                        this.users.forEach(function (user) {
+                            selectedUsers.push(user.id);
+                        });
+                    }
+
+                    this.selectedUsers = selectedUsers;
+                }
+            }
+        }
 
 });
