@@ -137,12 +137,12 @@
 		<version>0.4.13</version>
 		<configuration>
 			<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-			<dockerDirectory>server/src/main/docker</dockerDirectory>
+			<dockerDirectory>src/main/docker</dockerDirectory>
 			<resources>
 				<resource>
 					<targetPath>/</targetPath>
 					<directory>${project.build.directory}</directory>
-					<include>identity.jar</include>
+					<include>funbet-app.jar</include>
 					<!-- <include>newrelic*</include> -->
 				</resource>
 			</resources>
