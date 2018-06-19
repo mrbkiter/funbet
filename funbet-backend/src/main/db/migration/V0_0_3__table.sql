@@ -1,11 +1,11 @@
-DROP TABLE IF EXISTS "user";
-DROP TABLE IF EXISTS tournament_user;
-DROP TABLE IF EXISTS user_match_bet;
-DROP TABLE IF EXISTS match;
-DROP TABLE IF EXISTS tournament_team;
-DROP TABLE IF EXISTS tournament;
-DROP TABLE IF EXISTS team;
-DROP TABLE IF EXISTS user_account;
+--DROP TABLE IF EXISTS "user";
+--DROP TABLE IF EXISTS tournament_user;
+--DROP TABLE IF EXISTS user_match_bet;
+--DROP TABLE IF EXISTS match;
+--DROP TABLE IF EXISTS tournament_team;
+--DROP TABLE IF EXISTS tournament;
+--DROP TABLE IF EXISTS team;
+--DROP TABLE IF EXISTS user_account;
 
 CREATE TABLE IF NOT EXISTS user_account
 (
