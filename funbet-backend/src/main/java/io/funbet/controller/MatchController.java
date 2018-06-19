@@ -66,7 +66,7 @@ public class MatchController
     }
 
     @PostMapping("/tableboard")
-    public Table<SummaryUserView, UserMatchView> tableBoardReport(@RequestBody UserIdMatchIdRequest request)
+    public Table tableBoardReport(@RequestBody UserIdMatchIdRequest request)
     {
         return matchService.getMatchResultTable2(request.getMatchIds(), request.getUserIds());
     }

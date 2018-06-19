@@ -151,25 +151,28 @@ public class MatchService
         return tableBoard.values();
     }
 
-    public Table<SummaryUserView, UserMatchView> getMatchResultTable2(List<Integer> matchIds, List<Integer> userIds)
+    public Table getMatchResultTable2(List<Integer> matchIds, List<Integer> userIds)
     {
         if(CollectionUtils.isEmpty(matchIds) || CollectionUtils.isEmpty(userIds))
-            return new Table<>(0, 0);
+            return new Table(0, 0);
 
-        Table<SummaryUserView, UserMatchView> table = new Table<>(userIds.size(), matchIds.size());
+        Table table = new Table(userIds.size() + 1, matchIds.size());
 
         Map<Integer, Integer> matchIndexMappings = new HashMap<>();
         Map<Integer, Integer> headerIndexMappings = new HashMap<>();
         IntStream.range(0, matchIds.size())
                 .forEach(idx -> matchIndexMappings.put(matchIds.get(idx), idx));
-        IntStream.range(0, userIds.size()).forEach(idx -> headerIndexMappings.put(userIds.get(idx), idx));
+        IntStream.range(0, userIds.size()).forEach(idx -> headerIndexMappings.put(userIds.get(idx), idx + 1));
 
         List<UserMatchView> matches = userMatchViewRepository.findByMatchIdAndUserId(matchIds, userIds);
-        matches.stream().forEach(m -> {
-            table.setElement(matchIndexMappings.get(m.getMatchId()), headerIndexMappings.get(m.getUserId()), m);
+        matches.stream().forEach(m -> table.setElement
+                (matchIndexMappings.get(m.getMatchId()), headerIndexMappings.get(m.getUserId()), m));
+        //set first element of each row
+        IntStream.range(0, matchIds.size()).forEach(idx -> {
+            table.setElement(idx, 0, table.getRows()[idx][1]);
         });
 
-        List<SummaryUserView> userViews = userRepository.findUsers(userIds);
+        List userViews = userRepository.findUsers(userIds);
         table.setHeaders(userViews);
         return table;
     }

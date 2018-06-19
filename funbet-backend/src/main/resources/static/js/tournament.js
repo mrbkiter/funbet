@@ -5,7 +5,9 @@ var tournaments = new Vue({
           tournament: {
             name: null,
             defaultMoneyBet: 10000
-          }
+          },
+          selectedUser: [],
+          selectedMatch: []
         },
         mounted()
         {
@@ -21,7 +23,11 @@ var tournaments = new Vue({
         {
             showTournamentDetail: function($tournament)
             {
+                //show match section
                 matches.showMatches = true;
+                //show report section
+                userReport.showReport = true;
+                userReport.tournament = $tournament;
                 matches.tournament = $tournament;
                 var url = '/tournament/' + $tournament.id + '/match/bet';
                  axios.get(url).then(response => {
@@ -31,6 +37,14 @@ var tournaments = new Vue({
                         Vue.set(item, 'needChooseTeam', false);
                     });
                   })
+                  var teamUrl = '/tournament/' + $tournament.id + '/match';
+                   axios.get(teamUrl).then(response => {
+                      userReport.matches = response.data;
+                 });
+
+                  axios.get("/user").then(response => {
+                    userReport.users = response.data
+                  });
             }
         }
 });
@@ -57,7 +71,7 @@ var matches = new Vue({
     {
         showSelectedTeam: function(_match)
         {
-            Vue.set(_match, 'needChooseTeam', true);
+            Vue.set(_match, 'needChooseTeam', !_match.needChooseTeam);
         },
         saveSelectedTeam: function(_match)
         {
@@ -82,14 +96,21 @@ var matches = new Vue({
     }
 });
 
-var tableResult = new Vue({
+var userReport = new Vue({
     el: "#match-user-board",
     data: {
         matchRows: [],
-        matchHeaders: []
+        matchHeaders: [],
+        showReport: false,
+        users: [],
+        matches: [],
+        selectedUsers: [],
+        selectedMatches: [],
+        tournament: null
     },
     mounted()
             {
+                          /*
                 var body = {
                            	"userIds": [2,3],
                            	"matchIds": [1,3]
@@ -97,7 +118,19 @@ var tableResult = new Vue({
               axios.post("/match/tableboard", body).then(response => {
                 this.matchRows = response.data.rows;
                 this.matchHeaders = response.data.headers;
-              })
+              })*/
             },
+    methods: {
+        buildReportDashboard: function(event){
+            var body = {
+                "userIds": this.selectedUsers,
+                "matchIds": this.selectedMatches
+               };
+              axios.post("/match/tableboard", body).then(response => {
+                this.matchRows = response.data.rows;
+                this.matchHeaders = response.data.headers;
+              })
+        }
+    }
 
 });

@@ -1,14 +1,14 @@
 <html>
 <head>
     <!-- Add this to <head> -->
-    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css"/>
-    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
-
+    <link href='/static/css/default.css' rel="stylesheet" media="all"/>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vue2-datepicker/lib/index.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <link rel="shortcut icon" href="about:blank">
+    <style>
+    </style>
 </head>
 <body>
 <div id="tournament-list">
@@ -27,17 +27,20 @@
         </tbody>
     </table>
 </div>
+<br/><br/>
+<label>User Match details</label>
+<br/><br/>
 <div id="match-detail" v-if="showMatches">
     <table>
         <thead>
         <tr>
             <th>Team 1</th>
+            <th>Score</th>
             <th>Match Betting</th>
             <th>Team 2</th>
             <th>Stake</th>
             <th>Start Time</th>
-            <td>Selected Team</td>
-            <th>Score</th>
+            <th>Selected Team</th>
             <th>Betting Status</th>
             <th>Action</th>
         </tr>
@@ -45,43 +48,68 @@
         <tbody v-for="(t, index) in matches">
         <tr>
             <td>{{t.teamName1}}</td>
+            <td><span v-if="t.score1 != null">{{t.score1}} - {{t.score2}}</span></td>
             <td>{{t.betScore1}} - {{t.betScore2}}</td>
             <td>{{t.teamName2}}</td>
             <td>{{t.betMoney}}</td>
             <td>{{t.startTime}}</td>
             <td>{{t.selectedTeamName}}</td>
-            <td><span v-if="t.score1 != null">{{t.score1}} - {{t.score2}}</span></td>
-            <td>{{betStatus}}</td>
+            <td>{{t.betStatus}}</td>
             <td>
                 <div>
-                    <button v-on:click="showSelectedTeam(t)">Choose Team</button>
-                    <div v-if="t.needChooseTeam">
-                        <select v-model="t.selectedTeamId">
-                            <option :value="t.teamId1">{{t.teamName1}}</option>
-                            <option :value="t.teamId2">{{t.teamName2}}</option>
-                            <option></option>
-                        </select>
-                        <button v-on:click="saveSelectedTeam(t)">Save</button>
-                        <button v-on:click="seeAll(t)">See All</button>
-                    </div>
+                    <span>
+                        <button v-on:click="showSelectedTeam(t)">Choose Team</button>
+                        <span v-if="t.needChooseTeam">
+                            <select v-model="t.selectedTeamId">
+                                <option :value="t.teamId1">{{t.teamName1}}</option>
+                                <option :value="t.teamId2">{{t.teamName2}}</option>
+                                <option></option>
+                            </select>
+                            <button v-on:click="saveSelectedTeam(t)">Save</button>
+                        </span>
+                    </span>
+
                 </div>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
-<div id="match-user-board">
+<br/><br/>
+<div id="match-user-board" v-if="showReport">
+    <label>User Report Section</label>
+
+    <br/>
+    <span>
+        <div>
+            <label>User List</label>
+        <div id="user-list" v-for="t in users">
+            <input name="user" type="checkbox" :value="t.id" v-model="selectedUsers"><label>{{t.name}}</label>
+        </div>
+        </div>
+        <div>
+            <label>Match list</label>
+            <div id="team-list" v-for="m in matches">
+        <input name="match" type="checkbox" :value="m.id" v-model="selectedMatches"><label>{{m.teamName1}} - {{m.teamName2}}</label>
+    </div>
+        </div>
+    </span>
+    <button v-on:click="buildReportDashboard">Show report</button>
     <table>
         <thead>
-            <tr>
-                <td v-for="h in matchHeaders">{{h.name}}</td>
-            </tr>
+        <tr>
+            <td/>
+            <td v-for="h in matchHeaders">{{h.name}}</td>
+        </tr>
         </thead>
         <tbody v-for="(r, idx1) in matchRows">
-            <tr v-for="(ele, idx2) in r">
-                <td>{{idx1}} - {{idx2}}</td>
-                <td>{{ele.selectedTeamName}} - {{ele.betStatus}}</td>
-            </tr>
+        <tr>
+            <td v-for="(ele, idx2) in r" v-if="idx2 == 0">{{ele.teamName1}} - {{ele.teamName2}}</td>
+            <td v-else>
+                <span v-if="ele.selectedTeamName == null">NOT SELECTED - {{ele.betStatus}}</span>
+                <span v-else>{{ele.selectedTeamName}} - {{ele.betStatus}}</span>
+            </td>
+        </tr>
         </tbody>
     </table>
 </div>

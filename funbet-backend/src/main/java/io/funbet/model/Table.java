@@ -6,22 +6,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class Table<H, R>
+public class Table
 {
-    List<H> headers = new ArrayList<>();
+    List<Object> headers = new ArrayList<>();
 
-    R[][] rows;
+    Object[][] rows;
 
     public Table(int headCount, int rowCount)
     {
-        rows = (R[][]) new Object[rowCount][headCount];
+        rows = new Object[rowCount][headCount];
         /*for(int ridx=0; ridx < rowCount; ridx++)
         {
             rows[ridx] = (R[]) new Object[headCount];
         }*/
     }
 
-    public void setElement(Integer rowIdx, Integer headerIdx, R ele)
+    public void setElement(Integer rowIdx, Integer headerIdx, Object ele)
     {
         rows[rowIdx][headerIdx] = ele;
     }
