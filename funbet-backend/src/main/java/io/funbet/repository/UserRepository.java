@@ -13,6 +13,9 @@ import java.util.List;
 public interface UserRepository
         extends JpaRepository<UserEntity, Integer>
 {
+    @Query(value = "SELECT u FROm UserEntity u WHERE u.role != 'ADMIN'")
+    List<UserEntity> findExcludeAdmin();
+
     UserEntity findByEmail(String email);
 
     @Query("SELECT ua.id FROM UserEntity ua ORDER BY ua.id ASC")

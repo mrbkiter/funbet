@@ -14,9 +14,9 @@ public class UserService
     @Autowired
     UserRepository userRepository;
 
-    public List<UserEntity> listAll()
+    public List<UserEntity> listAllExcludeAdmin()
     {
-        return userRepository.findAll();
+        return userRepository.findExcludeAdmin();
     }
 
     public UserEntity findUserById(Integer id) throws ResourceNotFoundException

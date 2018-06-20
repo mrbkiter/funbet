@@ -37,7 +37,8 @@ SELECT m.tournament_id, m."id" AS match_id, m.bet_money, ua.id AS user_id, ua."n
 ua.email AS email, um.bet_status, um.paid
 FROM user_account ua
 LEFT JOIN  user_match_bet um ON ua."id" = um.user_id
-LEFT JOIN "match" m ON  um.match_id = m."id";
+LEFT JOIN "match" m ON  um.match_id = m."id"
+WHERE ua."role" != 'ADMIN';
 
 CREATE OR REPLACE VIEW finance_tournament_report_view AS
 SELECT tournament_id, user_id, email, name,

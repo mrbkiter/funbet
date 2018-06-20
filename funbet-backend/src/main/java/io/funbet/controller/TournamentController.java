@@ -52,7 +52,7 @@ public class TournamentController {
         UserEntity user = WebUtils.getLoggedInUser();
         return tournamentService.getBetMatches(id, user.getId())
                 .stream().map(m -> {
-                    if(m.getStartTime().isBefore(LocalDateTime.now()))
+                    if(m.getSystemStartTime().isBefore(LocalDateTime.now()))
                         m.setEditable(false);
                     else
                         m.setEditable(true);

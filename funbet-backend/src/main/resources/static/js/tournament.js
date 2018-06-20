@@ -78,7 +78,6 @@ var matches = new Vue({
         {
             var url = "/match/" + _match.matchId + "/team/" + _match.selectedTeamId + "/bet";
             axios.put(url).then(response => {
-                alert('DONE');
                 if(_match.selectedTeamId == _match.teamId1)
                     _match.selectedTeamName = _match.teamName1;
                 else
@@ -159,10 +158,9 @@ var userReport = new Vue({
             var url = '/tournament/' + this.tournament.id + '/finance/debt/clear';
             axios.put(url, this.selectedUsers).then(response =>
             {
-                alert('DONE');
                 this.buildFinanceReport();
             }).catch(function(e){
-                alert(e);
+                alert(e.response.data);
             });
         },
         clearDebt: function(userId)
@@ -174,10 +172,9 @@ var userReport = new Vue({
             var url = '/tournament/' + this.tournament.id + '/finance/debt/clear';
             axios.put(url, body).then(response =>
             {
-                alert('DONE');
                 this.buildFinanceReport();
             }).catch(function(e){
-                alert(e);
+                alert(e.response.data);
             });
         }
     },

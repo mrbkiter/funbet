@@ -74,7 +74,7 @@ public class MatchService
 
         //for all players who haven't bet yet. They would become losers
         List<UserMatchBetEntity> userMatchNotBet =
-                userRepository.findAll().stream().map(u -> u.getId()).filter(id -> !betUserIds.contains(id))
+                userRepository.findExcludeAdmin().stream().map(u -> u.getId()).filter(id -> !betUserIds.contains(id))
                 .map(id -> {
                     UserMatchBetEntity ett = new UserMatchBetEntity();
                     ett.setId(new UserMatchBetEntity.UserMatchBetId(id, matchId));

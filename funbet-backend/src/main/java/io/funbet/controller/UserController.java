@@ -2,7 +2,7 @@ package io.funbet.controller;
 
 
 import io.funbet.exception.ResourceNotFoundException;
-import io.funbet.model.entity.SummaryUserView;
+import io.funbet.model.dto.UserUpdateRequest;
 import io.funbet.model.entity.UserEntity;
 import io.funbet.service.UserService;
 import io.funbet.utils.WebUtils;
@@ -22,7 +22,7 @@ public class UserController
     @GetMapping
     List<UserEntity> listAll()
     {
-        return userService.listAll();
+        return userService.listAllExcludeAdmin();
     }
 
     @PostMapping
@@ -44,4 +44,15 @@ public class UserController
         return WebUtils.getLoggedInUser();
     }
 
+    @PutMapping("/loggingUser")
+    void updateLoggingUser(@Validated @RequestBody UserUpdateRequest request) throws ResourceNotFoundException {
+        UserEntity user = WebUtils.getLoggedInUser();
+
+        user = userService.findUserById(user.getId());
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+
+        userService.saveUser(user);
+    }
 }

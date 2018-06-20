@@ -26,9 +26,9 @@ public class JdbcAuthenticationProvider
     UserRepository userRepository;
 
     @Override
-    @Cacheable(value = "funbet",
+    /*@Cacheable(value = "funbet",
             key = "'user#' + #authentication.getName().hashCode() + '#' + #authentication.getCredentials().toString().hashCode()",
-    condition = "#authentication.getCredentials() != null")
+    condition = "#authentication.getCredentials() != null")*/
     public Authentication authenticate(Authentication authentication)
             throws AuthenticationException {
 

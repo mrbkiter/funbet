@@ -5,13 +5,30 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vue2-datepicker/lib/index.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
     <link rel="shortcut icon" href="about:blank">
     <style>
     </style>
 </head>
 <body>
-<li><a href="/logout">logout</a>
+<div id="header-bar">
+    <div>
+        <a href="/logout">logout</a> |
+        <a href="#" v-on:click="showProfile">Hello {{profile.name}}. Need to update???</a>
+    </div>
+    <br />
+    <div id="user-profile">
+        <label></label>
+        <div v-if="isShowProfile == true">
+            <label>Name: <input type="text" v-model="profile.name" placeholder="Full Name"/> </label>
+            <label>Email: <input type="email" v-model="profile.email" placeholder="email"/></label>
+            <label>Password: <input type="password" v-model="profile.password" placeholder="password"></label>
+            <button v-on:click="saveProfile">Save Profile</button>
+        </div>
+    </div>
+    <br />
+</div>
+
+
 <div id="tournament-list">
     <table>
         <thead>
@@ -98,9 +115,9 @@
     </div>
         </div>
     </span>
-    <br />
+    <br/>
     <button v-on:click="buildReportDashboard">Show report</button>
-    <br /><br />
+    <br/><br/>
     <table>
         <thead>
         <tr>
@@ -118,30 +135,35 @@
         </tr>
         </tbody>
     </table>
-    <br /><br />
+    <br/><br/>
     <table>
         <thead>
-            <tr>
-                <td>Player</td>
-                <td>Contribution</td>
-                <td>Remaining Debt</td>
-                <td v-if="loggedInUser.role == 'ADMIN'"><button v-on:click="clearAllDebt">Clear all debt</button></td>
-            </tr>
+        <tr>
+            <td>Player</td>
+            <td>Contribution</td>
+            <td>Remaining Debt</td>
+            <td v-if="loggedInUser.role == 'ADMIN'">
+                <button v-on:click="clearAllDebt">Clear all debt</button>
+            </td>
+        </tr>
         </thead>
         <tbody v-for="t in financeReport.reports">
-            <tr>
-                <td>{{t.name}}</td>
-                <td>{{t.contribution}}</td>
-                <td>{{t.remainingDebt}}</td>
-                <td v-if="loggedInUser.role == 'ADMIN'"><button v-on:click="clearDebt(t.userId)">Clear debt</button></td>
-            </tr>
+        <tr>
+            <td>{{t.name}}</td>
+            <td>{{t.contribution}}</td>
+            <td>{{t.remainingDebt}}</td>
+            <td v-if="loggedInUser.role == 'ADMIN'">
+                <button v-on:click="clearDebt(t.userId)">Clear debt</button>
+            </td>
+        </tr>
         </tbody>
     </table>
-    <br /><br />
-    <label>Total Contribution: </label> {{financeReport.totalContribution}} <br />
+    <br/><br/>
+    <label>Total Contribution: </label> {{financeReport.totalContribution}} <br/>
 
     <label>Total remaining debt: </label> {{financeReport.totalRemainingDebt}}
 </div>
+<script src="/static/js/header.js"></script>
 <script src="/static/js/tournament.js"></script>
 </body>
 </html>

@@ -31,7 +31,6 @@ var teams = new Vue({
             {
                 var url = "/team/" + id;
                 axios.delete(url).then(response => {
-                    alert("DONE");
                     teams.teams.splice(index, 1);
                 }).catch(function(e) {
                     alert(e);
