@@ -33,7 +33,7 @@ var tournaments = new Vue({
                  axios.get(url).then(response => {
                     matches.matches = response.data;
                     matches.matches.map(item => {
-                        Vue.set(item, 'enableModified', item.enableModified);
+                        Vue.set(item, 'editable', item.editable);
                         Vue.set(item, 'needChooseTeam', false);
                     });
                   })
@@ -125,7 +125,15 @@ var userReport = new Vue({
         selectedUsers: [],
         selectedMatches: [],
         tournament: null,
-        financeReport: []
+        financeReport: [],
+        loggedInUser: null
+    },
+    mounted()
+    {
+        axios.get("/user/loggedInUser").then(response => {
+            this.loggedInUser = response.data;
+        });
+
     },
     methods: {
         buildReportDashboard: function(event){

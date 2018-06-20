@@ -59,7 +59,7 @@
             <td>{{t.selectedTeamName}}</td>
             <td>{{t.betStatus}}</td>
             <td>
-                <div>
+                <div v-if="t.editable">
                     <span>
                         <button v-on:click="showSelectedTeam(t)">Choose Team</button>
                         <span v-if="t.needChooseTeam">
@@ -100,6 +100,7 @@
     </span>
     <br />
     <button v-on:click="buildReportDashboard">Show report</button>
+    <br /><br />
     <table>
         <thead>
         <tr>
@@ -124,7 +125,7 @@
                 <td>Player</td>
                 <td>Contribution</td>
                 <td>Remaining Debt</td>
-                <td><button v-on:click="clearAllDebt">Clear all debt</button></td>
+                <td v-if="loggedInUser.role == 'ADMIN'"><button v-on:click="clearAllDebt">Clear all debt</button></td>
             </tr>
         </thead>
         <tbody v-for="t in financeReport.reports">
@@ -132,7 +133,7 @@
                 <td>{{t.name}}</td>
                 <td>{{t.contribution}}</td>
                 <td>{{t.remainingDebt}}</td>
-                <td><button v-on:click="clearDebt(t.userId)">Clear debt</button></td>
+                <td v-if="loggedInUser.role == 'ADMIN'"><button v-on:click="clearDebt(t.userId)">Clear debt</button></td>
             </tr>
         </tbody>
     </table>

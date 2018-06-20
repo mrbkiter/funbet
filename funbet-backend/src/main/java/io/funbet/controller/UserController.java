@@ -2,8 +2,10 @@ package io.funbet.controller;
 
 
 import io.funbet.exception.ResourceNotFoundException;
+import io.funbet.model.entity.SummaryUserView;
 import io.funbet.model.entity.UserEntity;
 import io.funbet.service.UserService;
+import io.funbet.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,4 +37,11 @@ public class UserController
     {
         return userService.findUserById(id);
     }
+
+    @GetMapping(value = "/loggedInUser")
+    UserEntity user()
+    {
+        return WebUtils.getLoggedInUser();
+    }
+
 }

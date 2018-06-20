@@ -77,4 +77,7 @@ public class UserMatchView
 
     @Column(name = "name")
     String name;
+
+    @Transient
+    boolean editable = true;
 }

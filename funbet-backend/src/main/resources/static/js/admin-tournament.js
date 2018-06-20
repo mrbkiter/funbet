@@ -34,6 +34,7 @@ var tournaments = new Vue({
             {
                 matches.showMatches = true;
                 matches.tournament = $tournament;
+                matches.currentMatch.betMoney = $tournament.defaultMoneyBet;
                 var url = '/tournament/' + $tournament.id + '/match';
                  axios.get(url).then(response => {
                     matches.matches = response.data;
@@ -54,13 +55,13 @@ var matches = new Vue({
       teams: [],
       showMatches: false,
       currentMatch: {
-            id: null,
-            teamId1: null,
-          teamId2: null,
-          betScore1: null,
-          betScore2: null,
-          startTime: null,
-          moneyBet: null
+        id: null,
+        teamId1: null,
+        teamId2: null,
+        betScore1: null,
+        betScore2: null,
+        startTime: null,
+        betMoney: null
       }
     },
     mounted()
