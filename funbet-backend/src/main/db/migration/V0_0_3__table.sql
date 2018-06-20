@@ -117,8 +117,8 @@ CREATE TABLE IF NOT EXISTS tournament_user
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
-DELETE FROM user_account WHERE email = 'sysadmin@funbet';
-INSERT INTO user_account(email, password, "name", "role") values ('sysadmin@funbet', 'password', 'Sys Admin', 'ADMIN');
+--DELETE FROM user_account WHERE email = 'sysadmin@funbet';
+--INSERT INTO user_account(email, password, "name", "role") values ('sysadmin@funbet', 'password', 'Sys Admin', 'ADMIN');
 
 
 --SELECT * FROM "match";

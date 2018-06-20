@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/page")
 public class PageController
 {
-    @RequestMapping(value = "/admin-tournament")
+    @RequestMapping(value = "/admin/tournament")
     public String adminTournamentPage() {
         return "admin-tournament-page";
     }
@@ -17,12 +17,12 @@ public class PageController
         return "tournament-page";
     }
 
-    @RequestMapping(value = "/user")
+    @RequestMapping(value = "/admin/user")
     public String userPage() {
         return "user-page";
     }
 
-    @RequestMapping(value = "/team")
+    @RequestMapping(value = "/admin/team")
     public String teamPage() {
         return "team-page";
     }

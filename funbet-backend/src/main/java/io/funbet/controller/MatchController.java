@@ -6,16 +6,13 @@ import io.funbet.model.Table;
 import io.funbet.model.dto.ScoreRequest;
 import io.funbet.model.dto.UserIdMatchIdRequest;
 import io.funbet.model.entity.MatchEntity;
-import io.funbet.model.entity.SummaryUserView;
 import io.funbet.model.entity.UserMatchBetEntity;
-import io.funbet.model.entity.UserMatchView;
 import io.funbet.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * vu.nguyen
@@ -57,17 +54,5 @@ public class MatchController
             throws ResourceNotFoundException, TimestampNotAllowedException
     {
         return matchService.betAMatch(matchId, teamId);
-    }
-
-    @GetMapping("/{id}/result")
-    public List<UserMatchView> getMatchResult(@PathVariable("id") Integer matchId)
-    {
-        return matchService.getMatchResultTable(matchId);
-    }
-
-    @PostMapping("/tableboard")
-    public Table tableBoardReport(@RequestBody UserIdMatchIdRequest request)
-    {
-        return matchService.getMatchResultTable2(request.getMatchIds(), request.getUserIds());
     }
 }

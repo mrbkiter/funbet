@@ -128,30 +128,7 @@ public class MatchService
         return ett;
     }
 
-    public List<UserMatchView> getMatchResultTable(Integer matchId)
-    {
-        return userMatchViewRepository.findByMatchIdOrderByBetStatusAsc(matchId);
-    }
-
-    public Collection<List<UserMatchView>> getMatchResultTable(List<Integer> matchIds, List<Integer> userIds)
-    {
-        Map<Integer, List<UserMatchView>> tableBoard = Maps.newHashMap();
-        if(CollectionUtils.isEmpty(matchIds) || CollectionUtils.isEmpty(userIds))
-            return Lists.newArrayList();
-
-
-        List<UserMatchView> matches = userMatchViewRepository.findByMatchIdAndUserId(matchIds, userIds);
-        matches.stream().forEach(m -> {
-            List<UserMatchView> row = tableBoard.getOrDefault(m.getMatchId(), Lists.newArrayList());
-            row.add(m);
-            tableBoard.put(m.getMatchId(), row);
-        });
-
-
-        return tableBoard.values();
-    }
-
-    public Table getMatchResultTable2(List<Integer> matchIds, List<Integer> userIds)
+    public Table getMatchResultTable(List<Integer> matchIds, List<Integer> userIds)
     {
         if(CollectionUtils.isEmpty(matchIds) || CollectionUtils.isEmpty(userIds))
             return new Table(0, 0);

@@ -134,7 +134,7 @@ var userReport = new Vue({
                 "userIds": this.selectedUsers,
                 "matchIds": this.selectedMatches
                };
-              axios.post("/match/tableboard", body).then(response => {
+              axios.post("/report/tableboard", body).then(response => {
                 this.matchReport.matchRows = response.data.rows;
                 this.matchReport.matchHeaders = response.data.headers;
               });

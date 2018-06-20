@@ -9,9 +9,13 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -32,8 +36,16 @@ public class JdbcAuthenticationProvider
         String password = authentication.getCredentials().toString();
         UsernamePasswordAuthenticationToken token =  Optional.ofNullable(userRepository.findByEmail(email.toLowerCase()))
                 .filter(u -> u.getPassword().equals(password))
-                .map(u -> new UsernamePasswordAuthenticationToken(u, password, null))
+                .map(u -> {
+                    List<GrantedAuthority> list = new ArrayList<>();
+                    if(u.getRole() == UserEntity.Role.ADMIN)
+                        list.add(new SimpleGrantedAuthority(UserEntity.Role.ADMIN.name()));
+                    else
+                        list.add(new SimpleGrantedAuthority(UserEntity.Role.USER.name()));
+                    return new UsernamePasswordAuthenticationToken(u, password, list);
+                })
                 .orElseThrow(() -> new BadCredentialsException("Authentication failed for user = " + email));
+
         return token;
     }
 
