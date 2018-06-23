@@ -48,11 +48,16 @@
 <br/><br/>
 <label>User Match details</label>
 <br/><br/>
+
 <div id="match-detail" v-if="showMatches">
+    <a href="#" v-on:click="showRecentMatches">Recent Matches</a> |
+    <a href="#" v-on:click="showAllMatches">All Matches</a>
+    <br />
     <table>
         <thead>
         <tr>
-            <th>Select Match(Select All<input type="checkbox" v-model="selectAllMatches">)</th>
+            <th></th>
+            <th><input type="checkbox" v-model="selectAllMatches"></th>
             <th>Team 1</th>
             <th>Score</th>
             <th>Match Betting</th>
@@ -66,6 +71,7 @@
         </thead>
         <tbody v-for="(t, index) in matches">
         <tr>
+            <td>{{index + 1}}</td>
             <td><input name="match" type="checkbox" :value="t.matchId" v-model="selectedMatches"></td>
             <td>{{t.teamName1}}</td>
             <td><span v-if="t.score1 != null">{{t.score1}} - {{t.score2}}</span></td>

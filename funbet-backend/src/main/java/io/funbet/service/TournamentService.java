@@ -8,9 +8,12 @@ import io.funbet.repository.UserMatchViewRepository;
 import io.funbet.utils.TimezoneUtils;
 import io.funbet.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TournamentService
@@ -35,6 +38,20 @@ public class TournamentService
     public TournamentEntity save(TournamentEntity tournamentEntity)
     {
         return tournamentRepository.save(tournamentEntity);
+    }
+
+
+    public List<UserMatchView> getRecentBetMatches(Integer tournamentId, Integer userId)
+    {
+        List<UserMatchView> matches = userMatchViewRepository
+                .showRecentPastMatchesByTournamentIdAndUserId(tournamentId, userId, PageRequest.of(0, 5));
+        Collections.reverse(matches);
+        List<UserMatchView> futureMatches = userMatchViewRepository
+                .showFutureMatchesByTournamentIdAndUserId(tournamentId, userId, PageRequest.of(0, 5));
+
+        matches.addAll(futureMatches);
+
+        return matches;
     }
 
     public List<UserMatchView> getBetMatches(Integer tournamentId, Integer userId)

@@ -29,14 +29,8 @@ var tournaments = new Vue({
                 userReport.showReport = true;
                 userReport.tournament = $tournament;
                 matches.tournament = $tournament;
-                var url = '/tournament/' + $tournament.id + '/match/bet';
-                 axios.get(url).then(response => {
-                    matches.matches = response.data;
-                    matches.matches.map(item => {
-                        Vue.set(item, 'editable', item.editable);
-                        Vue.set(item, 'needChooseTeam', false);
-                    });
-                  })
+                //show recent match only
+                matches.showRecentMatches(null);
                   var teamUrl = '/tournament/' + $tournament.id + '/match';
                    axios.get(teamUrl).then(response => {
                       userReport.matches = response.data;
@@ -70,6 +64,27 @@ var matches = new Vue({
     },
     methods:
     {
+        showRecentMatches: function(event)
+        {
+            this.showMatchesInTournament(true);
+        },
+        showAllMatches: function(event)
+        {
+            this.showMatchesInTournament(false);
+        },
+        showMatchesInTournament: function(recent)
+        {
+            var url = '/tournament/' + this.tournament.id + '/match/bet';
+            if(recent)
+                url = '/tournament/' + this.tournament.id + '/match/recent/bet';
+             axios.get(url).then(response => {
+                this.matches = response.data;
+                this.matches.map(item => {
+                    Vue.set(item, 'editable', item.editable);
+                    Vue.set(item, 'needChooseTeam', false);
+                });
+              })
+        },
         showSelectedTeam: function(_match)
         {
             Vue.set(_match, 'needChooseTeam', !_match.needChooseTeam);

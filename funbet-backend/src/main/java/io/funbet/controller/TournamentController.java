@@ -60,6 +60,20 @@ public class TournamentController {
                 }).collect(Collectors.toList());
     }
 
+    @GetMapping("/{id}/match/recent/bet")
+    public List<UserMatchView> getRecentBetMatches(@PathVariable("id") Integer id)
+    {
+        UserEntity user = WebUtils.getLoggedInUser();
+        return tournamentService.getRecentBetMatches(id, user.getId())
+                .stream().map(m -> {
+                    if(m.getSystemStartTime().isBefore(LocalDateTime.now()))
+                        m.setEditable(false);
+                    else
+                        m.setEditable(true);
+                    return m;
+                }).collect(Collectors.toList());
+    }
+
     @PostMapping("/{id}/match")
     public MatchView saveMatch(@PathVariable("id") Integer id, @Validated @RequestBody MatchEntity match)
     {
