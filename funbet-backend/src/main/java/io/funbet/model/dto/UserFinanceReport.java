@@ -11,11 +11,11 @@ public class UserFinanceReport
 
     String name;
     String email;
-    Long remainingDebtOtherFee;
-    Long otherFeeContribution;
+    long remainingDebtOtherFee;
+    long otherFeeContribution;
 
-    Long remainingBonus;
-    Long paidBonus;
-    Long remainingDebt;
-    Long contribution;
+    long remainingBonus;
+    long paidBonus;
+    long remainingDebt;
+    long contribution;
 }

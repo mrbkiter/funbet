@@ -23,5 +23,8 @@ public interface UserMatchBetRepository
             "AND m.id = um.match_id", nativeQuery = true)
     @Transactional
     void clearDebtForUsers(@Param("tournamentId") Integer tournamentId, @Param("userIds") List<Integer> userIds);
+
+    @Query(value = "SELECT count(um) FROM UserMatchBetEntity um WHERE um.id.matchId = :matchId")
+    int countNoOfBetOnByMatchId(@Param("matchId") Integer matchId);
 }
 

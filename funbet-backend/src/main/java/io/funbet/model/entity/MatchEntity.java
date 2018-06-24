@@ -36,11 +36,11 @@ public class MatchEntity
     Integer teamId2;
 
     @Column(name = "bet_score_1")
-    @NotNull
+    //@NotNull
     BigDecimal betScore1;
 
     @Column(name = "bet_score_2")
-    @NotNull
+    //@NotNull
     BigDecimal betScore2;
 
     @Column(name = "score_1")

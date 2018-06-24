@@ -2,6 +2,7 @@ package io.funbet.controller;
 
 import io.funbet.exception.ResourceNotFoundException;
 import io.funbet.exception.TimestampNotAllowedException;
+import io.funbet.exception.UpdateNotAllowException;
 import io.funbet.model.Table;
 import io.funbet.model.dto.ScoreRequest;
 import io.funbet.model.dto.UserIdMatchIdRequest;
@@ -51,7 +52,7 @@ public class MatchController
 
     @PutMapping("/{id}/team/{teamId}/bet")
     public UserMatchBetEntity betAMatch(@PathVariable("id") Integer matchId, @PathVariable("teamId") Integer teamId)
-            throws ResourceNotFoundException, TimestampNotAllowedException
+            throws ResourceNotFoundException, TimestampNotAllowedException, UpdateNotAllowException
     {
         return matchService.betAMatch(matchId, teamId);
     }

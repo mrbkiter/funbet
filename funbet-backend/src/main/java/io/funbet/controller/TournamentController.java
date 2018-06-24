@@ -1,5 +1,6 @@
 package io.funbet.controller;
 
+import io.funbet.exception.UpdateNotAllowException;
 import io.funbet.model.dto.OtherFeeRequestCreation;
 import io.funbet.model.entity.*;
 import io.funbet.service.FinanceService;
@@ -77,6 +78,7 @@ public class TournamentController {
 
     @PostMapping("/{id}/match")
     public MatchView saveMatch(@PathVariable("id") Integer id, @Validated @RequestBody MatchEntity match)
+            throws UpdateNotAllowException
     {
         match.setTournamentId(id);
         return tournamentService.saveMatch(match);

@@ -104,7 +104,7 @@ var matches = new Vue({
             axios.delete(url).then(response => {
                 matches.matches.splice(index, 1);
             }).catch(function(e) {
-                alert(e);
+                alert(e.response.data);
                 console.log(e)
             });
         },
@@ -118,7 +118,7 @@ var matches = new Vue({
             })
             .catch(function(e)
              {
-                alert(e),
+                alert(e.response.data);
                 console.log(e)
              })
         }

@@ -167,6 +167,9 @@ var userReport = new Vue({
             + row.userId + '/fee';
             axios.post(url, body).then(response => {
                 this.buildFinanceReport();
+            }).catch(function(e)
+            {
+                alert(e.response.data);
             });
         },
         clearFee: function(row)

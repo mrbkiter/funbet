@@ -1,5 +1,6 @@
 <html>
 <head>
+    <link href='/static/css/default.css' rel="stylesheet" media="all"/>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="shortcut icon" href="about:blank">
@@ -12,15 +13,18 @@
             <th>User Name</th>
             <th>Email</th>
             <th>Role</th>
+            <th>Locked???</th>
             <th>Action</th>
         </tr>
         </thead>
-        <tbody v-for="user in users">
+        <tbody v-for="(user, index) in users">
         <tr>
             <td>{{user.name}}</a></td>
             <td>{{user.email}}</td>
             <td>{{user.role}}</td>
-            <td><button v-on:click="deleteUser">Delete</button> <button v-on:click="editUser">Edit</button></td>
+            <td>{{user.lock}}</td>
+            <td><button v-on:click="deleteUser(user, index)">Delete</button> <button v-on:click="editUser(user)">Edit</button>
+                <button v-on:click="lockUser(user)"><label v-if="user.lock">Unlock</label><label v-else>Lock</label></button></td>
         </tr>
         </tbody>
 

@@ -1,10 +1,9 @@
 package io.funbet.service;
 
+import io.funbet.exception.ResourceNotFoundException;
+import io.funbet.exception.UpdateNotAllowException;
 import io.funbet.model.entity.*;
-import io.funbet.repository.MatchRepository;
-import io.funbet.repository.MatchViewRepository;
-import io.funbet.repository.TournamentRepository;
-import io.funbet.repository.UserMatchViewRepository;
+import io.funbet.repository.*;
 import io.funbet.utils.TimezoneUtils;
 import io.funbet.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +28,9 @@ public class TournamentService
 
     @Autowired
     UserMatchViewRepository userMatchViewRepository;
+
+    @Autowired
+    UserMatchBetRepository userMatchBetRepository;
 
     public List<TournamentEntity> getAll()
     {
@@ -62,8 +64,13 @@ public class TournamentService
         return matchViewRepository.findByTournamentIdOrderByStartTimeAsc(tournamentId);
     }
 
-    public MatchView saveMatch(MatchEntity match)
-    {
+    public MatchView saveMatch(MatchEntity match) throws UpdateNotAllowException {
+
+        int noOfBetOnMatch = userMatchBetRepository.countNoOfBetOnByMatchId(match.getId());
+        if(noOfBetOnMatch > 0)
+            throw new UpdateNotAllowException("Users already placed bet on this match. " +
+                    "You are no longer allowed to make any update on it");
+
         UserEntity userEntity = WebUtils.getLoggedInUser();
         String timezone = userEntity.getTimezone();
         match.setTimezone(timezone);

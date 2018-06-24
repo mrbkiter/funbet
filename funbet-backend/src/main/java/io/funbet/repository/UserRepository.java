@@ -16,14 +16,18 @@ public interface UserRepository
     @Query(value = "SELECT u FROm UserEntity u WHERE u.role != 'ADMIN'")
     List<UserEntity> findExcludeAdmin();
 
+    @Query(value = "SELECT u FROm UserEntity u WHERE u.role != 'ADMIN' AND u.lock != true")
+    List<UserEntity> findExcludeAdminAndLockedUser();
+
+
     UserEntity findByEmail(String email);
 
     @Query("SELECT ua.id FROM UserEntity ua ORDER BY ua.id ASC")
     List<Integer> findOrderByIdAsc();
 
     @Query("SELECT new io.funbet.model.entity.SummaryUserView(ua.id, ua.email, ua.name) FROM UserEntity ua " +
-            "WHERE ua.id IN (:ids)")
-    List<SummaryUserView> findUsers(@Param("ids") List<Integer> ids);
+            "WHERE ua.id IN (:ids) ORDER BY ua.id ASC")
+    List<SummaryUserView> findUsersOrderbyIdASC(@Param("ids") List<Integer> ids);
 
 
 }

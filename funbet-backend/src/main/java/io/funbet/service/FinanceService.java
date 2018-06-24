@@ -65,11 +65,11 @@ public class FinanceService
                converted.setContribution(converted.getContribution() - x.getPaidBonus());
             if(x.getOtherFeeContribution() != null)
                 converted.setContribution(converted.getContribution() + x.getOtherFeeContribution());
-
         });
 
         Collection<UserFinanceReport> totalReports = userFinanceReportMap.values();
-        Long totalRemainingDebt = totalReports.stream().map(r -> r.getRemainingDebt())
+        Long totalRemainingDebt = totalReports.stream()
+                .map(r -> r.getRemainingDebt() + r.getRemainingDebtOtherFee())
                 .reduce((x, y)-> x + y).get();
         Long totalContribution = totalReports.stream().map(r -> r.getContribution())
                 .reduce((x, y)-> x + y).get();

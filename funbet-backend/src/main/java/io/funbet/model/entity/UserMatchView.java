@@ -85,4 +85,10 @@ public class UserMatchView
 
     @Transient
     boolean editable = true;
+
+    @Transient
+    int follower1;
+
+    @Transient
+    int follower2;
 }

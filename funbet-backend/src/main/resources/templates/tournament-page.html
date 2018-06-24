@@ -111,7 +111,8 @@
             <label>User List</label>
         (Select All<input type="checkbox" v-model="selectAllUsers">)
         <div id="user-list" v-for="t in users">
-            <input name="user" type="checkbox" :value="t.id" v-model="selectedUsers"><label>{{t.name}}</label>
+            <input name="user" type="checkbox" :value="t.id" v-model="selectedUsers">
+            <span><label>{{t.name}}</label> <span v-if="t.lock">(Locked)</span></span>
         </div>
         </div>
         <div>
@@ -133,9 +134,11 @@
         </thead>
         <tbody v-for="(r, idx1) in matchReport.matchRows">
         <tr>
-            <td v-for="(ele, idx2) in r" v-if="idx2 == 0">{{ele.teamName1}} - {{ele.teamName2}}</td>
+            <td v-for="(ele, idx2) in r" v-if="idx2 == 0">
+                {{ele.teamName1}} ({{ele.follower1}}) - {{ele.teamName2}} ({{ele.follower2}})
+            </td>
             <td v-else>
-                <span v-if="ele.selectedTeamName == null">NOT SELECTED - {{ele.betStatus}}</span>
+                <span v-if="ele.selectedTeamName == null"> - {{ele.betStatus}}</span>
                 <span v-else>{{ele.selectedTeamName}} - {{ele.betStatus}}</span>
             </td>
         </tr>

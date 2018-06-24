@@ -2,6 +2,7 @@ package io.funbet.controller;
 
 
 import io.funbet.exception.ResourceNotFoundException;
+import io.funbet.model.dto.UserLockRequest;
 import io.funbet.model.dto.UserUpdateRequest;
 import io.funbet.model.entity.UserEntity;
 import io.funbet.service.UserService;
@@ -26,9 +27,18 @@ public class UserController
     }
 
     @PostMapping
-    UserEntity savePlayer(@Validated @RequestBody UserEntity user)
-    {
+    UserEntity savePlayer(@Validated @RequestBody UserEntity user) throws ResourceNotFoundException {
         user.setRole(UserEntity.Role.USER);
+        if(user.getId() != null)
+        {
+            UserEntity oldValue = userService.findUserById(user.getId());
+            oldValue.setEmail(user.getEmail());
+            oldValue.setName(user.getName());
+            oldValue.setPassword(user.getPassword());
+
+            user = oldValue;
+        }
+
         return userService.saveUser(user);
     }
 
@@ -54,5 +64,18 @@ public class UserController
         user.setPassword(request.getPassword());
 
         userService.saveUser(user);
+    }
+
+    @DeleteMapping("/{id}")
+    void deleteUser(@PathVariable("id") Integer userId)
+    {
+        userService.deleteUser(userId);
+    }
+
+    @PutMapping("/{id}/lock")
+    void updateLock(@PathVariable("id") Integer userId, @RequestBody UserLockRequest request)
+            throws ResourceNotFoundException
+    {
+        userService.updateUserLock(userId, request);
     }
 }
