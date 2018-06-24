@@ -42,10 +42,6 @@ public class FinanceService
     {
         List<FinanceTournamentReportView> reports = ftrvRepository.buildTournamentReport(userId);
 
-        Long totalRemainingDebt = reports.stream().map(r -> r.getRemainingDebt())
-                .reduce((x, y)-> x + y).get();
-        Long totalContribution = reports.stream().map(r -> r.getContribution())
-                .reduce((x, y)-> x + y).get();
 
         Map<Integer, UserFinanceReport> userFinanceReportMap =
                 reports.stream().collect(Collectors.toMap(x -> x.getUserId(), x -> {
@@ -72,7 +68,13 @@ public class FinanceService
 
         });
 
-        return FinanceTournamentReportResponse.builder().reports(userFinanceReportMap.values())
+        Collection<UserFinanceReport> totalReports = userFinanceReportMap.values();
+        Long totalRemainingDebt = totalReports.stream().map(r -> r.getRemainingDebt())
+                .reduce((x, y)-> x + y).get();
+        Long totalContribution = totalReports.stream().map(r -> r.getContribution())
+                .reduce((x, y)-> x + y).get();
+
+        return FinanceTournamentReportResponse.builder().reports(totalReports)
                 .totalContribution(totalContribution)
                 .totalRemainingDebt(totalRemainingDebt).build();
     }
