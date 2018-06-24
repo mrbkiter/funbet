@@ -150,6 +150,33 @@ var userReport = new Vue({
 
     },
     methods: {
+        showAddFee: function(row)
+        {
+            row.enableAddFee == undefined ? Vue.set(row, 'enableAddFee', true)
+            : Vue.set(row, 'enableAddFee', !row.enableAddFee);
+        },
+        saveFee: function(row)
+        {
+            row.enableAddFee = !row.enableAddFee;
+            var body = {
+                fee: row.fee,
+                note: row.note
+            };
+
+            var url = '/tournament/' + this.tournament.id + '/finance/user/'
+            + row.userId + '/fee';
+            axios.post(url, body).then(response => {
+                this.buildFinanceReport();
+            });
+        },
+        clearFee: function(row)
+        {
+            var url = '/tournament/' + this.tournament.id + '/finance/user/'
+                        + row.userId + '/fee/clear';
+                        axios.put(url).then(response => {
+                            this.buildFinanceReport();
+                        });
+        },
         buildReportDashboard: function(event){
             this.selectedMatches = matches.selectedMatches;
             var body = {
@@ -167,6 +194,10 @@ var userReport = new Vue({
             var url = '/tournament/' + this.tournament.id + '/finance/report';
                           axios.post(url, this.selectedUsers).then(response => {
                             this.financeReport = response.data;
+                            this.financeReport.reports.forEach(function(r) {
+                                Vue.set(r, 'fee', 0);
+                                Vue.set(r, 'note', '');
+                            });
                           })
         },
         clearAllDebt: function(event) {

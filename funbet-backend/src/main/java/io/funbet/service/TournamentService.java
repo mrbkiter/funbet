@@ -40,7 +40,6 @@ public class TournamentService
         return tournamentRepository.save(tournamentEntity);
     }
 
-
     public List<UserMatchView> getRecentBetMatches(Integer tournamentId, Integer userId)
     {
         List<UserMatchView> matches = userMatchViewRepository

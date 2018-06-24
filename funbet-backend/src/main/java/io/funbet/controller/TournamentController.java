@@ -1,5 +1,6 @@
 package io.funbet.controller;
 
+import io.funbet.model.dto.OtherFeeRequestCreation;
 import io.funbet.model.entity.*;
 import io.funbet.service.FinanceService;
 import io.funbet.service.TournamentService;
@@ -101,4 +102,17 @@ public class TournamentController {
         financeService.clearAllDebt(tournamentId, userId);
     }
 
+
+    @PostMapping("/{id}/finance/user/{userId}/fee")
+    public void addFee(@PathVariable("id") Integer tournamentId, @PathVariable("userId") Integer userId,
+                       @Validated @RequestBody OtherFeeRequestCreation feeRequestCreation)
+    {
+        financeService.addFee(tournamentId, userId, feeRequestCreation);
+    }
+
+    @PutMapping("/{id}/finance/user/{userId}/fee/clear")
+    public void clearFee(@PathVariable("id") Integer tournamentId, @PathVariable("userId") Integer userId)
+    {
+        financeService.clearFee(tournamentId, userId);
+    }
 }

@@ -49,7 +49,7 @@
 <label>User Match details</label>
 <br/><br/>
 
-<div id="match-detail" v-if="showMatches">
+<div id="match-detail" v-if="showMatches"  style="overflow-x:auto;">
     <a href="#" v-on:click="showRecentMatches">Recent Matches</a> |
     <a href="#" v-on:click="showAllMatches">All Matches</a>
     <br />
@@ -102,7 +102,7 @@
     </table>
 </div>
 <br/><br/>
-<div id="match-user-board" v-if="showReport">
+<div id="match-user-board" v-if="showReport"  style="overflow-x:auto;">
     <label>User Report Section</label>
 
     <br/>
@@ -148,19 +148,36 @@
             <td>Player</td>
             <td>Contribution</td>
             <td>Remaining Debt</td>
-            <td v-if="loggedInUser.role == 'ADMIN'">
+            <td>Other fee</td>
+            <td>Bonus</td>
+            <!--<td v-if="loggedInUser.role == 'ADMIN'">
                 <button v-on:click="clearAllDebt">Clear all debt</button>
-            </td>
+            </td>-->
         </tr>
         </thead>
         <tbody v-for="t in financeReport.reports">
         <tr>
             <td>{{t.name}}</td>
             <td>{{t.contribution}}</td>
-            <td>{{t.remainingDebt}}</td>
-            <td v-if="loggedInUser.role == 'ADMIN'">
-                <button v-on:click="clearDebt(t.userId)">Clear debt</button>
+            <td>{{t.remainingDebt}}
+            <span  v-if="loggedInUser.role == 'ADMIN'">
+                &nbsp; <button v-on:click="clearDebt(t.userId)">Clear debt</button>
+            </span>
             </td>
+            <td>{{t.remainingDebtOtherFee}}
+                <span  v-if="loggedInUser.role == 'ADMIN'">
+                     &nbsp;
+                    <button v-on:click="showAddFee(t)">Add fee</button>
+                    <div v-if="t.enableAddFee">
+                        <input type="number" v-model="t.fee" placeholder="How much" />
+                        <input type="text" v-model="t.feeNote" placeholder="Note"/>
+                        <button v-on:click="saveFee(t)">Save</button>
+                    </div>
+                    <button v-on:click="clearFee(t)">Clear</button>
+                </span>
+
+            </td>
+            <td>{{t.remainingBonus}}</td>
         </tr>
         </tbody>
     </table>
