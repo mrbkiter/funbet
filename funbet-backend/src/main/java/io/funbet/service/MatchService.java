@@ -143,7 +143,11 @@ public class MatchService {
             int verticalIdx = headerIndexMappings.get(m.getUserId());
             table.setElement
                     (rowIdx, verticalIdx, m);
-
+            if(m.getSystemStartTime().isAfter(LocalDateTime.now()))
+            {
+                m.setSelectedTeamId(0);
+                m.setSelectedTeamName("CENSORED");
+            }
             //set first element of each row.
             if (table.getRows()[rowIdx][0] == null) {
                 table.setElement(rowIdx, 0, m);
