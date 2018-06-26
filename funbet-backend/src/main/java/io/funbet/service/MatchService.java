@@ -143,11 +143,6 @@ public class MatchService {
             int verticalIdx = headerIndexMappings.get(m.getUserId());
             table.setElement
                     (rowIdx, verticalIdx, m);
-            if(m.getSystemStartTime().isAfter(LocalDateTime.now()))
-            {
-                //m.setSelectedTeamId(0);
-                m.setSelectedTeamName("CENSORED");
-            }
             //set first element of each row.
             if (table.getRows()[rowIdx][0] == null) {
                 table.setElement(rowIdx, 0, m);
@@ -159,6 +154,12 @@ public class MatchService {
                     firstEle.setFollower1(firstEle.getFollower1() + 1);
                 else
                     firstEle.setFollower2(firstEle.getFollower2() + 1);
+            }
+            //censor the selection of future matches
+            if(m.getSystemStartTime().isAfter(LocalDateTime.now()))
+            {
+                m.setSelectedTeamId(0);
+                m.setSelectedTeamName("CENSORED");
             }
 
         });
