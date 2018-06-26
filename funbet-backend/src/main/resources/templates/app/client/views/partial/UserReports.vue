@@ -1,6 +1,6 @@
 <template>
 
-    <div v-if="showReport"  style="overflow-x:auto;">
+    <div style="overflow-x:auto;">
         <label>User Report Section</label>
 
         <br/>
@@ -21,7 +21,7 @@
         </div>
     </span>
         <br/>
-        <button v-on:click="buildReportDashboard">Show report</button>
+        <button @click="buildReportDashboard()">Show report</button>
         <br/><br/>
         <table>
             <thead>
@@ -61,16 +61,16 @@
                 <td>{{t.name}}</td>
                 <td>{{t.contribution}}</td>
                 <td>{{t.remainingDebt}}
-                    <span  v-if="loggedInUser.role == 'ADMIN'">
+                    <span v-if="loggedInUser.role == 'ADMIN'">
                 &nbsp; <button v-on:click="clearDebt(t.userId)">Clear debt</button>
             </span>
                 </td>
                 <td>{{t.remainingDebtOtherFee}}
-                    <span  v-if="loggedInUser.role == 'ADMIN'">
+                    <span v-if="loggedInUser.role == 'ADMIN'">
                      &nbsp;
                     <button v-on:click="showAddFee(t)">Add fee</button>
                     <div v-if="t.enableAddFee">
-                        <input type="number" v-model="t.fee" placeholder="How much" />
+                        <input type="number" v-model="t.fee" placeholder="How much"/>
                         <input type="text" v-model="t.feeNote" placeholder="Note"/>
                         <button v-on:click="saveFee(t)">Save</button>
                     </div>
@@ -90,130 +90,137 @@
 </template>
 
 <script>
-    //import * as _ from 'lodash';
-    import axios from '@/services/axios.js';
+  //import * as _ from 'lodash';
+  import axios from '@/services/axios.js';
+  import Vue from 'vue';
 
-    export default {
-        data() {
-            let vm = this;
-            return {
-              matchReport: {
-                matchRows: [],
-                matchHeaders: []
-              },
-              showReport: false,
-              users: [],
-              matches: [],
-              selectedUsers: [],
-              selectedMatches: [],
-              tournament: null,
-              financeReport: [],
-              loggedInUser: null
-            }
+  export default {
+    data() {
+      let vm = this;
+      return {
+        matchReport: {
+          matchRows: [],
+          matchHeaders: []
         },
-      mounted(){
-        axios.get("/user/loggedInUser").then(response => {
-          this.loggedInUser = response.data;
+        users: [],
+        matches: [],
+        selectedUsers: [],
+        financeReport: [],
+        loggedInUser: null
+      }
+    },
+    props: ['tournament', 'selectedMatches'],
+    mounted() {
+      let vm = this;
+      axios.get("/user/loggedInUser").then(response => {
+        this.loggedInUser = response.data;
+      });
+
+      vm.updateReportByTournament();
+
+    },
+    methods: {
+      showAddFee: function (row) {
+        row.enableAddFee == undefined ? Vue.set(row, 'enableAddFee', true)
+          : Vue.set(row, 'enableAddFee', !row.enableAddFee);
+      },
+      saveFee: function (row) {
+        row.enableAddFee = !row.enableAddFee;
+        var body = {
+          fee: row.fee,
+          note: row.note
+        };
+
+        var url = '/tournament/' + this.tournament.id + '/finance/user/'
+          + row.userId + '/fee';
+        axios.post(url, body).then(response => {
+          this.buildFinanceReport();
+        }).catch(function (e) {
+          alert(e.response.data);
+        });
+      },
+      clearFee: function (row) {
+        var url = '/tournament/' + this.tournament.id + '/finance/user/'
+          + row.userId + '/fee/clear';
+        axios.put(url).then(response => {
+          this.buildFinanceReport();
+        });
+      },
+      buildReportDashboard: function (event) {
+        let vm = this;
+        this.selectedMatches = vm.selectedMatches;
+        var body = {
+          "userIds": this.selectedUsers,
+          "matchIds": this.selectedMatches
+        };
+        axios.post("/report/tableboard", body).then(response => {
+          this.matchReport.matchRows = response.data.rows;
+          this.matchReport.matchHeaders = response.data.headers;
+        });
+        this.buildFinanceReport();
+      },
+      buildFinanceReport() {
+        let vm = this;
+        var url = '/tournament/' + vm.tournament.id + '/finance/report';
+        axios.post(url, vm.selectedUsers).then(response => {
+          vm.financeReport = response.data;
+          vm.financeReport.reports.forEach(function (r) {
+            Vue.set(r, 'fee', 0);
+            Vue.set(r, 'note', '');
+          });
+        })
+      },
+      clearAllDebt: function (event) {
+        var url = '/tournament/' + this.tournament.id + '/finance/debt/clear';
+        axios.put(url, this.selectedUsers).then(response => {
+          this.buildFinanceReport();
+        }).catch(function (e) {
+          alert(e.response.data);
+        });
+      },
+      clearDebt: function (userId) {
+        var body = [
+          userId
+        ];
+
+        var url = '/tournament/' + this.tournament.id + '/finance/debt/clear';
+        axios.put(url, body).then(response => {
+          this.buildFinanceReport();
+        }).catch(function (e) {
+          alert(e.response.data);
+        });
+      },
+      updateReportByTournament: function () {
+        let vm = this;
+        var teamUrl = '/tournament/' + vm.tournament.id + '/match';
+        axios.get(teamUrl).then(response => {
+          vm.matches = response.data;
         });
 
-      },
-      methods: {
-        showAddFee: function(row)
-        {
-          row.enableAddFee == undefined ? Vue.set(row, 'enableAddFee', true)
-            : Vue.set(row, 'enableAddFee', !row.enableAddFee);
+        axios.get("/user").then(response => {
+          vm.users = response.data
+        });
+      }
+    },
+    computed: {
+      selectAllUsers: {
+        get: function () {
+          return this.users ? this.selectedUsers.length == this.users.length : false;
         },
-        saveFee: function(row)
-        {
-          row.enableAddFee = !row.enableAddFee;
-          var body = {
-            fee: row.fee,
-            note: row.note
-          };
+        set: function (value) {
+          var selectedUsers = [];
 
-          var url = '/tournament/' + this.tournament.id + '/finance/user/'
-            + row.userId + '/fee';
-          axios.post(url, body).then(response => {
-            this.buildFinanceReport();
-          }).catch(function(e)
-          {
-            alert(e.response.data);
-          });
-        },
-        clearFee: function(row)
-        {
-          var url = '/tournament/' + this.tournament.id + '/finance/user/'
-            + row.userId + '/fee/clear';
-          axios.put(url).then(response => {
-            this.buildFinanceReport();
-          });
-        },
-        buildReportDashboard: function(event){
-          this.selectedMatches = matches.selectedMatches;
-          var body = {
-            "userIds": this.selectedUsers,
-            "matchIds": this.selectedMatches
-          };
-          axios.post("/report/tableboard", body).then(response => {
-            this.matchReport.matchRows = response.data.rows;
-            this.matchReport.matchHeaders = response.data.headers;
-          });
-          this.buildFinanceReport();
-        },
-        buildFinanceReport()
-        {
-          var url = '/tournament/' + this.tournament.id + '/finance/report';
-          axios.post(url, this.selectedUsers).then(response => {
-            this.financeReport = response.data;
-            this.financeReport.reports.forEach(function(r) {
-              Vue.set(r, 'fee', 0);
-              Vue.set(r, 'note', '');
+          if (value) {
+            this.users.forEach(function (user) {
+              selectedUsers.push(user.id);
             });
-          })
-        },
-        clearAllDebt: function(event) {
-          var url = '/tournament/' + this.tournament.id + '/finance/debt/clear';
-          axios.put(url, this.selectedUsers).then(response =>
-          {
-            this.buildFinanceReport();
-          }).catch(function(e){
-            alert(e.response.data);
-          });
-        },
-        clearDebt: function(userId)
-        {
-          var body = [
-            userId
-          ];
-
-          var url = '/tournament/' + this.tournament.id + '/finance/debt/clear';
-          axios.put(url, body).then(response =>
-          {
-            this.buildFinanceReport();
-          }).catch(function(e){
-            alert(e.response.data);
-          });
-        }
-      },
-      computed: {
-        selectAllUsers: {
-          get: function () {
-            return this.users ? this.selectedUsers.length == this.users.length : false;
-          },
-          set: function (value) {
-            var selectedUsers = [];
-
-            if (value) {
-              this.users.forEach(function (user) {
-                selectedUsers.push(user.id);
-              });
-            }
-
-            this.selectedUsers = selectedUsers;
           }
+
+          this.selectedUsers = selectedUsers;
         }
       }
     }
+  }
 </script>
 
 <style lang="scss">

@@ -7,9 +7,11 @@
 
         <master-layout id="layout-body">
             <div slot="page-body">
-                <tournaments></tournaments>
-                <matches></matches>
-                <user-reports></user-reports>
+
+                <tournament v-for="tournament in tournaments" :key="tournament.id" :tournament="tournament"></tournament>
+
+                <br/><br/>
+
             </div>
         </master-layout>
 
@@ -17,12 +19,11 @@
 </template>
 
 <script>
-  import * as _ from 'lodash';
+//  import * as _ from 'lodash';
+  import axios from '@/services/axios';
 
   import MasterLayout from 'views/layouts/MasterLayout.vue';
-  import Tournaments from 'views/partial/Tournaments.vue';
-  import Matches from 'views/partial/Matches.vue';
-  import UserReports from 'views/partial/UserReports.vue';
+  import Tournament from 'views/partial/Tournament.vue';
 
   import CustomLoader from 'components/plugins/CustomLoader/index.vue';
 
@@ -36,15 +37,24 @@
     data() {
       let vm = this;
       return {
-        showLoader: true
+        showLoader: true,
+        tournaments: []
       }
     },
     methods: {},
-    components: {MasterLayout, Tournaments, Matches, UserReports, CustomLoader},
+    components: {MasterLayout, Tournament, CustomLoader},
     mounted() {
       let vm = this;
       vm.showLoader = false;
 
+      axios.get("/tournament").then(response => {
+        vm.tournaments = response.data;
+        /*if (vm.tournaments.length == 1) {
+          setTimeout(() => {
+            vm.showTournamentDetail(vm.tournaments[0]);
+          }, 3000)
+        }*/
+      })
 
     }
   }
