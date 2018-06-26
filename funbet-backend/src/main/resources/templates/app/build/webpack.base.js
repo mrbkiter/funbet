@@ -29,9 +29,8 @@ module.exports = {
       root: path.join(__dirname, '../client'),
       '@': path.join(__dirname, '../client'),
       components: path.join(__dirname, '../client/components'),
+      views: path.join(__dirname, '../client/views'),
       vendors: path.join(__dirname, '../client/vendors'),
-      "TweenLite": path.resolve('node_modules', 'gsap/src/uncompressed/TweenLite.js'),
-      "CustomEase": path.resolve('components', '../client/components/plugins/-premium/gsap-plugins/CustomEase.min.js')
     },
     modules: [
       _.cwd('node_modules'),
@@ -43,7 +42,6 @@ module.exports = {
   module: {
     loaders: [
         {test: require.resolve('jquery'), loader: 'expose-loader?jQuery!expose-loader?$'},
-        {test: require.resolve('skel-framework-npm'), loader: 'expose-loader?skel!expose-loader?$'},
         {
             test: /\.vue$/,
             loaders: ['vue-loader']
@@ -68,18 +66,10 @@ module.exports = {
           name: 'static/media/[name].[hash:8].[ext]'
         }
       },
-      /*{
-        test: /\.svg$/,
-        loader: 'raw-loader'
-      },*/
       {
         test   : /\.scss$/,
         loaders: ['style-loader', 'css-loader', 'resolve-url-loader', 'sass-loader?sourceMap']
       },
-      /*{
-        test: /\.svg$/,
-        loader: 'svg-inline-loader?classPrefix'
-      },*/
       {
         test: /\.svg$/,
         loader: 'vue-svg-loader', // `vue-svg` for webpack 1.x
@@ -101,10 +91,6 @@ module.exports = {
           }
         }
       }
-      /*,{
-        test: require.resolve('TweenLite'),
-        use: ['imports-loader?this=>window', 'exports-loader?foo']
-      }*/
     ]
   },
   plugins: [
