@@ -1,6 +1,5 @@
 package io.funbet.service;
 
-import io.funbet.exception.ResourceNotFoundException;
 import io.funbet.exception.UpdateNotAllowException;
 import io.funbet.model.entity.*;
 import io.funbet.repository.*;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TournamentService
@@ -31,6 +29,9 @@ public class TournamentService
 
     @Autowired
     UserMatchBetRepository userMatchBetRepository;
+
+    @Autowired
+    TournamentPredictionRepository tournamentPredictionRepository;
 
     public List<TournamentEntity> getAll()
     {
@@ -78,4 +79,16 @@ public class TournamentService
         MatchEntity matchEntity = matchRepository.save(match);
         return matchViewRepository.findById(matchEntity.getId()).orElse(new MatchView());
     }
+
+    public List<TournamentPredictionEntity> getTournamentPredictionGames(Integer tournamentId)
+    {
+        return tournamentPredictionRepository.findAll();
+    }
+
+    public TournamentPredictionEntity save(TournamentPredictionEntity entity)
+    {
+        return tournamentPredictionRepository.save(entity);
+    }
+
+    
 }
