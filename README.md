@@ -18,3 +18,7 @@ PASSWORD. Default is dbapplication_user <br />
 SERVER_PORT. Default is 9111. <br />
 
 - Run jar: java -jar <jar file>. 
+
+* Start app use Inteliji
+From Project view, select [root]/funbet-backend/src/main/java/io/funbet/config/FunbetBoot.java
+right click & select Run 

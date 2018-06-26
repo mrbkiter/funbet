@@ -8,11 +8,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeController
 {
-    @RequestMapping(value = "/")
+    /*@RequestMapping(value = "/")
     public String index() {
         UserEntity user = WebUtils.getLoggedInUser();
         if(user.getRole() == UserEntity.Role.ADMIN)
             return "index";
+        else
+            return "tournament-page";
+    }*/
+
+    @RequestMapping(value = "/")
+    public String app() {
+        UserEntity user = WebUtils.getLoggedInUser();
+        if(user.getRole() == UserEntity.Role.ADMIN)
+            return "app/dist/index";
         else
             return "tournament-page";
     }
