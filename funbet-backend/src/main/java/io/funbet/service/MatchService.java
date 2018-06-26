@@ -145,7 +145,7 @@ public class MatchService {
                     (rowIdx, verticalIdx, m);
             if(m.getSystemStartTime().isAfter(LocalDateTime.now()))
             {
-                m.setSelectedTeamId(0);
+                //m.setSelectedTeamId(0);
                 m.setSelectedTeamName("CENSORED");
             }
             //set first element of each row.
