@@ -95,6 +95,10 @@ public class TournamentService
 
     public TournamentPredictionEntity save(TournamentPredictionEntity entity)
     {
+        entity.setSystemEndTimestamp(
+                TimezoneUtils.convertLocalDateTimeToSystemTz(entity.getEndTimestamp(),
+                        WebUtils.getLoggedInUser().getTimezone()));
+
         return tournamentPredictionRepository.save(entity);
     }
 

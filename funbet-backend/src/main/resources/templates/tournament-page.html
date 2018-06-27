@@ -189,6 +189,37 @@
 
     <label>Total remaining debt: </label> {{financeReport.totalRemainingDebt}}
 </div>
+<div id="bonus-section" v-if="showBonusSection">
+    <br />
+    <label>PREDICT SECTION</label>
+    <br />
+    <table>
+        <thead>
+        <tr>
+            <th>Bonus Name</th>
+            <th>No of teams</th>
+            <th>End Time (UTC +07)</th>
+            <th>Amount of bonus</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody v-for="(t, index) in bonuses">
+        <tr>
+            <td>{{t.name}}</td>
+            <td>{{t.noOfTeam}}</td>
+            <td>{{t.endTimestamp}}</td>
+            <td>{{t.bonusAmount}}</td>
+            <td><button v-on:click="predictNow(t)">Predict Now</button></td>
+        </tr>
+        </tbody>
+    </table>
+    <div id="predict-answer-section" v-if="showAnswerSection">
+        <div id="answer-team-list" v-for="t in teams">
+            <input name="answerTeam" type="checkbox" :value="t.id" v-model="teamAnswer">
+            <span><label>{{t.name}}</label> </span>
+        </div>
+    </div>
+</div>
 <script src="/static/js/header.js"></script>
 <script src="/static/js/tournament.js"></script>
 </body>

@@ -1,5 +1,8 @@
 package io.funbet.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,12 +18,11 @@ public class TournamentPredictionEntity {
     Integer id;
 
     @Column(name = "tournament_id")
-    @NotNull
     Integer tournamentId;
 
     @Column(name = "name")
     @NotNull
-    Integer name;
+    String name;
 
     @Column(name = "no_of_team")
     Integer noOfTeam;
@@ -29,10 +31,14 @@ public class TournamentPredictionEntity {
     Integer bonusAmount;
 
     @Column(name = "last_update_timestamp")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     LocalDateTime lastUpdateTimestamp = LocalDateTime.now();
 
     @Column(name = "end_timestamp")
     @NotNull
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     LocalDateTime endTimestamp;
 
     @Column(name = "system_end_timestamp")

@@ -1,7 +1,7 @@
 <html>
 <head>
     <!-- Add this to <head> -->
-    <link href='/static/css/default.css' rel="stylesheet" media="all" />
+    <link href='/static/css/default.css' rel="stylesheet" media="all"/>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vue2-datepicker/lib/index.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -64,28 +64,63 @@
         </tr>
         </tbody>
     </table>
-    <br /><br />
+    <br/><br/>
     <label>Add match (Ho Chi Minh, Bangkok (UTC +07))</label>
     <div>
-        <input type="hidden" v-model="currentMatch.id" />
+        <input type="hidden" v-model="currentMatch.id"/>
         <label>Team 1: </label>
         <select v-model="currentMatch.teamId1">
-                <option v-for="t1 in teams" :value="t1.id">
-                    {{ t1.name }}
-                </option>
+            <option v-for="t1 in teams" :value="t1.id">
+                {{ t1.name }}
+            </option>
         </select>
         <input type="number" placeholder="Betting 1" v-model="currentMatch.betScore1"/>
         <label>Team 2: </label>
         <select v-model="currentMatch.teamId2">
-                <option v-for="t2 in teams" v-bind:value="t2.id">
-                    {{ t2.name }}
-                </option>
+            <option v-for="t2 in teams" v-bind:value="t2.id">
+                {{ t2.name }}
+            </option>
         </select>
         <input type="number" placeholder="Betting 2" v-model="currentMatch.betScore2"/>
         <label>Start time</label>
-        <input type="text" placeholder="2018-07-20 15:00" v-model="currentMatch.startTime" />
+        <input type="text" placeholder="2018-07-20 15:00" v-model="currentMatch.startTime"/>
         <input type="number" v-model="currentMatch.betMoney" placeholder="Stake"/>
         <button v-on:click="saveMatch">Save</button>
+    </div>
+</div>
+<br/>
+<div id="bonus-section" v-if="showBonusSection">
+    <label>PREDICTION SECTION</label>
+    <table>
+        <thead>
+        <tr>
+            <th>Bonus Name</th>
+            <th>No of teams</th>
+            <th>End Time (UTC +07)</th>
+            <th>Amount of bonus</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody v-for="(t, index) in bonuses">
+            <tr>
+                <td>{{t.name}}</td>
+                <td>{{t.noOfTeam}}</td>
+                <td>{{t.endTimestamp}}</td>
+                <td>{{t.bonusAmount}}</td>
+                <td><button v-on:click="editBonus(t)">Edit</button></td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <div>
+        <input type="hidden" v-model="currentBonus.id"/>
+        <label>Name: </label>
+        <input type="text" placeholder="Bonus Name" v-model="currentBonus.name" />
+        <input type="number" placeholder="No of team" v-model="currentBonus.noOfTeam" />
+        <label>End time (UTC +07) </label>
+        <input type="text" placeholder="2018-12-20 12:30" v-model="currentBonus.endTimestamp" />
+        <input type="number" placeholder="Amount of bonus" v-model="currentBonus.bonusAmount" />
+        <button v-on:click="saveBonus">Save</button>
     </div>
 </div>
 <script src="/static/js/admin-tournament.js"></script>
