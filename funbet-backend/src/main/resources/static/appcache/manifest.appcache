@@ -1,44 +1,13 @@
 CACHE MANIFEST
-#ver:6/26/2018, 6:40:33 PM
+#ver:6/27/2018, 5:39:16 PM
 #plugin:4.9.0
 
 CACHE:
-/static/static/media/bg.eefca139.jpg
-/static/f926d7923aa9525a6321fb70a06bb151.eot
-/static/86d7806657b1f58791999151ef49fe71.eot
-/static/static/media/paralax-blue-800.2cae2f68.jpg
-/static/f8ff3c1954edf4e46af10efb5df32b71.ttf
-/static/f1f2eb6bf045befede7e1fc557900f7d.ttf
-/static/static/media/bg.old.8315b083.jpg
-/static/static/media/circle-me.3a82fe8e.jpg
-/static/static/media/free_style_300.f4284caf.jpg
-/static/static/media/me-tshirt.f911f50a.png
-/static/static/media/developer.e6bd463c.jpg
-/static/static/media/in_blue_coat.2548374c.jpg
-/static/static/media/pic01.69b87478.jpg
-/static/static/media/pic02.2b077619.jpg
-/static/static/media/pic03.8b8f037c.jpg
-/static/static/media/pic04.7a47d97c.jpg
-/static/static/media/pic05.3fbdbd1f.jpg
-/static/static/media/pic06.5755b4aa.jpg
-/static/static/media/pic07.43baa0fd.jpg
-/static/static/media/pic08.781d1cb0.jpg
-/static/static/media/skills_set.468b90df.jpg
-/static/static/media/skills_set_square.18dcaad3.jpg
-/static/static/media/e_clinical_works.168a4d28.jpg
-/static/static/media/fitkit.65593dc0.jpg
-/static/static/media/honolulu.e25a6aca.jpg
-/static/static/media/mainlandtool.182ccb4d.jpg
-/static/static/media/medstar.73c41a93.jpg
-/static/static/media/plistings_1.6d43e069.jpg
-/static/static/media/plistings_1.195dfb9e.png
-/static/static/media/plistings_2.b59acb8c.png
-/static/static/media/recognition-source.3f6fde19.jpg
-/static/static/media/vincere_ats.19810d65.png
-/static/client.7d2e6a69.js
-/static/vendor.1d174685.js
-/static/manifest.872624a7.js
-/static/styles.7e51bcb7.css
+/static/vendor.d089cd13.js
+/static/client.4974cf83.js
+/static/manifest.716e9fba.js
+/static/styles.fa458049.css
+/static/styles.ab6f624d.css
 /static/favicon.ico
 /static/
 
