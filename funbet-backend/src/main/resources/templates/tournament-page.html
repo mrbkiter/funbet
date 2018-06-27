@@ -200,6 +200,7 @@
             <th>No of teams</th>
             <th>End Time (UTC +07)</th>
             <th>Amount of bonus</th>
+            <th>Selected teams</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -209,15 +210,17 @@
             <td>{{t.noOfTeam}}</td>
             <td>{{t.endTimestamp}}</td>
             <td>{{t.bonusAmount}}</td>
+            <td>{{t.teams}}</td>
             <td><button v-on:click="predictNow(t)">Predict Now</button></td>
         </tr>
         </tbody>
     </table>
     <div id="predict-answer-section" v-if="showAnswerSection">
         <div id="answer-team-list" v-for="t in teams">
-            <input name="answerTeam" type="checkbox" :value="t.id" v-model="teamAnswer">
+            <input name="answerTeam" type="checkbox" :value="t.id" v-model="selectedTeamIds">
             <span><label>{{t.name}}</label> </span>
         </div>
+        <button v-on:click="saveUserPrediction">Save</button>
     </div>
 </div>
 <script src="/static/js/header.js"></script>

@@ -41,6 +41,9 @@ public class TournamentService
     @Autowired
     TournamentPredictionUserAnswerRepository userAnswerRepository;
 
+    @Autowired
+    TournamentUserBonusViewRepository tournamentUserBonusViewRepository;
+
     public List<TournamentEntity> getAll()
     {
         return tournamentRepository.findAll();
@@ -125,5 +128,10 @@ public class TournamentService
     public List<TournamentPredictionTeamUserEntity> findUserPredictionByUserIdAndTournamentPredictionId( Integer userId, Integer predictionId)
     {
         return userAnswerRepository.findByUserIdAndTournamentPredictionId(userId, predictionId);
+    }
+
+    public List<TournamentUserBonusView> findUserPredictionByUserIdAndTournamentId(Integer userId, Integer tournamentId)
+    {
+        return tournamentUserBonusViewRepository.findByUserIdAndTournamentId(userId, tournamentId);
     }
 }
