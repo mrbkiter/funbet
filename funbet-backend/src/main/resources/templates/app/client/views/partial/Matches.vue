@@ -48,14 +48,21 @@
 
                         <template slot-scope="dataItem">
 
+                            <div v-if="dataItem.row.editable==true && dataItem.row.betStatus == null">
+                                <el-button :class="{'el-button--success': dataItem.row.selectedTeamId == dataItem.row.teamId1, 'is-plain': dataItem.row.selectedTeamId != dataItem.row.teamId1}"
+                                           size="mini"
+                                           @click="saveSelectedTeam(dataItem.row, '1')">{{dataItem.row.teamName1}}</el-button>
 
+                                <el-button :class="{'el-button--success': dataItem.row.selectedTeamId == dataItem.row.teamId2, 'is-plain': dataItem.row.selectedTeamId != dataItem.row.teamId2}"
+                                           size="mini"
+                                           @click="saveSelectedTeam(dataItem.row, '2')">{{dataItem.row.teamName2}}</el-button>
 
-                            <el-button class="el-button--success is-plain"
-                                    size="mini"
-                                    @click="saveSelectedTeam(dataItem.row.teamId1)">{{dataItem.row.teamName1}}</el-button>
-                            <el-button class="el-button--danger is-plain"
-                                    size="mini"
-                                    @click="saveSelectedTeam(dataItem.row.teamId2)">{{dataItem.row.teamName2}}</el-button>
+                            </div>
+
+                            <el-tooltip placement="top">
+                                <div slot="content">You can't bet this match<br/>Because it started already</div>
+                                <i v-if="dataItem.row.editable==false" class="ti-lock"></i>
+                            </el-tooltip>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -162,7 +169,7 @@
         }
       },
       matchesSelectionChange(selection){
-        this.selectedMatches = selection;
+        this.selectedMatches = _.map(selection, (m) => {return m.matchId});
       },
       showRecentMatches: function () {
         this.showMatchesInTournament(true);
@@ -189,13 +196,11 @@
       showSelectedTeam: function (_match) {
         Vue.set(_match, 'needChooseTeam', !_match.needChooseTeam);
       },
-      saveSelectedTeam: function (_match) {
+      saveSelectedTeam: function (_match, whichTeamNumber) {
+        _match.selectedTeamId = _match[`teamId${whichTeamNumber}`];
         var url = "/match/" + _match.matchId + "/team/" + _match.selectedTeamId + "/bet";
         axios.put(url).then(response => {
-          if (_match.selectedTeamId == _match.teamId1)
-            _match.selectedTeamName = _match.teamName1;
-          else
-            _match.selectedTeamName = _match.teamName2;
+          _match.selectedTeamName = _match[`teamName${whichTeamNumber}`]
 
         }).catch(function (e) {
           alert(e.response.data);

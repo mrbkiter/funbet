@@ -23,14 +23,14 @@
         <div class="space-20"></div>
 
 
-        <div class="panel-block" v-if="matchReport.matchHeaders.length>0">
+        <div class="panel-block" v-if="matchReport.matchHeaders !=null && matchReport.matchHeaders.length>0">
             <el-table v-loading="userMatchTableLoader" :data="matchReport.matchRows" style="width: 100%" empty-text="No record">
-                <el-table-column width="150" :render-header="renderHeader">
+                <el-table-column width="200" :render-header="renderHeader">
                     <template slot-scope="dataItem">
 
 
-                        <el-table :data="dataItem" style="width: 100%" ng-if="dataItem.length>0" :show-header="false">
-                            <el-table-column width="150">
+                        <el-table :data="dataItem.row" ng-if="dataItem.length>0" :show-header="false">
+                            <el-table-column width="180">
                                 <template slot-scope="subDataItem">
 
                                     <span v-if="subDataItem.$index == 0">
@@ -223,16 +223,22 @@
       },
       buildReportDashboard: function (event) {
         let vm = this;
+
         this.selectedMatches = vm.selectedMatches;
 
         if(vm.selectedUsers.length > 0){
+
+          vm.userMatchTableLoader = true;
           var body = {
             "userIds": vm.selectedUsers,
             "matchIds": vm.selectedMatches
           };
+
           axios.post("/report/tableboard", body).then(response => {
             this.matchReport.matchRows = response.data.rows;
             this.matchReport.matchHeaders = response.data.headers;
+
+            vm.userMatchTableLoader = false;
           });
           this.buildFinanceReport();
         }else{
@@ -279,10 +285,8 @@
         let vm = this;
         var teamUrl = '/tournament/' + vm.tournament.id + '/match';
 
-        vm.userMatchTableLoader = true;
         axios.get(teamUrl).then(response => {
           vm.matches = response.data;
-          vm.userMatchTableLoader = false;
         });
 
         axios.get("/user").then(response => {
