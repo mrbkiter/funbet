@@ -16,7 +16,8 @@ public interface UserRepository
     @Query(value = "SELECT u FROm UserEntity u WHERE u.role != 'ADMIN'")
     List<UserEntity> findExcludeAdmin();
 
-    @Query(value = "SELECT u FROm UserEntity u WHERE u.role != 'ADMIN' AND u.lock != true")
+    @Query(value = "SELECT u FROm UserEntity u WHERE u.role != 'ADMIN' " +
+            "AND (u.lock = false OR u.lock IS NULL)")
     List<UserEntity> findExcludeAdminAndLockedUser();
 
 
