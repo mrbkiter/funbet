@@ -31,6 +31,7 @@
           name: null,
           defaultMoneyBet: 10000
         },*/
+        loader: true,
         selectedUser: [],
         selectedMatch: []
       }
@@ -58,7 +59,7 @@
         vm.tournament = vm.tournament;
 
         //show recent match only
-        vm.$refs.matchesComponent.showRecentMatches(null);
+        //vm.$refs.matchesComponent.showRecentMatches(null);
       }
     }
 

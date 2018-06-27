@@ -1,88 +1,160 @@
 <template>
 
-    <div style="overflow-x:auto;">
-        <label>User Report Section</label>
+    <div>
+        <h3>User Report Section</h3>
 
-        <br/>
-        <span>
-        <div>
+
+        <div class="panel-block">
             <label>User List</label>
-        (Select All<input type="checkbox" v-model="selectAllUsers">)
-        <div id="user-list" v-for="t in users">
-            <input name="user" type="checkbox" :value="t.id" v-model="selectedUsers">
-            <span><label>{{t.name}}</label> <span v-if="t.lock">(Locked)</span></span>
+            (Select All <el-checkbox v-model="selectAllUsers"></el-checkbox>)
+            <div id="user-list" v-for="t in users">
+                <input name="user" type="checkbox" :value="t.id" v-model="selectedUsers">
+                <!--<el-checkbox v-model="t.id" name="user"></el-checkbox>-->
+                <span><label>{{t.name}}</label> <span v-if="t.lock">(Locked)</span></span>
+            </div>
         </div>
-        </div>
-        <div>
-            <label>Match list</label>
-            <div id="team-list" v-for="m in matches">
 
-    </div>
-        </div>
-    </span>
-        <br/>
+        <div class="space-20"></div>
+
         <button @click="buildReportDashboard()">Show report</button>
-        <br/><br/>
-        <table>
-            <thead>
-            <tr>
-                <td/>
-                <td v-for="h in matchReport.matchHeaders">{{h.name}}</td>
-            </tr>
-            </thead>
-            <tbody v-for="(r, idx1) in matchReport.matchRows">
-            <tr>
-                <td v-for="(ele, idx2) in r" v-if="idx2 == 0">
-                    {{ele.teamName1}} ({{ele.follower1}}) - {{ele.teamName2}} ({{ele.follower2}})
-                </td>
-                <td v-else>
-                    <span v-if="ele.selectedTeamName == null"> - {{ele.betStatus}}</span>
-                    <span v-else>{{ele.selectedTeamName}} - {{ele.betStatus}}</span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <br/><br/>
-        <table>
-            <thead>
-            <tr>
-                <td>Player</td>
-                <td>Contribution</td>
-                <td>Remaining Debt</td>
-                <td>Other fee</td>
-                <td>Bonus</td>
-                <!--<td v-if="loggedInUser.role == 'ADMIN'">
-                    <button v-on:click="clearAllDebt">Clear all debt</button>
-                </td>-->
-            </tr>
-            </thead>
-            <tbody v-for="t in financeReport.reports">
-            <tr>
-                <td>{{t.name}}</td>
-                <td>{{t.contribution}}</td>
-                <td>{{t.remainingDebt}}
-                    <span v-if="loggedInUser.role == 'ADMIN'">
-                &nbsp; <button v-on:click="clearDebt(t.userId)">Clear debt</button>
-            </span>
-                </td>
-                <td>{{t.remainingDebtOtherFee}}
-                    <span v-if="loggedInUser.role == 'ADMIN'">
-                     &nbsp;
-                    <button v-on:click="showAddFee(t)">Add fee</button>
-                    <div v-if="t.enableAddFee">
-                        <input type="number" v-model="t.fee" placeholder="How much"/>
-                        <input type="text" v-model="t.feeNote" placeholder="Note"/>
-                        <button v-on:click="saveFee(t)">Save</button>
-                    </div>
-                    <button v-on:click="clearFee(t)">Clear</button>
-                </span>
 
-                </td>
-                <td>{{t.remainingBonus}}</td>
-            </tr>
-            </tbody>
-        </table>
-        <br/><br/>
+
+        <div class="space-20"></div>
+        <div class="space-20"></div>
+
+
+        <div class="panel-block" v-if="matchReport.matchHeaders.length>0">
+            <el-table v-loading="userMatchTableLoader" :data="matchReport.matchRows" style="width: 100%" empty-text="No record">
+                <el-table-column width="150" :render-header="renderHeader">
+                    <template slot-scope="dataItem">
+
+
+                        <el-table :data="dataItem" style="width: 100%" ng-if="dataItem.length>0" :show-header="false">
+                            <el-table-column width="150">
+                                <template slot-scope="subDataItem">
+
+                                    <span v-if="subDataItem.$index == 0">
+                                        {{subDataItem.row.teamName1}} ({{subDataItem.row.follower1}}) - {{subDataItem.row.teamName2}} ({{subDataItem.row.follower2}})
+                                    </span>
+                                    <span v-else>
+                                        <span v-if="subDataItem.row.selectedTeamName == null"> - {{subDataItem.row.betStatus}}</span>
+                                        <span v-else>{{subDataItem.row.selectedTeamName}} - {{subDataItem.row.betStatus}}</span>
+                                    </span>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+
+
+
+                    </template>
+                </el-table-column>
+            </el-table>
+
+            <!--<table>
+                <thead>
+                <tr>
+                    <td/>
+                    <td v-for="h in matchReport.matchHeaders">{{h.name}}</td>
+                </tr>
+                </thead>
+                <tbody v-for="(r, idx1) in matchReport.matchRows">
+                    <tr>
+                        <td v-for="(ele, idx2) in r" v-if="idx2 == 0">
+                            {{ele.teamName1}} ({{ele.follower1}}) - {{ele.teamName2}} ({{ele.follower2}})
+                        </td>
+                        <td v-else>
+                            <span v-if="ele.selectedTeamName == null"> - {{ele.betStatus}}</span>
+                            <span v-else>{{ele.selectedTeamName}} - {{ele.betStatus}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>-->
+
+        </div>
+
+        <div class="space-20"></div>
+        <div class="space-20"></div>
+
+
+
+        <div class="panel-block">
+            <el-table v-loading="financeTableLoader" :data="financeReport.reports" style="width: 100%" empty-text="No record">
+                <el-table-column prop="name" label="Player" width="150"></el-table-column>
+                <el-table-column prop="contribution" label="Contribution" width="200"></el-table-column>
+                <el-table-column prop="remainingDebt" label="Remaining Debt" width="380">
+                    <template slot-scope="dataItem">
+                        <span>{{dataItem.row.remainingDebt}}</span>
+                        <el-button v-if="loggedInUser.role == 'ADMIN'" @click="clearDebt(dataItem.row.userId)" round>Clear debt</el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="remainingDebtOtherFee" label="Other Fee" width="400">
+                    <template slot-scope="dataItem">
+                        <span>{{dataItem.row.remainingDebtOtherFee}}</span>
+                        <div v-if="loggedInUser.role == 'ADMIN'">
+
+
+                            <el-button @click="showAddFee(dataItem.row)" round>Add fee</el-button>
+                            <div v-if="dataItem.row.enableAddFee">
+                                <el-input-number v-model="dataItem.row.fee" :min="0"></el-input-number>
+
+                                <el-input placeholder="Note" v-model="dataItem.row.feeNote"></el-input>
+
+                                <el-button @click="saveFee(dataItem.row)" type="primary" round>Save</el-button>
+                            </div>
+                            <button @click="clearFee(t)">Clear</button>
+
+                        </div>
+                        <el-button v-if="loggedInUser.role == 'ADMIN'" @click="clearDebt(dataItem.row.userId)" round>Clear debt</el-button>
+                    </template>
+
+                </el-table-column>
+                <el-table-column prop="remainingBonus" label="Bonus" width="200"></el-table-column>
+            </el-table>
+            <!--<table>
+                <thead>
+                <tr>
+                    <td>Player</td>
+                    <td>Contribution</td>
+                    <td>Remaining Debt</td>
+                    <td>Other fee</td>
+                    <td>Bonus</td>
+                    &lt;!&ndash;<td v-if="loggedInUser.role == 'ADMIN'">
+                        <button v-on:click="clearAllDebt">Clear all debt</button>
+                    </td>&ndash;&gt;
+                </tr>
+                </thead>
+                <tbody v-for="t in financeReport.reports">
+                <tr>
+                    <td>{{t.name}}</td>
+                    <td>{{t.contribution}}</td>
+                    <td>{{t.remainingDebt}}
+                        <span v-if="loggedInUser.role == 'ADMIN'">
+                    &nbsp; <button v-on:click="clearDebt(t.userId)">Clear debt</button>
+                </span>
+                    </td>
+                    <td>{{t.remainingDebtOtherFee}}
+                        <span v-if="loggedInUser.role == 'ADMIN'">
+                         &nbsp;
+                        <button v-on:click="showAddFee(t)">Add fee</button>
+                        <div v-if="t.enableAddFee">
+                            <input type="number" v-model="t.fee" placeholder="How much"/>
+                            <input type="text" v-model="t.feeNote" placeholder="Note"/>
+                            <button v-on:click="saveFee(t)">Save</button>
+                        </div>
+                        <button v-on:click="clearFee(t)">Clear</button>
+                    </span>
+
+                    </td>
+                    <td>{{t.remainingBonus}}</td>
+                </tr>
+                </tbody>
+            </table>-->
+        </div>
+
+
+
+        <div class="space-20"></div>
+        <div class="space-20"></div>
         <label>Total Contribution: </label> {{financeReport.totalContribution}} <br/>
 
         <label>Total remaining debt: </label> {{financeReport.totalRemainingDebt}}
@@ -106,7 +178,10 @@
         matches: [],
         selectedUsers: [],
         financeReport: [],
-        loggedInUser: null
+        loggedInUser: null,
+
+        userMatchTableLoader: false,
+        financeTableLoader: false
       }
     },
     props: ['tournament', 'selectedMatches'],
@@ -149,18 +224,27 @@
       buildReportDashboard: function (event) {
         let vm = this;
         this.selectedMatches = vm.selectedMatches;
-        var body = {
-          "userIds": this.selectedUsers,
-          "matchIds": this.selectedMatches
-        };
-        axios.post("/report/tableboard", body).then(response => {
-          this.matchReport.matchRows = response.data.rows;
-          this.matchReport.matchHeaders = response.data.headers;
-        });
-        this.buildFinanceReport();
+
+        if(vm.selectedUsers.length > 0){
+          var body = {
+            "userIds": vm.selectedUsers,
+            "matchIds": vm.selectedMatches
+          };
+          axios.post("/report/tableboard", body).then(response => {
+            this.matchReport.matchRows = response.data.rows;
+            this.matchReport.matchHeaders = response.data.headers;
+          });
+          this.buildFinanceReport();
+        }else{
+          vm.$notify.info({
+            title: 'Info',
+            message: 'Please tick into the checkbox to select a user for the report.'
+          });
+        }
       },
       buildFinanceReport() {
         let vm = this;
+        vm.financeTableLoader = true;
         var url = '/tournament/' + vm.tournament.id + '/finance/report';
         axios.post(url, vm.selectedUsers).then(response => {
           vm.financeReport = response.data;
@@ -168,6 +252,7 @@
             Vue.set(r, 'fee', 0);
             Vue.set(r, 'note', '');
           });
+          vm.financeTableLoader = false;
         })
       },
       clearAllDebt: function (event) {
@@ -193,13 +278,27 @@
       updateReportByTournament: function () {
         let vm = this;
         var teamUrl = '/tournament/' + vm.tournament.id + '/match';
+
+        vm.userMatchTableLoader = true;
         axios.get(teamUrl).then(response => {
           vm.matches = response.data;
+          vm.userMatchTableLoader = false;
         });
 
         axios.get("/user").then(response => {
           vm.users = response.data
         });
+      },
+      renderHeader(h, { column, $index }){
+
+        let vm = this;
+//        console.log("renderHeader", $index, vm.matchReport.matchHeaders);
+        if(vm.matchReport.matchHeaders.length > 0)
+            return h('div', null, [
+              h('div', null, vm.matchReport.matchHeaders[$index].name)
+            ])
+        else
+          return ""
       }
     },
     computed: {

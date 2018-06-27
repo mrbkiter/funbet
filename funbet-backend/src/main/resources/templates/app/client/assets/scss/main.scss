@@ -3,7 +3,7 @@ body{
   font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif !important;
   font-size: 15px;
 }
-.loading-container {
+/*.loading-container {
   background-color: #2e3141;
   height: 100vh;
   overflow: hidden;
@@ -13,10 +13,10 @@ body{
   transition: opacity .8s;
 }
 
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+.fade-enter, .fade-leave-to !* .fade-leave-active below version 2.1.8 *!
 {
   opacity: 0;
-}
+}*/
 
 .panel-block{
   border: 1px solid #ebebeb;
@@ -26,7 +26,7 @@ body{
 }
 
 .space-20{
-  margin-top:10px;margin-bottom: 10px;
+  height:20px;
 }
 
 

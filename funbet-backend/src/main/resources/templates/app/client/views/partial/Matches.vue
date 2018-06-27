@@ -12,22 +12,37 @@
             </el-menu>
 
             <div class="panel-block">
-                <el-table :data="matches" style="width: 100%" empty-text="No record"
-                          @selection-change="matchOnSelected">
+                <el-table v-loading="tableLoader" :data="matches" style="width: 100%" empty-text="No record"
+                          @selection-change="matchesSelectionChange">
                     <el-table-column type="index" width="50"></el-table-column>
                     <el-table-column type="selection" width="50"></el-table-column>
 
-                    <el-table-column prop="teamName1" label="Team Name 1" width="150"></el-table-column>
-                    <el-table-column prop="name" label="Score" width="100" sortable>
+                    <el-table-column prop="teamName1" label="Team Name 1" width="150">
                         <template slot-scope="dataItem">
-                            <span v-if="dataItem.column.score1 != null">{{dataItem.column.score1}} - {{dataItem.column.score2}}</span>
+                            <span v-if="dataItem.row.score1 !=null && (dataItem.row.score1 + dataItem.row.betScore1) > (dataItem.row.score2 + dataItem.row.betScore2)">🏅</span>
+                            <span :class="{'line-through': dataItem.row.score1 !=null && (dataItem.row.score1 + dataItem.row.betScore1) < (dataItem.row.score2 + dataItem.row.betScore2)}">{{dataItem.row.teamName1}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="teamName2" label="Team Name 2" width="150"></el-table-column>
-                    <el-table-column prop="betMoney" label="Stake" width="100"></el-table-column>
+                    <el-table-column prop="name" label="Score" width="100" sortable>
+                        <template slot-scope="dataItem">
+                            <span>{{dataItem.row.score1}} - {{dataItem.row.score2}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="teamName2" label="Team Name 2" width="150">
+                        <template slot-scope="dataItem">
+                            <span v-if="dataItem.row.score1 !=null && (dataItem.row.score1 + dataItem.row.betScore1) < (dataItem.row.score2 + dataItem.row.betScore2)">🏅</span>
+                            <span :class="{'line-through': dataItem.row.score2 !=null && (dataItem.row.score1 + dataItem.row.betScore1) > (dataItem.row.score2 + dataItem.row.betScore2)}">{{dataItem.row.teamName2}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="betMoney" label="Stake" width="80"></el-table-column>
                     <el-table-column prop="startTime" label="Start Time" width="150" sortable></el-table-column>
                     <el-table-column prop="selectedTeamName" label="Selected Team" width="120"></el-table-column>
-                    <el-table-column prop="betStatus" label="Betting Status" width="150" sortable></el-table-column>
+                    <el-table-column prop="betStatus" label="Betting Status" width="150" sortable>
+                        <template slot-scope="dataItem">
+                            <span v-if="dataItem.row.betStatus == 'LOSE'">😞 LOSE</span>
+                            <span v-if="dataItem.row.betStatus == 'WIN'">😎 WIN</span>
+                        </template>
+                    </el-table-column>
 
                     <el-table-column label="Choose Team" align="center">
 
@@ -47,6 +62,7 @@
                 <div class="space-20"></div>
             </div>
 
+            <div class="space-20"></div>
             <user-reports v-if="tournament" ref="userReportComponent" :tournament="tournament" :selected-matches="selectedMatches"></user-reports>
 
             <!--<table>
@@ -117,6 +133,7 @@
       return {
         activeIndex: 'recentMatches',
         matches: [],
+        tableLoader: true,
         showMatches: false,
         currentMatch: {
           matchId: null,
@@ -144,10 +161,10 @@
           vm.showAllMatches();
         }
       },
-      matchOnSelected(){
-
+      matchesSelectionChange(selection){
+        this.selectedMatches = selection;
       },
-      showRecentMatches: function (event) {
+      showRecentMatches: function () {
         this.showMatchesInTournament(true);
       },
       showAllMatches: function (event) {
@@ -164,6 +181,9 @@
             Vue.set(item, 'editable', item.editable);
             Vue.set(item, 'needChooseTeam', false);
           });
+
+          // hide loader
+          vm.tableLoader = false;
         })
       },
       showSelectedTeam: function (_match) {
@@ -201,6 +221,10 @@
           this.selectedMatches = selectedMatches;
         }
       }
+    },
+    mounted(){
+      let vm = this;
+      vm.showRecentMatches();
     }
 
 
