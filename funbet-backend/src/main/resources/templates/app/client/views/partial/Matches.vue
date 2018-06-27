@@ -27,7 +27,7 @@
                     <el-table-column prop="betMoney" label="Stake" width="100"></el-table-column>
                     <el-table-column prop="startTime" label="Start Time" width="150" sortable></el-table-column>
                     <el-table-column prop="selectedTeamName" label="Selected Team" width="120"></el-table-column>
-                    <el-table-column prop="betStatus" label="Betting Status" width="130" sortable></el-table-column>
+                    <el-table-column prop="betStatus" label="Betting Status" width="150" sortable></el-table-column>
 
                     <el-table-column label="Choose Team" align="center">
 

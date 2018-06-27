@@ -43,4 +43,13 @@
   /*@import '~font-awesome/scss/font-awesome.scss';*/
   ;
   @import '~@/assets/fonts/themify/themify-icons.css';
+
+  $textColor: #000;
+  .el-table {
+    thead, td {
+      color: $textColor !important;
+    }
+  }
+
+
 </style>

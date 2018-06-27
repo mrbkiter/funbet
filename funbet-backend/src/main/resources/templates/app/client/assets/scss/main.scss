@@ -1,8 +1,8 @@
-
-@import url('https://fonts.googleapis.com/css?family=Raleway:200,700|Source+Sans+Pro:300,600,300italic,600italic');
-
 @import 'components/sass-css-utilities/sass-css-utilities';
-
+body{
+  font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif !important;
+  font-size: 15px;
+}
 .loading-container {
   background-color: #2e3141;
   height: 100vh;
@@ -28,3 +28,7 @@
 .space-20{
   margin-top:10px;margin-bottom: 10px;
 }
+
+
+
+//@import url('https://fonts.googleapis.com/css?family=Raleway:200,700|Source+Sans+Pro:300,600,300italic,600italic');
