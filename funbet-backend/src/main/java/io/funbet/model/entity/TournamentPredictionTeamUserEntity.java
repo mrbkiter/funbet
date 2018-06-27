@@ -19,6 +19,12 @@ public class TournamentPredictionTeamUserEntity
     @Column(name = "last_update_timestamp")
     LocalDateTime lastUpdateTimestamp = LocalDateTime.now();
 
+    public TournamentPredictionTeamUserEntity withId(TournamentPredictionTeamUserId id)
+    {
+        this.id = id;
+        return this;
+    }
+
     @Embeddable
     @Getter
     @Setter

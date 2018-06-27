@@ -1,7 +1,9 @@
 package io.funbet.controller;
 
+import io.funbet.exception.TimestampNotAllowedException;
 import io.funbet.exception.UpdateNotAllowException;
 import io.funbet.model.dto.OtherFeeRequestCreation;
+import io.funbet.model.dto.UserPredictionRequest;
 import io.funbet.model.entity.*;
 import io.funbet.service.FinanceService;
 import io.funbet.service.TournamentService;
@@ -116,5 +118,50 @@ public class TournamentController {
     public void clearFee(@PathVariable("id") Integer tournamentId, @PathVariable("userId") Integer userId)
     {
         financeService.clearFee(tournamentId, userId);
+    }
+
+    @GetMapping("/{id}/prediction")
+    public List<TournamentPredictionEntity> listAllPrediction(@PathVariable("id") Integer tournamentId)
+    {
+        return tournamentService.getTournamentPredictionGames(tournamentId);
+    }
+
+    @PostMapping("/{id}/prediction")
+    public TournamentPredictionEntity createPrediction(@PathVariable("id") Integer tournamentId, @RequestBody @Validated TournamentPredictionEntity body)
+    {
+        body.setTournamentId(tournamentId);
+        return tournamentService.save(body);
+    }
+
+    @PutMapping("/{id}/prediction/{predictionId}")
+    public TournamentPredictionEntity updatePrediction(@PathVariable("id") Integer tournamentId, @PathVariable("predictionId") Integer predictionId,
+                                                        @RequestBody @Validated TournamentPredictionEntity body)
+    {
+        body.setTournamentId(tournamentId);
+        body.setId(predictionId);
+        return tournamentService.save(body);
+    }
+
+    @DeleteMapping("/prediction/{predictionId}")
+    public void deleteAPrediction(@PathVariable("predictionId") Integer predictionId)
+    {
+        tournamentService.deletePrediction(predictionId);
+    }
+
+    @PostMapping("/prediction/{predictionId}/user")
+    public List<TournamentPredictionTeamUserEntity>
+    createUserPrediction(@PathVariable("predictionId") Integer predictionId, @RequestBody @Validated UserPredictionRequest request) throws TimestampNotAllowedException {
+        UserEntity user = WebUtils.getLoggedInUser();
+
+        return tournamentService.createUserPrediction( user.getId(), predictionId,request);
+    }
+
+    @GetMapping("/prediction/{predictionId}/user")
+    public List<TournamentPredictionTeamUserEntity> getUserPrediction(@PathVariable("predictionId") Integer predictionId)
+            throws TimestampNotAllowedException
+    {
+        UserEntity user = WebUtils.getLoggedInUser();
+
+        return tournamentService.findUserPredictionByUserIdAndTournamentPredictionId( user.getId(), predictionId);
     }
 }

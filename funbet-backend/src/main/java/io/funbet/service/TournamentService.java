@@ -1,6 +1,8 @@
 package io.funbet.service;
 
+import io.funbet.exception.TimestampNotAllowedException;
 import io.funbet.exception.UpdateNotAllowException;
+import io.funbet.model.dto.UserPredictionRequest;
 import io.funbet.model.entity.*;
 import io.funbet.repository.*;
 import io.funbet.utils.TimezoneUtils;
@@ -9,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TournamentService
@@ -32,6 +37,9 @@ public class TournamentService
 
     @Autowired
     TournamentPredictionRepository tournamentPredictionRepository;
+
+    @Autowired
+    TournamentPredictionUserAnswerRepository userAnswerRepository;
 
     public List<TournamentEntity> getAll()
     {
@@ -90,5 +98,28 @@ public class TournamentService
         return tournamentPredictionRepository.save(entity);
     }
 
-    
+    public void deletePrediction(Integer predictionId)
+    {
+        tournamentPredictionRepository.deleteById(predictionId);
+    }
+
+    @Transactional
+    public List<TournamentPredictionTeamUserEntity> createUserPrediction( Integer userId, Integer predictionId, UserPredictionRequest request)
+            throws TimestampNotAllowedException {
+        TournamentPredictionEntity prediction =
+                tournamentPredictionRepository.findById(predictionId).filter(v -> v.getSystemEndTimestamp()
+                .isAfter(LocalDateTime.now())).orElseThrow(() -> new TimestampNotAllowedException("Prediction is closed"));
+
+        List<TournamentPredictionTeamUserEntity> userPredictionEtts = request.getTeamIds().stream()
+                .map(teamId -> new TournamentPredictionTeamUserEntity.TournamentPredictionTeamUserId(predictionId, teamId, userId))
+                .map(id -> new TournamentPredictionTeamUserEntity().withId(id)).collect(Collectors.toList());
+        userAnswerRepository.deleteByUserIdAndTournamentPredictionId(userId, predictionId);
+        userAnswerRepository.saveAll(userPredictionEtts);
+        return userPredictionEtts;
+    }
+
+    public List<TournamentPredictionTeamUserEntity> findUserPredictionByUserIdAndTournamentPredictionId( Integer userId, Integer predictionId)
+    {
+        return userAnswerRepository.findByUserIdAndTournamentPredictionId(userId, predictionId);
+    }
 }
