@@ -156,11 +156,12 @@ public class MatchService {
                     firstEle.setFollower2(firstEle.getFollower2() + 1);
             }
             //censor the selection of future matches
-            /*if(m.getSystemStartTime().isAfter(LocalDateTime.now()))
+            if(m.getSystemStartTime().isAfter(LocalDateTime.now())
+                    && m.getSelectedTeamId() != null)
             {
                 m.setSelectedTeamId(0);
                 m.setSelectedTeamName("CENSORED");
-            }*/
+            }
 
         });
         //set first element of each row
