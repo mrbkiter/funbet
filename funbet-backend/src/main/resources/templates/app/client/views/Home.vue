@@ -5,13 +5,11 @@
             <custom-loader type="loaderNumber" :type-number="6"></custom-loader>
         </div>
 
-        <master-layout id="layout-body">
+        <master-layout>
+            <div slot="page-header"></div>
             <div slot="page-body">
-
                 <tournament v-for="tournament in tournaments" :key="tournament.id" :tournament="tournament"></tournament>
-
                 <br/><br/>
-
             </div>
         </master-layout>
 
@@ -61,20 +59,5 @@
 </script>
 
 <style lang="scss">
-
-    .loading-container {
-        background-color: #2e3141;
-        height: 100vh;
-        overflow: hidden;
-    }
-
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .8s;
-    }
-
-    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
-    {
-        opacity: 0;
-    }
 
 </style>

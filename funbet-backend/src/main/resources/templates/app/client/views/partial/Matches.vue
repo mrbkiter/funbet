@@ -1,10 +1,55 @@
 <template>
     <div>
-        <div style="overflow-x:auto;">
-            <a href="#" @click="showRecentMatches()">Recent Matches</a> |
-            <a href="#" @click="showAllMatches()">All Matches</a>
-            <br/>
-            <table>
+        <div>
+
+            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="menuOnChange">
+                <el-menu-item index="recentMatches">
+                    <a href="javascript:;">Recent Matches</a>
+                </el-menu-item>
+                <el-menu-item index="allMatches">
+                    <a href="javascript:;">All Matches</a>
+                </el-menu-item>
+            </el-menu>
+
+            <div class="panel-block">
+                <el-table :data="matches" style="width: 100%" empty-text="No record"
+                          @selection-change="matchOnSelected">
+                    <el-table-column type="index" width="50"></el-table-column>
+                    <el-table-column type="selection" width="50"></el-table-column>
+
+                    <el-table-column prop="teamName1" label="Team Name 1" width="150"></el-table-column>
+                    <el-table-column prop="name" label="Score" width="100" sortable>
+                        <template slot-scope="dataItem">
+                            <span v-if="dataItem.column.score1 != null">{{dataItem.column.score1}} - {{dataItem.column.score2}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="teamName2" label="Team Name 2" width="150"></el-table-column>
+                    <el-table-column prop="betMoney" label="Stake" width="100"></el-table-column>
+                    <el-table-column prop="startTime" label="Start Time" width="150" sortable></el-table-column>
+                    <el-table-column prop="selectedTeamName" label="Selected Team" width="120"></el-table-column>
+                    <el-table-column prop="betStatus" label="Betting Status" width="130" sortable></el-table-column>
+
+                    <el-table-column label="Choose Team" align="center">
+
+                        <template slot-scope="dataItem">
+
+
+
+                            <el-button class="el-button--success is-plain"
+                                    size="mini"
+                                    @click="saveSelectedTeam(dataItem.row.teamId1)">{{dataItem.row.teamName1}}</el-button>
+                            <el-button class="el-button--danger is-plain"
+                                    size="mini"
+                                    @click="saveSelectedTeam(dataItem.row.teamId2)">{{dataItem.row.teamName2}}</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <div class="space-20"></div>
+            </div>
+
+            <user-reports v-if="tournament" ref="userReportComponent" :tournament="tournament" :selected-matches="selectedMatches"></user-reports>
+
+            <!--<table>
                 <thead>
                 <tr>
                     <th></th>
@@ -50,10 +95,12 @@
                     </td>
                 </tr>
                 </tbody>
-            </table>
+            </table>-->
         </div>
 
-        <user-reports v-if="tournament" ref="userReportComponent" :tournament="tournament" :selected-matches="selectedMatches"></user-reports>
+
+        <div class="space-20"></div>
+        <div class="space-20"></div>
 
     </div>
 </template>
@@ -68,6 +115,7 @@
     data() {
       let vm = this;
       return {
+        activeIndex: 'recentMatches',
         matches: [],
         showMatches: false,
         currentMatch: {
@@ -87,6 +135,18 @@
     props: ['tournament'],
     components: {UserReports},
     methods: {
+      menuOnChange(key, keyPath) {
+        let vm = this;
+        if(key == 'recentMatches'){
+          vm.showRecentMatches();
+        }
+        else if(key == 'allMatches'){
+          vm.showAllMatches();
+        }
+      },
+      matchOnSelected(){
+
+      },
       showRecentMatches: function (event) {
         this.showMatchesInTournament(true);
       },

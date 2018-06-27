@@ -1,23 +1,20 @@
 <template>
     <div>
-        <table>
-            <thead>
-            <tr>
-                <th>Tournament Name</th>
-                <th>Current default money bet</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td><a href="#" @click="showTournamentDetail()">{{tournament.name}}</a></td>
-                <td>{{tournament.defaultMoneyBet}}</td>
-            </tr>
-            </tbody>
-        </table>
-        <br/><br/>
-
-
-    <matches v-if="tournament" ref="matchesComponent" :tournament="tournament"></matches>
+        <div class="panel-block">
+            <el-table :data="tournaments"  style="width: 100%">
+                <el-table-column prop="name" label="Tournament Name" width="180">
+                    <template slot-scope="dataItem">
+                        <el-button @click="showTournamentDetail(dataItem.row)" type="text" size="small">{{dataItem.row.name}}</el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="defaultMoneyBet" label="Default Bet Amount" width="180">
+                </el-table-column>
+            </el-table>
+            <div class="space-20"></div>
+        </div>
+        <div>
+            <matches v-if="tournament" ref="matchesComponent" :tournament="tournament"></matches>
+        </div>
     </div>
 </template>
 
@@ -39,6 +36,12 @@
       }
     },
     props: ['tournament'],
+    computed: {
+      tournaments(){
+        let vm = this;
+        return [vm.tournament];
+      }
+    },
     components: {Matches},
     mounted() {
 
@@ -48,6 +51,7 @@
     methods: {
       showTournamentDetail: function () {
         let vm = this;
+
         //show match section
         vm.showMatches = true;
         //show report section

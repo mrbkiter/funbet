@@ -2,3 +2,29 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:200,700|Source+Sans+Pro:300,600,300italic,600italic');
 
 @import 'components/sass-css-utilities/sass-css-utilities';
+
+.loading-container {
+  background-color: #2e3141;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .8s;
+}
+
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+{
+  opacity: 0;
+}
+
+.panel-block{
+  border: 1px solid #ebebeb;
+  border-radius: 3px;
+  transition: .2s;
+  padding: 24px;
+}
+
+.space-20{
+  margin-top:10px;margin-bottom: 10px;
+}
