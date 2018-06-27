@@ -127,7 +127,7 @@ public class MatchService {
     public Table getMatchResultTable(List<Integer> matchIds, List<Integer> userIds) {
         if (CollectionUtils.isEmpty(matchIds) || CollectionUtils.isEmpty(userIds))
             return new Table(0, 0);
-
+        UserEntity loggedInUser = WebUtils.getLoggedInUser();
         Table table = new Table(userIds.size() + 1, matchIds.size());
 
         userIds.sort(Comparator.comparing(x -> x));
@@ -157,7 +157,8 @@ public class MatchService {
             }
             //censor the selection of future matches
             if(m.getSystemStartTime().isAfter(LocalDateTime.now())
-                    && m.getSelectedTeamId() != null)
+                    && m.getSelectedTeamId() != null
+                    && !loggedInUser.getId().equals(m.getUserId()))
             {
                 m.setSelectedTeamId(0);
                 m.setSelectedTeamName("CENSORED");
