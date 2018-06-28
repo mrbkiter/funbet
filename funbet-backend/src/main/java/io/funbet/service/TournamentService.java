@@ -61,10 +61,10 @@ public class TournamentService
     public List<UserMatchView> getRecentBetMatches(Integer tournamentId, Integer userId)
     {
         List<UserMatchView> matches = userMatchViewRepository
-                .showRecentPastMatchesByTournamentIdAndUserId(tournamentId, userId, PageRequest.of(0, 5));
+                .showRecentPastMatchesByTournamentIdAndUserId(tournamentId, userId, PageRequest.of(0, 4));
         Collections.reverse(matches);
         List<UserMatchView> futureMatches = userMatchViewRepository
-                .showFutureMatchesByTournamentIdAndUserId(tournamentId, userId, PageRequest.of(0, 5));
+                .showFutureMatchesByTournamentIdAndUserId(tournamentId, userId, PageRequest.of(0, 50));
 
         matches.addAll(futureMatches);
 
