@@ -14,15 +14,23 @@ public class HomeController
         if(user.getRole() == UserEntity.Role.ADMIN)
             return "index";
         else
-            return "tournament-page";
+            return "vue/dist/index";
+//            return "tournament-page";
+    }
+
+
+    @RequestMapping(value = "/login")
+    public String loginPage() {
+        return "login";
     }
 
     @RequestMapping(value = "/app")
     public String app() {
         UserEntity user = WebUtils.getLoggedInUser();
         if(user.getRole() == UserEntity.Role.ADMIN)
-            return "app/dist/index";
+            return "vue/dist/index";
         else
-            return "tournament-page";
+            return "vue/dist/index";
     }
+
 }

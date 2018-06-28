@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .anyRequest().authenticated() //
                 .and()
                 .requestCache().requestCache(new NullRequestCache()) //
-                .and().formLogin() //
+                .and().formLogin().loginPage("/login").permitAll() //
                 .and().logout().logoutUrl("/logout")
                 .and().csrf().disable();
     }
