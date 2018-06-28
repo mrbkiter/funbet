@@ -223,7 +223,8 @@
             <td>{{t.endTimestamp}}</td>
             <td>{{t.bonusAmount}}</td>
             <td>{{t.teams}}</td>
-            <td><button v-on:click="predictNow(t)">Predict Now</button>
+            <td>
+                <div v-if="t.editable"><button v-on:click="predictNow(t)">Predict Now</button></div>
                 <button v-on:click="showOtherPredict(t)">Show Others</button>
                 </td>
         </tr>

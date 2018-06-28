@@ -138,6 +138,13 @@ public class TournamentService
     {
         return tournamentUserBonusViewRepository.findByUserIdAndTournamentId(userId, tournamentId)
                 .stream().filter(m -> m.getRole() != UserEntity.Role.ADMIN)
+                .map(m -> {
+                    if(m.getSystemEndTimestamp().isBefore(LocalDateTime.now()))
+                        m.setEditable(false);
+                    else
+                        m.setEditable(true);
+                    return m;
+                })
                 .collect(Collectors.toList())
                 ;
     }

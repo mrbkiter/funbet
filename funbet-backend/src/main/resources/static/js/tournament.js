@@ -322,6 +322,8 @@ var bonuses = new Vue({
                 this.showAnswerSection = !this.showAnswerSection;
                 tournaments.showBonusDetail(this.tournament);
                 this.currentPrediction = null;
+            }).catch(function(e){
+                alert(e.response.data);
             });
         },
         showOtherPredict: function(prediction)

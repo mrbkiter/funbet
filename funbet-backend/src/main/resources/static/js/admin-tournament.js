@@ -157,6 +157,12 @@ var bonuses = new Vue({
                 {
                    this.currentBonus = response.data;
                    this.bonuses.push(this.currentBonus);
+                   this.currentBonus = {
+                        id: null,
+                        name: null,
+                        bonusAmount: null,
+                        endTimestamp: null
+                   };
                 }
 
             });
