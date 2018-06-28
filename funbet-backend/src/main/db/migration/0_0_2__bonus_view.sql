@@ -13,7 +13,7 @@ WITH tmp AS
 )
 SELECT row_number() OVER () as id, tp."id" AS tournament_prediction_id, tp.name AS name, tp.tournament_id, tp.bonus_amount, tp.end_timestamp, tp.no_of_team, tp.system_end_timestamp
 ,tpt.user_id, tpt.user_name, tpt.team_ids, tpt.teams
-, ua.id AS user_id1
+, ua.id AS user_id1, ua.role
  FROM
 tournament_prediction tp
 CROSS JOIN user_account ua

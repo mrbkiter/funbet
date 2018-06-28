@@ -51,6 +51,9 @@ public class TournamentUserBonusView {
     @Column(name = "team_ids")
     String teamIds;
 
+    @Column(name = "role")
+    UserEntity.Role role;
+
     public List<String> getSelectedTeamIds() {
 
         return teamIds == null ? new ArrayList<>() : Arrays.asList(teamIds.split(","));
