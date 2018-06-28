@@ -211,16 +211,37 @@
             <td>{{t.endTimestamp}}</td>
             <td>{{t.bonusAmount}}</td>
             <td>{{t.teams}}</td>
-            <td><button v-on:click="predictNow(t)">Predict Now</button></td>
+            <td><button v-on:click="predictNow(t)">Predict Now</button>
+                <button v-on:click="showOtherPredict(t)">Show Others</button>
+                </td>
         </tr>
         </tbody>
     </table>
     <div id="predict-answer-section" v-if="showAnswerSection">
+        <label>Please select {{currentPrediction.noOfTeam}} team(s)</label>
         <div id="answer-team-list" v-for="t in teams">
-            <input name="answerTeam" type="checkbox" :value="t.id" v-model="selectedTeamIds">
+            <input name="answerTeam" type="checkbox" :value="t.id" v-model="currentPrediction.selectedTeamIds">
             <span><label>{{t.name}}</label> </span>
         </div>
         <button v-on:click="saveUserPrediction">Save</button>
+    </div>
+    <div id="predict-all-report" v-if="showAllSection">
+        <label>Other predictions</label><br />
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Selected teams</th>
+            </tr>
+            </thead>
+            <tbody v-for="(t, index) in allPredictions">
+            <tr>
+                <td>{{t.userName}}</td>
+                <td>{{t.teams}}</td>
+            </tr>
+            </tbody>
+        </table>
+
     </div>
 </div>
 <script src="/static/js/header.js"></script>

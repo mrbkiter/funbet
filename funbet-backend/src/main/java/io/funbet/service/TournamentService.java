@@ -134,4 +134,9 @@ public class TournamentService
     {
         return tournamentUserBonusViewRepository.findByUserIdAndTournamentId(userId, tournamentId);
     }
+
+    public List<TournamentUserBonusView> findUserPredictionByPredictionId(Integer predictionId)
+    {
+        return tournamentUserBonusViewRepository.findBytournamentPredictionId(predictionId);
+    }
 }

@@ -171,4 +171,10 @@ public class TournamentController {
         UserEntity user = WebUtils.getLoggedInUser();
         return tournamentService.findUserPredictionByUserIdAndTournamentId(user.getId(), tournamentId);
     }
+
+    @GetMapping("/prediction/{predictionId}")
+    public List<TournamentUserBonusView> findAll(@PathVariable("predictionId") Integer predictionId)
+    {
+        return tournamentService.findUserPredictionByPredictionId(predictionId);
+    }
 }

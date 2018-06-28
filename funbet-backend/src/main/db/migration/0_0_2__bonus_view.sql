@@ -11,12 +11,11 @@ WITH tmp AS
     JOIN user_account ua ON tpt.user_id = ua."id") tmp1
     GROUP BY  user_id, tournament_prediction_id, user_name
 )
-SELECT row_number() OVER () as id, tp."id" AS tournament_prediction_id, tp.name AS name, tp.tournament_id, tp.bonus_amount, tp.end_timestamp, tp.no_of_team, tp.system_end_timestamp,
-tpt.user_id, tpt.user_name, tpt.team_ids, tpt.teams, ua.id AS user_id1
+SELECT row_number() OVER () as id, tp."id" AS tournament_prediction_id, tp.name AS name, tp.tournament_id, tp.bonus_amount, tp.end_timestamp, tp.no_of_team, tp.system_end_timestamp
+,tpt.user_id, tpt.user_name, tpt.team_ids, tpt.teams
+, ua.id AS user_id1
  FROM
 tournament_prediction tp
 CROSS JOIN user_account ua
-LEFT JOIN tmp tpt ON tp."id" = tpt.tournament_prediction_id
+LEFT JOIN tmp tpt ON tp."id" = tpt.tournament_prediction_id AND tpt.user_id = ua.id
 WHERE ua.id = user_id OR (user_id IS null);
-
-select * from tournament_user_bonus_view;

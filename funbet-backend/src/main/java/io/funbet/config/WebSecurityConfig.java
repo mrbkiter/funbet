@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
         http.authorizeRequests() //
                 .antMatchers("/static/**", "/js/**", "/css/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/match/**/bet").authenticated()
-                .antMatchers(HttpMethod.POST, "/tournament/**/report").authenticated()
+                .antMatchers(HttpMethod.POST, "/tournament/**/report", "/tournament/**/user").authenticated()
                 .antMatchers(HttpMethod.PUT, "/user/**/loggingUser").authenticated()
                 .antMatchers(HttpMethod.PUT, adminUrls).hasAuthority(ADMIN_ROLE)
                 .antMatchers(HttpMethod.POST, adminUrls).hasAuthority(ADMIN_ROLE)

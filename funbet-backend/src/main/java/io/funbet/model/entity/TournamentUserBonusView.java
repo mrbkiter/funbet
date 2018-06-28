@@ -52,7 +52,7 @@ public class TournamentUserBonusView {
     String teamIds;
 
     public List<String> getSelectedTeamIds() {
-        String[] ids = StringUtils.split(teamIds, ",");
-        return ids == null ? new ArrayList<>() : Arrays.asList(ids);
+
+        return teamIds == null ? new ArrayList<>() : Arrays.asList(teamIds.split(","));
     }
 }

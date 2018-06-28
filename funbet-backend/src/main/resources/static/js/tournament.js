@@ -269,7 +269,8 @@ var bonuses = new Vue({
         currentPrediction: null,
         showAnswerSection: false,
         tournament: null,
-        selectedTeamIds: []
+        showAllSection: false,
+        allPredictions: []
     },
      mounted()
      {
@@ -286,20 +287,28 @@ var bonuses = new Vue({
         predictNow: function(prediction)
         {
             this.showAnswerSection = !this.showAnswerSection;
-            this.teamAnswer = prediction.selectedTeamIds;
             this.currentPrediction = prediction;
         },
         saveUserPrediction: function()
         {
-            var url = '/tournament/prediction/' + this.currentPrediction.id + '/user';
+            debugger;
+            var url = '/tournament/prediction/' + this.currentPrediction.tournamentPredictionId + '/user';
             var body = {
-                teamIds: this.selectedTeamIds
+                teamIds: this.currentPrediction.selectedTeamIds
             };
 
             axios.post(url, body).then(response => {
                 this.showAnswerSection = !this.showAnswerSection;
                 tournaments.showBonusDetail(this.tournament);
                 this.currentPrediction = null;
+            });
+        },
+        showOtherPredict: function(prediction)
+        {
+            var url = '/tournament/prediction/' + prediction.tournamentPredictionId;
+            this.showAllSection = !this.showAllSection;
+            axios.get(url).then(response => {
+                this.allPredictions = response.data;
             });
         }
     }
