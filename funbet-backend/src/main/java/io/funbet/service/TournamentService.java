@@ -1,7 +1,8 @@
 package io.funbet.service;
 
-import io.funbet.exception.ResourceNotFoundException;
+import io.funbet.exception.TimestampNotAllowedException;
 import io.funbet.exception.UpdateNotAllowException;
+import io.funbet.model.dto.UserPredictionRequest;
 import io.funbet.model.entity.*;
 import io.funbet.repository.*;
 import io.funbet.utils.TimezoneUtils;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +34,15 @@ public class TournamentService
 
     @Autowired
     UserMatchBetRepository userMatchBetRepository;
+
+    @Autowired
+    TournamentPredictionRepository tournamentPredictionRepository;
+
+    @Autowired
+    TournamentPredictionUserAnswerRepository userAnswerRepository;
+
+    @Autowired
+    TournamentUserBonusViewRepository tournamentUserBonusViewRepository;
 
     public List<TournamentEntity> getAll()
     {
@@ -77,5 +89,57 @@ public class TournamentService
         match.setSystemStartTime(TimezoneUtils.convertLocalDateTimeToSystemTz(match.getStartTime(), timezone));
         MatchEntity matchEntity = matchRepository.save(match);
         return matchViewRepository.findById(matchEntity.getId()).orElse(new MatchView());
+    }
+
+    public List<TournamentPredictionEntity> getTournamentPredictionGames(Integer tournamentId)
+    {
+        return tournamentPredictionRepository.findAll();
+    }
+
+    public TournamentPredictionEntity save(TournamentPredictionEntity entity)
+    {
+        entity.setSystemEndTimestamp(
+                TimezoneUtils.convertLocalDateTimeToSystemTz(entity.getEndTimestamp(),
+                        WebUtils.getLoggedInUser().getTimezone()));
+
+        return tournamentPredictionRepository.save(entity);
+    }
+
+    public void deletePrediction(Integer predictionId)
+    {
+        tournamentPredictionRepository.deleteById(predictionId);
+    }
+
+    @Transactional
+    public List<TournamentPredictionTeamUserEntity> createUserPrediction( Integer userId, Integer predictionId, UserPredictionRequest request)
+            throws TimestampNotAllowedException {
+        TournamentPredictionEntity prediction =
+                tournamentPredictionRepository.findById(predictionId).filter(v -> v.getSystemEndTimestamp()
+                .isAfter(LocalDateTime.now())).orElseThrow(() -> new TimestampNotAllowedException("Prediction is closed"));
+
+        List<TournamentPredictionTeamUserEntity> userPredictionEtts = request.getTeamIds().stream()
+                .map(teamId -> new TournamentPredictionTeamUserEntity.TournamentPredictionTeamUserId(predictionId, teamId, userId))
+                .map(id -> new TournamentPredictionTeamUserEntity().withId(id)).collect(Collectors.toList());
+        userAnswerRepository.deleteByUserIdAndTournamentPredictionId(userId, predictionId);
+        userAnswerRepository.saveAll(userPredictionEtts);
+        return userPredictionEtts;
+    }
+
+    public List<TournamentPredictionTeamUserEntity> findUserPredictionByUserIdAndTournamentPredictionId( Integer userId, Integer predictionId)
+    {
+        return userAnswerRepository.findByUserIdAndTournamentPredictionId(userId, predictionId);
+    }
+
+    public List<TournamentUserBonusView> findUserPredictionByUserIdAndTournamentId(Integer userId, Integer tournamentId)
+    {
+        return tournamentUserBonusViewRepository.findByUserIdAndTournamentId(userId, tournamentId)
+                .stream().filter(m -> m.getRole() != UserEntity.Role.ADMIN)
+                .collect(Collectors.toList())
+                ;
+    }
+
+    public List<TournamentUserBonusView> findUserPredictionByPredictionId(Integer predictionId)
+    {
+        return tournamentUserBonusViewRepository.findBytournamentPredictionId(predictionId);
     }
 }

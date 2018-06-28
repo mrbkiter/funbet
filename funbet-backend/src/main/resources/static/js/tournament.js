@@ -34,11 +34,22 @@ var tournaments = new Vue({
                   var teamUrl = '/tournament/' + $tournament.id + '/match';
                    axios.get(teamUrl).then(response => {
                       userReport.matches = response.data;
-                 });
+                    });
 
                   axios.get("/user").then(response => {
                     userReport.users = response.data
                   });
+
+                  this.showBonusDetail($tournament);
+            },
+            showBonusDetail: function($tournament)
+            {
+                bonuses.showBonusSection = true;
+                bonuses.tournament = $tournament;
+                var url = '/tournament/' + $tournament.id + '/prediction/user';
+                axios.get(url).then(response => {
+                    bonuses.bonuses = response.data;
+                });
             }
         }
 });
@@ -245,5 +256,60 @@ var userReport = new Vue({
                 }
             }
         }
+
+});
+
+
+var bonuses = new Vue({
+    el: '#bonus-section',
+    data: {
+        bonuses: [],
+        showBonusSection: false,
+        teams: [],
+        currentPrediction: null,
+        showAnswerSection: false,
+        tournament: null,
+        showAllSection: false,
+        allPredictions: []
+    },
+     mounted()
+     {
+         axios.get("/team").then(response => {
+             this.teams = response.data;
+          })
+          .catch(function(e)
+          {
+             alert(e),
+             console.log(e)
+          })
+     },
+    methods: {
+        predictNow: function(prediction)
+        {
+            this.showAnswerSection = !this.showAnswerSection;
+            this.currentPrediction = prediction;
+        },
+        saveUserPrediction: function()
+        {
+            var url = '/tournament/prediction/' + this.currentPrediction.tournamentPredictionId + '/user';
+            var body = {
+                teamIds: this.currentPrediction.selectedTeamIds
+            };
+
+            axios.post(url, body).then(response => {
+                this.showAnswerSection = !this.showAnswerSection;
+                tournaments.showBonusDetail(this.tournament);
+                this.currentPrediction = null;
+            });
+        },
+        showOtherPredict: function(prediction)
+        {
+            var url = '/tournament/prediction/' + prediction.tournamentPredictionId;
+            this.showAllSection = !this.showAllSection;
+            axios.get(url).then(response => {
+                this.allPredictions = response.data;
+            });
+        }
+    }
 
 });
