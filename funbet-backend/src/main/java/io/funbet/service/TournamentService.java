@@ -2,6 +2,7 @@ package io.funbet.service;
 
 import io.funbet.exception.TimestampNotAllowedException;
 import io.funbet.exception.UpdateNotAllowException;
+import io.funbet.model.dto.TournamentOtherFeeRequest;
 import io.funbet.model.dto.UserPredictionRequest;
 import io.funbet.model.entity.*;
 import io.funbet.repository.*;
@@ -43,6 +44,9 @@ public class TournamentService
 
     @Autowired
     TournamentUserBonusViewRepository tournamentUserBonusViewRepository;
+
+    @Autowired
+    TournamentOtherFeeRepository tournamentOtherFeeRepository;
 
     public List<TournamentEntity> getAll()
     {
@@ -141,5 +145,20 @@ public class TournamentService
     public List<TournamentUserBonusView> findUserPredictionByPredictionId(Integer predictionId)
     {
         return tournamentUserBonusViewRepository.findBytournamentPredictionId(predictionId);
+    }
+
+    public List<TournamentOtherFeeEntity> findTournamentOtherFeeByTournamentId(Integer tournamentId)
+    {
+        return tournamentOtherFeeRepository.findByTournamentIdOrderByIdAsc(tournamentId);
+    }
+
+    public TournamentOtherFeeEntity saveTournamentOtherFee(Integer tournamentId,
+                                                           TournamentOtherFeeRequest request)
+    {
+        TournamentOtherFeeEntity ett = new TournamentOtherFeeEntity();
+        ett.setOtherFee(request.getAmount());
+        ett.setNote(request.getNote());
+        ett.setTournamentId(tournamentId);
+        return tournamentOtherFeeRepository.save(ett);
     }
 }

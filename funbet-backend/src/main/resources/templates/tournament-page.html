@@ -184,7 +184,19 @@
         </tr>
         </tbody>
     </table>
-    <br/><br/>
+    <br/>
+    <label>Other Fee Report</label>
+    <ul>
+        <li v-for="o in otherFees"> {{o.otherFee}} ({{ o.note }}) </li>
+    </ul>
+    <div v-if="loggedInUser.role == 'ADMIN'">
+        <span>
+            <input type="number" placeholder="Other Fee" v-model="otherFee.amount" />
+            <input type="text" placeholder="Note" v-model="otherFee.note" />
+            <button v-on:click="saveOtherFee">Save</button>
+        </span>
+    </div>
+    <br/>
     <label>Total Contribution: </label> {{financeReport.totalContribution}} <br/>
 
     <label>Total remaining debt: </label> {{financeReport.totalRemainingDebt}}

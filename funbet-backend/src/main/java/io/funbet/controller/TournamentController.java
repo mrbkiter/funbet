@@ -3,6 +3,7 @@ package io.funbet.controller;
 import io.funbet.exception.TimestampNotAllowedException;
 import io.funbet.exception.UpdateNotAllowException;
 import io.funbet.model.dto.OtherFeeRequestCreation;
+import io.funbet.model.dto.TournamentOtherFeeRequest;
 import io.funbet.model.dto.UserPredictionRequest;
 import io.funbet.model.entity.*;
 import io.funbet.service.FinanceService;
@@ -90,7 +91,7 @@ public class TournamentController {
     public FinanceService.FinanceTournamentReportResponse
     financeReport(@PathVariable("id") Integer tournamentId, @RequestBody List<Integer> userIds)
     {
-        return financeService.buildFinanceTournamentReport(userIds);
+        return financeService.buildFinanceTournamentReport(tournamentId, userIds);
     }
 
     @PutMapping("/{id}/finance/debt/clear")
@@ -176,5 +177,18 @@ public class TournamentController {
     public List<TournamentUserBonusView> findAll(@PathVariable("predictionId") Integer predictionId)
     {
         return tournamentService.findUserPredictionByPredictionId(predictionId);
+    }
+
+    @GetMapping("/{id}/otherfee")
+    public List<TournamentOtherFeeEntity> findAllOtherFee(@PathVariable("id") Integer tournamentId)
+    {
+        return tournamentService.findTournamentOtherFeeByTournamentId(tournamentId);
+    }
+
+    @PostMapping("/{id}/otherfee")
+    public TournamentOtherFeeEntity saveOtherFee(@PathVariable("id") Integer tournamentId,
+                                                 @Validated @RequestBody TournamentOtherFeeRequest request)
+    {
+        return tournamentService.saveTournamentOtherFee(tournamentId, request);
     }
 }
