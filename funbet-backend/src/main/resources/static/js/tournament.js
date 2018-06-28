@@ -291,7 +291,6 @@ var bonuses = new Vue({
         },
         saveUserPrediction: function()
         {
-            debugger;
             var url = '/tournament/prediction/' + this.currentPrediction.tournamentPredictionId + '/user';
             var body = {
                 teamIds: this.currentPrediction.selectedTeamIds

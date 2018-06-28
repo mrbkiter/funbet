@@ -132,7 +132,10 @@ public class TournamentService
 
     public List<TournamentUserBonusView> findUserPredictionByUserIdAndTournamentId(Integer userId, Integer tournamentId)
     {
-        return tournamentUserBonusViewRepository.findByUserIdAndTournamentId(userId, tournamentId);
+        return tournamentUserBonusViewRepository.findByUserIdAndTournamentId(userId, tournamentId)
+                .stream().filter(m -> m.getRole() != UserEntity.Role.ADMIN)
+                .collect(Collectors.toList())
+                ;
     }
 
     public List<TournamentUserBonusView> findUserPredictionByPredictionId(Integer predictionId)
