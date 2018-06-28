@@ -165,6 +165,8 @@ var bonuses = new Vue({
                    };
                 }
 
+            }).catch(function(e){
+                alert(e.response.data);
             });
         },
         editBonus: function($bonus)

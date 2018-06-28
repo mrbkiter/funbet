@@ -100,8 +100,11 @@ public class TournamentService
         return tournamentPredictionRepository.findAll();
     }
 
-    public TournamentPredictionEntity save(TournamentPredictionEntity entity)
-    {
+    public TournamentPredictionEntity save(TournamentPredictionEntity entity) throws TimestampNotAllowedException {
+        Integer count = userAnswerRepository.countByTournamentPredictionId(entity.getId());
+        if(count > 0)
+            throw new TimestampNotAllowedException("Users already placed prediction on this game. You can't update it now");
+
         entity.setSystemEndTimestamp(
                 TimezoneUtils.convertLocalDateTimeToSystemTz(entity.getEndTimestamp(),
                         WebUtils.getLoggedInUser().getTimezone()));

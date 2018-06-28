@@ -128,16 +128,14 @@ public class TournamentController {
     }
 
     @PostMapping("/{id}/prediction")
-    public TournamentPredictionEntity createPrediction(@PathVariable("id") Integer tournamentId, @RequestBody @Validated TournamentPredictionEntity body)
-    {
+    public TournamentPredictionEntity createPrediction(@PathVariable("id") Integer tournamentId, @RequestBody @Validated TournamentPredictionEntity body) throws TimestampNotAllowedException {
         body.setTournamentId(tournamentId);
         return tournamentService.save(body);
     }
 
     @PutMapping("/{id}/prediction/{predictionId}")
     public TournamentPredictionEntity updatePrediction(@PathVariable("id") Integer tournamentId, @PathVariable("predictionId") Integer predictionId,
-                                                        @RequestBody @Validated TournamentPredictionEntity body)
-    {
+                                                        @RequestBody @Validated TournamentPredictionEntity body) throws TimestampNotAllowedException {
         body.setTournamentId(tournamentId);
         body.setId(predictionId);
         return tournamentService.save(body);
