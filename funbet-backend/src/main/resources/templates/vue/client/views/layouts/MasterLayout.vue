@@ -42,7 +42,7 @@
   }
   @import '~compass-mixins/lib/_compass.scss';
   @import '~@/assets/scss/main.scss';
-  @import '~at-ui-style/css/at.min.css';
+  @import '~at-ui-style/css/at.css';
   @import '~@/assets/themes/at-ui-style/index.scss';
 
   /*@import '~@/assets/fonts/fontawesome-5.11/css/fontawesome-all.min.css';
