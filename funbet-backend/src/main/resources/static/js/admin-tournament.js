@@ -14,6 +14,7 @@ var tournaments = new Vue({
             if(this.tournaments.length == 1)
             {
                 this.showTournamentDetail(this.tournaments[0]);
+                this.showBonusDetail(this.tournaments[0]);
             }
           })
         },
@@ -42,6 +43,15 @@ var tournaments = new Vue({
                         Vue.set(item, 'needWriteScore', false)
                     })
                   })
+            },
+            showBonusDetail: function($tournament)
+            {
+                bonuses.showBonusSection = true;
+                bonuses.tournament = $tournament;
+                var url = '/tournament/' + $tournament.id + '/prediction';
+                axios.get(url).then(response => {
+                    bonuses.bonuses = response.data;
+                });
             }
         }
 });
@@ -123,4 +133,46 @@ var matches = new Vue({
              })
         }
     }
-})
+});
+
+var bonuses = new Vue({
+    el: '#bonus-section',
+    data: {
+        bonuses: [],
+        showBonusSection: false,
+        currentBonus: {
+            id: null,
+            name: null,
+            bonusAmount: null,
+            endTimestamp: null
+        },
+        tournament: null
+    },
+    methods: {
+        saveBonus: function(event)
+        {
+            var url = '/tournament/' + this.tournament.id + '/prediction';
+            axios.post(url, this.currentBonus).then(response => {
+                if(this.currentBonus.id == null)
+                {
+                   this.currentBonus = response.data;
+                   this.bonuses.push(this.currentBonus);
+                   this.currentBonus = {
+                        id: null,
+                        name: null,
+                        bonusAmount: null,
+                        endTimestamp: null
+                   };
+                }
+
+            }).catch(function(e){
+                alert(e.response.data);
+            });
+        },
+        editBonus: function($bonus)
+        {
+            this.currentBonus = $bonus;
+        }
+    }
+
+});

@@ -5,10 +5,7 @@ import io.funbet.model.dto.UserFinanceReport;
 import io.funbet.model.entity.FinanceOtherFeeReportView;
 import io.funbet.model.entity.FinanceTournamentReportView;
 import io.funbet.model.entity.TournamentUserOtherFeeEntity;
-import io.funbet.repository.FOFRRepository;
-import io.funbet.repository.FTRVRepository;
-import io.funbet.repository.TournamentUserOtherFeeRepository;
-import io.funbet.repository.UserMatchBetRepository;
+import io.funbet.repository.*;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +35,11 @@ public class FinanceService
     @Autowired
     TournamentUserOtherFeeRepository tournamentUserOtherFeeRepository;
 
-    public FinanceTournamentReportResponse buildFinanceTournamentReport(List<Integer> userId)
+    @Autowired
+    TournamentOtherFeeRepository tournamentOtherFeeRepository;
+
+    public FinanceTournamentReportResponse
+        buildFinanceTournamentReport(Integer tournamentId, List<Integer> userId)
     {
         List<FinanceTournamentReportView> reports = ftrvRepository.buildTournamentReport(userId);
 
@@ -73,6 +74,11 @@ public class FinanceService
                 .reduce((x, y)-> x + y).get();
         Long totalContribution = totalReports.stream().map(r -> r.getContribution())
                 .reduce((x, y)-> x + y).get();
+
+        Integer otherFee = tournamentOtherFeeRepository.findByTournamentIdOrderByIdAsc(tournamentId)
+            .stream().map(x -> x.getOtherFee()).reduce((x, y) -> x + y).orElse(0);
+
+        totalContribution = totalContribution - otherFee;
 
         return FinanceTournamentReportResponse.builder().reports(totalReports)
                 .totalContribution(totalContribution)

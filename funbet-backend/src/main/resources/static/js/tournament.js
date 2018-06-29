@@ -34,11 +34,22 @@ var tournaments = new Vue({
                   var teamUrl = '/tournament/' + $tournament.id + '/match';
                    axios.get(teamUrl).then(response => {
                       userReport.matches = response.data;
-                 });
+                    });
 
                   axios.get("/user").then(response => {
                     userReport.users = response.data
                   });
+
+                  this.showBonusDetail($tournament);
+            },
+            showBonusDetail: function($tournament)
+            {
+                bonuses.showBonusSection = true;
+                bonuses.tournament = $tournament;
+                var url = '/tournament/' + $tournament.id + '/prediction/user';
+                axios.get(url).then(response => {
+                    bonuses.bonuses = response.data;
+                });
             }
         }
 });
@@ -140,20 +151,35 @@ var userReport = new Vue({
         selectedMatches: [],
         tournament: null,
         financeReport: [],
-        loggedInUser: null
+        loggedInUser: null,
+        otherFees: [],
+        otherFee: {
+            amount: 0,
+            note: null
+        }
     },
     mounted()
     {
         axios.get("/user/loggedInUser").then(response => {
             this.loggedInUser = response.data;
         });
-
     },
     methods: {
         showAddFee: function(row)
         {
             row.enableAddFee == undefined ? Vue.set(row, 'enableAddFee', true)
             : Vue.set(row, 'enableAddFee', !row.enableAddFee);
+        },
+        saveOtherFee: function(event)
+        {
+            axios.post('/tournament/' + this.tournament.id + '/otherfee', this.otherFee)
+            .then(response => {
+                this.otherFees.push(response.data);
+                this.buildFinanceReport();
+                this.buildOtherFeeBlock();
+            }).catch(function(e){
+                alert(e.response.data);
+            });
         },
         saveFee: function(row)
         {
@@ -191,7 +217,14 @@ var userReport = new Vue({
                 this.matchReport.matchHeaders = response.data.headers;
               });
               this.buildFinanceReport();
+              this.buildOtherFeeBlock();
         },
+        buildOtherFeeBlock: function(){
+           axios.get('/tournament/' + this.tournament.id + '/otherfee').then(response => {
+                       this.otherFees = response.data;
+                   });
+        },
+
         buildFinanceReport()
         {
             var url = '/tournament/' + this.tournament.id + '/finance/report';
@@ -245,5 +278,62 @@ var userReport = new Vue({
                 }
             }
         }
+
+});
+
+
+var bonuses = new Vue({
+    el: '#bonus-section',
+    data: {
+        bonuses: [],
+        showBonusSection: false,
+        teams: [],
+        currentPrediction: null,
+        showAnswerSection: false,
+        tournament: null,
+        showAllSection: false,
+        allPredictions: []
+    },
+     mounted()
+     {
+         axios.get("/team").then(response => {
+             this.teams = response.data;
+          })
+          .catch(function(e)
+          {
+             alert(e),
+             console.log(e)
+          })
+     },
+    methods: {
+        predictNow: function(prediction)
+        {
+            this.showAnswerSection = !this.showAnswerSection;
+            this.currentPrediction = prediction;
+        },
+        saveUserPrediction: function()
+        {
+            var url = '/tournament/prediction/' + this.currentPrediction.tournamentPredictionId + '/user';
+            var body = {
+                teamIds: this.currentPrediction.selectedTeamIds
+            };
+
+            axios.post(url, body).then(response => {
+                this.showAnswerSection = !this.showAnswerSection;
+                tournaments.showBonusDetail(this.tournament);
+                this.currentPrediction = null;
+            }).catch(function(e){
+                alert(e.response.data);
+            });
+        },
+        showOtherPredict: function(prediction)
+        {
+            var url = '/tournament/prediction/' + prediction.tournamentPredictionId;
+            this.showAllSection = !this.showAllSection;
+            axios.get(url).then(response => {
+                this.allPredictions = response.data;
+            });
+        }
+    }
 
 });

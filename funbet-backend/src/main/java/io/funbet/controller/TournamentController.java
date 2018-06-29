@@ -1,7 +1,10 @@
 package io.funbet.controller;
 
+import io.funbet.exception.TimestampNotAllowedException;
 import io.funbet.exception.UpdateNotAllowException;
 import io.funbet.model.dto.OtherFeeRequestCreation;
+import io.funbet.model.dto.TournamentOtherFeeRequest;
+import io.funbet.model.dto.UserPredictionRequest;
 import io.funbet.model.entity.*;
 import io.funbet.service.FinanceService;
 import io.funbet.service.TournamentService;
@@ -88,7 +91,7 @@ public class TournamentController {
     public FinanceService.FinanceTournamentReportResponse
     financeReport(@PathVariable("id") Integer tournamentId, @RequestBody List<Integer> userIds)
     {
-        return financeService.buildFinanceTournamentReport(userIds);
+        return financeService.buildFinanceTournamentReport(tournamentId, userIds);
     }
 
     @PutMapping("/{id}/finance/debt/clear")
@@ -116,5 +119,74 @@ public class TournamentController {
     public void clearFee(@PathVariable("id") Integer tournamentId, @PathVariable("userId") Integer userId)
     {
         financeService.clearFee(tournamentId, userId);
+    }
+
+    @GetMapping("/{id}/prediction")
+    public List<TournamentPredictionEntity> listAllPrediction(@PathVariable("id") Integer tournamentId)
+    {
+        return tournamentService.getTournamentPredictionGames(tournamentId);
+    }
+
+    @PostMapping("/{id}/prediction")
+    public TournamentPredictionEntity createPrediction(@PathVariable("id") Integer tournamentId, @RequestBody @Validated TournamentPredictionEntity body) throws TimestampNotAllowedException {
+        body.setTournamentId(tournamentId);
+        return tournamentService.save(body);
+    }
+
+    @PutMapping("/{id}/prediction/{predictionId}")
+    public TournamentPredictionEntity updatePrediction(@PathVariable("id") Integer tournamentId, @PathVariable("predictionId") Integer predictionId,
+                                                        @RequestBody @Validated TournamentPredictionEntity body) throws TimestampNotAllowedException {
+        body.setTournamentId(tournamentId);
+        body.setId(predictionId);
+        return tournamentService.save(body);
+    }
+
+    @DeleteMapping("/prediction/{predictionId}")
+    public void deleteAPrediction(@PathVariable("predictionId") Integer predictionId)
+    {
+        tournamentService.deletePrediction(predictionId);
+    }
+
+    @PostMapping("/prediction/{predictionId}/user")
+    public List<TournamentPredictionTeamUserEntity>
+    createUserPrediction(@PathVariable("predictionId") Integer predictionId, @RequestBody @Validated UserPredictionRequest request) throws TimestampNotAllowedException {
+        UserEntity user = WebUtils.getLoggedInUser();
+
+        return tournamentService.createUserPrediction( user.getId(), predictionId,request);
+    }
+
+    @GetMapping("/prediction/{predictionId}/user")
+    public List<TournamentPredictionTeamUserEntity> getUserPrediction(@PathVariable("predictionId") Integer predictionId)
+            throws TimestampNotAllowedException
+    {
+        UserEntity user = WebUtils.getLoggedInUser();
+
+        return tournamentService.findUserPredictionByUserIdAndTournamentPredictionId( user.getId(), predictionId);
+    }
+
+    @GetMapping("/{id}/prediction//user")
+    public List<TournamentUserBonusView> findUserPrediction(@PathVariable("id") Integer tournamentId)
+    {
+        UserEntity user = WebUtils.getLoggedInUser();
+        return tournamentService.findUserPredictionByUserIdAndTournamentId(user.getId(), tournamentId);
+    }
+
+    @GetMapping("/prediction/{predictionId}")
+    public List<TournamentUserBonusView> findAll(@PathVariable("predictionId") Integer predictionId)
+    {
+        return tournamentService.findUserPredictionByPredictionId(predictionId);
+    }
+
+    @GetMapping("/{id}/otherfee")
+    public List<TournamentOtherFeeEntity> findAllOtherFee(@PathVariable("id") Integer tournamentId)
+    {
+        return tournamentService.findTournamentOtherFeeByTournamentId(tournamentId);
+    }
+
+    @PostMapping("/{id}/otherfee")
+    public TournamentOtherFeeEntity saveOtherFee(@PathVariable("id") Integer tournamentId,
+                                                 @Validated @RequestBody TournamentOtherFeeRequest request)
+    {
+        return tournamentService.saveTournamentOtherFee(tournamentId, request);
     }
 }
