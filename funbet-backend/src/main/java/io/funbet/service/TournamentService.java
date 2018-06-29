@@ -154,7 +154,8 @@ public class TournamentService
 
     public List<TournamentUserBonusView> findUserPredictionByPredictionId(Integer predictionId)
     {
-        return tournamentUserBonusViewRepository.findBytournamentPredictionId(predictionId);
+        return tournamentUserBonusViewRepository.findBytournamentPredictionId(predictionId).stream()
+                .filter(p -> p.getSystemEndTimestamp().isBefore(LocalDateTime.now())).collect(Collectors.toList());
     }
 
     public List<TournamentOtherFeeEntity> findTournamentOtherFeeByTournamentId(Integer tournamentId)

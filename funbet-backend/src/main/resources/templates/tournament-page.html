@@ -225,7 +225,7 @@
             <td>{{t.teams}}</td>
             <td>
                 <div v-if="t.editable"><button v-on:click="predictNow(t)">Predict Now</button></div>
-                <button v-on:click="showOtherPredict(t)">Show Others</button>
+                <div v-else><button v-on:click="showOtherPredict(t)">Show Others</button></div>
                 </td>
         </tr>
         </tbody>
