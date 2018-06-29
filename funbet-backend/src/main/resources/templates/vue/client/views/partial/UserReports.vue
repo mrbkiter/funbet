@@ -7,16 +7,18 @@
         <div class="panel-block">
             <label>User List</label>
             (Select All <el-checkbox v-model="selectAllUsers"></el-checkbox>)
-            <div id="user-list" v-for="t in users">
-                <input name="user" type="checkbox" :value="t.id" v-model="selectedUsers">
-                <!--<el-checkbox v-model="t.id" name="user"></el-checkbox>-->
-                <span><label>{{t.name}}</label> <span v-if="t.lock">(Locked)</span></span>
-            </div>
+            <ul class="user-list">
+                <li class="user-item" v-for="t in users">
+                    <input name="user" type="checkbox" :value="t.id" v-model="selectedUsers">
+                    <!--<el-checkbox v-model="t.id" name="user"></el-checkbox>-->
+                    <span><label>{{t.name}}</label> <span v-if="t.lock">(Locked)</span></span>
+                </li>
+            </ul>
         </div>
 
         <div class="space-20"></div>
 
-        <button @click="buildReportDashboard()">Show report</button>
+        <el-button @click="buildReportDashboard()" type="primary" plain icon="ti-clipboard mr-5">Show report</el-button>
 
 
         <div class="space-20"></div>
@@ -24,7 +26,7 @@
 
 
         <div class="panel-block" v-if="matchReport.matchHeaders !=null && matchReport.matchHeaders.length>0">
-            <el-table v-loading="userMatchTableLoader" :data="matchReport.matchRows" style="width: 100%" empty-text="No record">
+            <!--<el-table v-loading="userMatchTableLoader" :data="matchReport.matchRows" style="width: 100%" empty-text="No record">
                 <el-table-column width="200" :render-header="renderHeader">
                     <template slot-scope="dataItem">
 
@@ -48,34 +50,32 @@
 
                     </template>
                 </el-table-column>
-            </el-table>
+            </el-table>-->
 
-            <!--<table>
+            <table class="el-table">
                 <thead>
-                <tr>
+                <tr class="el-table__row">
                     <td/>
-                    <td v-for="h in matchReport.matchHeaders">{{h.name}}</td>
+                    <td class="cell"  v-for="h in matchReport.matchHeaders">{{h.name}}</td>
                 </tr>
                 </thead>
                 <tbody v-for="(r, idx1) in matchReport.matchRows">
-                    <tr>
-                        <td v-for="(ele, idx2) in r" v-if="idx2 == 0">
+                    <tr class="el-table__row">
+                        <td class="cell" v-for="(ele, idx2) in r" v-if="idx2 == 0">
                             {{ele.teamName1}} ({{ele.follower1}}) - {{ele.teamName2}} ({{ele.follower2}})
                         </td>
-                        <td v-else>
+                        <td class="cell" v-else>
                             <span v-if="ele.selectedTeamName == null"> - {{ele.betStatus}}</span>
                             <span v-else>{{ele.selectedTeamName}} - {{ele.betStatus}}</span>
                         </td>
                     </tr>
                 </tbody>
-            </table>-->
+            </table>
 
         </div>
 
         <div class="space-20"></div>
         <div class="space-20"></div>
-
-
 
         <div class="panel-block">
             <el-table v-loading="financeTableLoader" :data="financeReport.reports" style="width: 100%" empty-text="No record">
@@ -326,6 +326,11 @@
   }
 </script>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
+    .user-list{
+        list-style: none;
+        .user-item{
+            margin-bottom: 18px;
+        }
+    }
 </style>

@@ -1,9 +1,14 @@
 <template>
-  <div v-cloak>
+  <div v-cloak class="wrapper">
     <page-header></page-header>
     <slot name='page-header'></slot>
-    <slot name='page-body'></slot>
+
+    <div class="at-container flex">
+      <slot name='page-body'></slot>
+    </div>
+
     <slot name='page-footer'></slot>
+
   </div>
 </template>
 <script>
@@ -37,6 +42,8 @@
   }
   @import '~compass-mixins/lib/_compass.scss';
   @import '~@/assets/scss/main.scss';
+  @import '~at-ui-style/css/at.min.css';
+  @import '~@/assets/themes/at-ui-style/index.scss';
 
   /*@import '~@/assets/fonts/fontawesome-5.11/css/fontawesome-all.min.css';
   $fa-font-path: "~font-awesome/fonts";*/

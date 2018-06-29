@@ -23,6 +23,11 @@
                             <span :class="{'line-through': dataItem.row.score1 !=null && (dataItem.row.score1 + dataItem.row.betScore1) < (dataItem.row.score2 + dataItem.row.betScore2)}">{{dataItem.row.teamName1}}</span>
                         </template>
                     </el-table-column>
+                    <el-table-column label="Bet Score" width="120">
+                        <template slot-scope="dataItem">
+                            {{dataItem.row.betScore1}} - {{dataItem.row.betScore2}}
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="name" label="Score" width="100" sortable>
                         <template slot-scope="dataItem">
                             <span>{{dataItem.row.score1}} - {{dataItem.row.score2}}</span>
@@ -37,7 +42,7 @@
                     <el-table-column prop="betMoney" label="Stake" width="80"></el-table-column>
                     <el-table-column prop="startTime" label="Start Time" width="150" sortable></el-table-column>
                     <el-table-column prop="selectedTeamName" label="Selected Team" width="120"></el-table-column>
-                    <el-table-column prop="betStatus" label="Betting Status" width="150" sortable>
+                    <el-table-column prop="betStatus" label="Betting Status" width="100" sortable  :render-header="renderBetStatusHeader">
                         <template slot-scope="dataItem">
                             <span v-if="dataItem.row.betStatus == 'LOSE'">😞 LOSE</span>
                             <span v-if="dataItem.row.betStatus == 'WIN'">😎 WIN</span>
@@ -49,11 +54,11 @@
                         <template slot-scope="dataItem">
 
                             <div v-if="dataItem.row.editable==true && dataItem.row.betStatus == null">
-                                <el-button :class="{'el-button--success': dataItem.row.selectedTeamId == dataItem.row.teamId1, 'is-plain': dataItem.row.selectedTeamId != dataItem.row.teamId1}"
+                                <el-button style="width:120px" :class="{'el-button--success': dataItem.row.selectedTeamId == dataItem.row.teamId1, 'is-plain': dataItem.row.selectedTeamId != dataItem.row.teamId1}"
                                            size="mini"
                                            @click="saveSelectedTeam(dataItem.row, '1')">{{dataItem.row.teamName1}}</el-button>
 
-                                <el-button :class="{'el-button--success': dataItem.row.selectedTeamId == dataItem.row.teamId2, 'is-plain': dataItem.row.selectedTeamId != dataItem.row.teamId2}"
+                                <el-button style="width:120px" class="mv-10 ml-0" :class="{'el-button--success': dataItem.row.selectedTeamId == dataItem.row.teamId2, 'is-plain': dataItem.row.selectedTeamId != dataItem.row.teamId2}"
                                            size="mini"
                                            @click="saveSelectedTeam(dataItem.row, '2')">{{dataItem.row.teamName2}}</el-button>
 
@@ -70,59 +75,12 @@
             </div>
 
             <div class="space-20"></div>
+            <bonus v-if="tournament" :tournament="tournament"></bonus>
+            <div class="space-20"></div>
             <user-reports v-if="tournament" ref="userReportComponent" :tournament="tournament" :selected-matches="selectedMatches"></user-reports>
 
-            <!--<table>
-                <thead>
-                <tr>
-                    <th></th>
-                    <th><input type="checkbox" v-model="selectAllMatches"></th>
-                    <th>Team 1</th>
-                    <th>Score</th>
-                    <th>Match Betting</th>
-                    <th>Team 2</th>
-                    <th>Stake</th>
-                    <th>Start Time</th>
-                    <th>Selected Team</th>
-                    <th>Betting Status</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody v-for="(t, index) in matches">
-                <tr>
-                    <td>{{index + 1}}</td>
-                    <td><input name="match" type="checkbox" :value="t.matchId" v-model="selectedMatches"></td>
-                    <td>{{t.teamName1}}</td>
-                    <td><span v-if="t.score1 != null">{{t.score1}} - {{t.score2}}</span></td>
-                    <td>{{t.betScore1}} - {{t.betScore2}}</td>
-                    <td>{{t.teamName2}}</td>
-                    <td>{{t.betMoney}}</td>
-                    <td>{{t.startTime}}</td>
-                    <td>{{t.selectedTeamName}}</td>
-                    <td>{{t.betStatus}}</td>
-                    <td>
-                        <div v-if="t.editable">
-                    <span>
-                        <button v-on:click="showSelectedTeam(t)">Choose Team</button>
-                        <span v-if="t.needChooseTeam">
-                            <select v-model="t.selectedTeamId">
-                                <option :value="t.teamId1">{{t.teamName1}}</option>
-                                <option :value="t.teamId2">{{t.teamName2}}</option>
-                                <option></option>
-                            </select>
-                            <button v-on:click="saveSelectedTeam(t)">Save</button>
-                        </span>
-                    </span>
-
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>-->
         </div>
 
-
-        <div class="space-20"></div>
         <div class="space-20"></div>
 
     </div>
@@ -133,6 +91,7 @@
   import axios from '@/services/axios.js';
   import Vue from 'vue';
   import UserReports from 'views/partial/UserReports.vue';
+  import Bonus from 'views/partial/Bonus.vue';
 
   export default {
     data() {
@@ -157,7 +116,7 @@
     },
 
     props: ['tournament'],
-    components: {UserReports},
+    components: {UserReports, Bonus},
     methods: {
       menuOnChange(key, keyPath) {
         let vm = this;
@@ -207,6 +166,14 @@
         }).finally(() => {
           Vue.set(_match, 'needChooseTeam', false);
         });
+      },
+
+      renderBetStatusHeader(h, { column, $index }){
+
+        let vm = this;
+        return h('span', {'class': 'text-ellipsis'}, [
+          'Result'
+        ])
       }
     },
     computed: {

@@ -7,10 +7,12 @@
 
         <master-layout>
             <div slot="page-header"></div>
-            <div slot="page-body">
+            <div slot="page-body" class="width-full ph-20 mt-20">
                 <tournament v-for="tournament in tournaments" :key="tournament.id" :tournament="tournament"></tournament>
+
+
                 <br/><br/>
-            </div>
+            </div>``
         </master-layout>
 
     </div>

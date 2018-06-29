@@ -11,6 +11,7 @@ module.exports = {
     proxy: {
       '/user': 'http://localhost:9111',
       '/tournament': 'http://localhost:9111',
+      '/team': 'http://localhost:9111',
       '/report': 'http://localhost:9111',
       '/match': 'http://localhost:9111',
     }
