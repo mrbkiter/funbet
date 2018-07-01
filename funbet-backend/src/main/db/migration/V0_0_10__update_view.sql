@@ -8,6 +8,3 @@ SUM(CASE WHEN bet_status = 'LOSE' AND paid = true THEN bet_money
     ELSE 0 END) AS contribution
 FROM finance_user_match_view
 GROUP BY tournament_id, user_id, email, name;
-
-
-select * from tournament_prediction_team_user
