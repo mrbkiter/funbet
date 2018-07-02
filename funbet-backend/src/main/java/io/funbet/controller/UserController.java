@@ -48,7 +48,9 @@ public class UserController
         return userService.findUserById(id);
     }
 
-    @GetMapping(value = "/loggedInUser")
+
+    @RequestMapping(value = "/loggedInUser", method={ RequestMethod.GET,
+            RequestMethod.OPTIONS })
     UserEntity user()
     {
         return WebUtils.getLoggedInUser();
