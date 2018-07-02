@@ -161,11 +161,13 @@
                 <ul>
                     <li class="pv-5" v-for="o in otherFees"> {{o.otherFee}} ({{ o.note }}) </li>
                 </ul>
+                <div class="space-20"></div>
+
                 <div v-if="loggedInUser.role == 'ADMIN'">
                 <span>
-                    <input type="number" placeholder="Other Fee" v-model="otherFee.amount" />
-                    <input type="text" placeholder="Note" v-model="otherFee.note" />
-                    <button v-on:click="saveOtherFee">Save</button>
+                    <el-input-number v-model="otherFee.amount" placeholder="Other Fee"></el-input-number>
+                    <el-input v-model="otherFee.note" placeholder="Note"></el-input>
+                    <el-button type="primary" plain icon="ti-save mr-5" @click="saveOtherFee">Save</el-button>
                 </span>
                 </div>
             </div>
@@ -378,5 +380,11 @@
         .user-item{
             margin-bottom: 18px;
         }
+    }
+    .el-input {
+        width: 200px;
+    }
+    .el-input-number {
+        width: 200px;
     }
 </style>

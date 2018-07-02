@@ -56,7 +56,7 @@ base.plugins.push(
   }),
   // progressive web app
   // it uses the publicPath in webpack config
-  new OfflinePlugin({
+ /* new OfflinePlugin({
     relativePaths: false,
     ServiceWorker: {
       events:true,
@@ -66,7 +66,7 @@ base.plugins.push(
       events:true,
       FALLBACK:{ '/':'/' }
     }
-  }),
+  }),*/
   new CompressionWebpackPlugin({
     asset: '[path].gz[query]',
     algorithm: 'gzip',

@@ -1,19 +1,19 @@
 <template>
 
-    <div class="ph-20">
+    <div>
         <h3>Forecast Section</h3>
 
         <div class="space-20"></div>
 
         <div class="panel-block">
             <el-table v-loading="forecastTableLoader" :data="bonuses" style="width: 100%" empty-text="No record">
-                <el-table-column width="200" prop="name" label="Bonus Name"></el-table-column>
-                <el-table-column width="100" prop="noOfTeam" label="No of teams"></el-table-column>
+                <el-table-column prop="name" label="Bonus Name"></el-table-column>
+                <el-table-column width="110" prop="noOfTeam" label="No of teams"></el-table-column>
                 <el-table-column width="200" prop="endTimestamp" label="End Time (UTC +07)"></el-table-column>
                 <el-table-column width="150" prop="bonusAmount" label="Bonus Amt"></el-table-column>
-                <el-table-column width="200" prop="teams" label="Selected teams"></el-table-column>
+                <el-table-column prop="teams" label="Selected teams"></el-table-column>
 
-                <el-table-column fixed="right" label="Actions" width="120">
+                <el-table-column label="Actions" width="120">
                     <template slot-scope="dataItem">
                         <el-button v-if="dataItem.row.editable" @click="predictNow(dataItem.row)" type="text" size="small">
                             Predict Now
