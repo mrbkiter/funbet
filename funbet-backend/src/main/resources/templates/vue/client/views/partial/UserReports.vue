@@ -1,7 +1,8 @@
 <template>
 
-    <div>
+    <div v-if="loggedInUser">
         <h3>User Report Section</h3>
+        <div class="space-20"></div>
 
 
         <div class="panel-block">
@@ -18,7 +19,7 @@
 
         <div class="space-20"></div>
 
-        <el-button @click="buildReportDashboard()" type="primary" plain icon="ti-clipboard mr-5">Show report</el-button>
+        <el-button @click="showReportDashboard()" type="primary" plain icon="ti-clipboard mr-5">Show report</el-button>
 
 
         <div class="space-20"></div>
@@ -150,11 +151,30 @@
                 </tbody>
             </table>-->
         </div>
-
-
-
         <div class="space-20"></div>
-        <div class="space-20"></div>
+
+        <div v-if="otherFees.length>0">
+            <h3>Other Fee Section</h3>
+            <div class="space-20"></div>
+
+            <div class="panel-block" v-if="otherFees.length>0">
+                <ul>
+                    <li class="pv-5" v-for="o in otherFees"> {{o.otherFee}} ({{ o.note }}) </li>
+                </ul>
+                <div v-if="loggedInUser.role == 'ADMIN'">
+                <span>
+                    <input type="number" placeholder="Other Fee" v-model="otherFee.amount" />
+                    <input type="text" placeholder="Note" v-model="otherFee.note" />
+                    <button v-on:click="saveOtherFee">Save</button>
+                </span>
+                </div>
+            </div>
+            <div class="space-20"></div>
+            <div class="space-20"></div>
+        </div>
+
+
+
         <label>Total Contribution: </label> {{financeReport.totalContribution}} <br/>
 
         <label>Total remaining debt: </label> {{financeReport.totalRemainingDebt}}
@@ -181,14 +201,19 @@
         loggedInUser: null,
 
         userMatchTableLoader: false,
-        financeTableLoader: false
+        financeTableLoader: false,
+        otherFees: [],
+        otherFee: {
+          amount: 0,
+          note: null
+        }
       }
     },
     props: ['tournament', 'selectedMatches'],
     mounted() {
       let vm = this;
       axios.get("/user/loggedInUser").then(response => {
-        this.loggedInUser = response.data;
+        vm.loggedInUser = response.data;
       });
 
       vm.updateReportByTournament();
@@ -198,6 +223,18 @@
       showAddFee: function (row) {
         row.enableAddFee == undefined ? Vue.set(row, 'enableAddFee', true)
           : Vue.set(row, 'enableAddFee', !row.enableAddFee);
+      },
+
+      saveOtherFee: function(event)
+      {
+        axios.post('/tournament/' + vm.tournament.id + '/otherfee', vm.otherFee)
+          .then(response => {
+            vm.otherFees.push(response.data);
+            vm.buildFinanceReport();
+            vm.buildOtherFeeBlock();
+          }).catch(function(e){
+          alert(e.response.data);
+        });
       },
       saveFee: function (row) {
         row.enableAddFee = !row.enableAddFee;
@@ -215,16 +252,17 @@
         });
       },
       clearFee: function (row) {
+        let vm = this;
         var url = '/tournament/' + this.tournament.id + '/finance/user/'
           + row.userId + '/fee/clear';
         axios.put(url).then(response => {
-          this.buildFinanceReport();
+          vm.buildFinanceReport();
         });
       },
-      buildReportDashboard: function (event) {
+      showReportDashboard: function (event) {
         let vm = this;
 
-        this.selectedMatches = vm.selectedMatches;
+        vm.selectedMatches = vm.selectedMatches;
 
         if(vm.selectedUsers.length > 0){
 
@@ -240,7 +278,9 @@
 
             vm.userMatchTableLoader = false;
           });
-          this.buildFinanceReport();
+          vm.buildFinanceReport();
+
+          vm.buildOtherFeeBlock();
         }else{
           vm.$notify.info({
             title: 'Info',
@@ -260,6 +300,12 @@
           });
           vm.financeTableLoader = false;
         })
+      },
+      buildOtherFeeBlock(){
+        let vm = this;
+        axios.get('/tournament/' + vm.tournament.id + '/otherfee').then(response => {
+          vm.otherFees = response.data;
+        });
       },
       clearAllDebt: function (event) {
         var url = '/tournament/' + this.tournament.id + '/finance/debt/clear';

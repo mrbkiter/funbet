@@ -20,7 +20,8 @@ if (config.electron) {
   rm.sync('app/assets/*')
 } else {
   // remove dist folder in web app mode
-  rm.sync('dist/*')
+  //rm.sync('dist/*') // keep index.html for java backend to read it
+
   // use source-map in web app mode
   base.devtool = 'source-map'
 }

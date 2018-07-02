@@ -29,8 +29,8 @@
         <div class="space-20"></div>
         <div class="space-20"></div>
 
-        <div class="panel-block">
-            <div v-if="showAnswerSection">
+        <div class="panel-block" v-if="showAnswerSection">
+            <div>
                 <label>Please select {{currentPrediction.noOfTeam}} team(s)</label>
                 <div id="answer-team-list" v-for="t in teams">
                     <input name="answerTeam" type="checkbox" :value="t.id" v-model="currentPrediction.selectedTeamIds">
@@ -39,8 +39,8 @@
                 <button v-on:click="saveUserPrediction">Save</button>
             </div>
         </div>
-        <div class="panel-block">
-            <div v-if="showAllSection">
+        <div class="panel-block" v-if="showAllSection">
+            <div>
                 <h2>Other predictions</h2>
 
                 <div class="space-20"></div>
