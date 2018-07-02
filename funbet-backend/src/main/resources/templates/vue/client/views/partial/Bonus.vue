@@ -8,14 +8,14 @@
         <div class="panel-block">
             <el-table v-loading="forecastTableLoader" :data="bonuses" style="width: 100%" empty-text="No record">
                 <el-table-column width="200" prop="name" label="Bonus Name"></el-table-column>
-                <el-table-column width="200" prop="noOfTeam" label="No of teams"></el-table-column>
+                <el-table-column width="100" prop="noOfTeam" label="No of teams"></el-table-column>
                 <el-table-column width="200" prop="endTimestamp" label="End Time (UTC +07)"></el-table-column>
-                <el-table-column width="200" prop="bonusAmount" label="Bonus Amt"></el-table-column>
+                <el-table-column width="150" prop="bonusAmount" label="Bonus Amt"></el-table-column>
                 <el-table-column width="200" prop="teams" label="Selected teams"></el-table-column>
 
                 <el-table-column fixed="right" label="Actions" width="120">
                     <template slot-scope="dataItem">
-                        <el-button v-if="t.editable" @click="predictNow(dataItem.row)" type="text" size="small">
+                        <el-button v-if="dataItem.row.editable" @click="predictNow(dataItem.row)" type="text" size="small">
                             Predict Now
                         </el-button>
                         <el-button v-else type="text" @click="showOtherPredict(dataItem.row)" size="small">Show Others
@@ -28,6 +28,30 @@
 
         <div class="space-20"></div>
         <div class="space-20"></div>
+
+        <div class="panel-block">
+            <div v-if="showAnswerSection">
+                <label>Please select {{currentPrediction.noOfTeam}} team(s)</label>
+                <div id="answer-team-list" v-for="t in teams">
+                    <input name="answerTeam" type="checkbox" :value="t.id" v-model="currentPrediction.selectedTeamIds">
+                    <span><label>{{t.name}}</label> </span>
+                </div>
+                <button v-on:click="saveUserPrediction">Save</button>
+            </div>
+        </div>
+        <div class="panel-block">
+            <div v-if="showAllSection">
+                <h2>Other predictions</h2>
+
+                <div class="space-20"></div>
+
+                <el-table v-loading="allPredictionTableLoader" :data="allPredictions" style="width: 100%" empty-text="No record">
+                    <el-table-column width="300" prop="userName" label="Name"></el-table-column>
+                    <el-table-column prop="teams" label="Selected teams"></el-table-column>
+                </el-table>
+
+            </div>
+        </div>
     </div>
 </template>
 
@@ -47,6 +71,7 @@
         currentPrediction: null,
         showAnswerSection: false,
         showAllSection: false,
+        allPredictionTableLoader: true,
         allPredictions: []
       }
     },
@@ -90,6 +115,7 @@
         vm.showAllSection = !vm.showAllSection;
         axios.get(url).then(response => {
           vm.allPredictions = response.data;
+          vm.allPredictionTableLoader = false;
         });
       },
       showBonusDetail: function(){
