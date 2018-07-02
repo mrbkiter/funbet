@@ -1,9 +1,11 @@
 package io.funbet.service;
 
+import io.funbet.exception.InvalidDataException;
+import io.funbet.exception.ResourceNotFoundException;
 import io.funbet.exception.TimestampNotAllowedException;
 import io.funbet.exception.UpdateNotAllowException;
 import io.funbet.model.dto.TournamentOtherFeeRequest;
-import io.funbet.model.dto.UserPredictionRequest;
+import io.funbet.model.dto.PredictionAnswerRequest;
 import io.funbet.model.entity.*;
 import io.funbet.repository.*;
 import io.funbet.utils.TimezoneUtils;
@@ -16,6 +18,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.MissingResourceException;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,6 +50,9 @@ public class TournamentService
 
     @Autowired
     TournamentOtherFeeRepository tournamentOtherFeeRepository;
+
+    @Autowired
+    TournamentPredictionAnswerRepository tournamentPredictionAnswerRepository;
 
     public List<TournamentEntity> getAll()
     {
@@ -118,7 +124,7 @@ public class TournamentService
     }
 
     @Transactional
-    public List<TournamentPredictionTeamUserEntity> createUserPrediction( Integer userId, Integer predictionId, UserPredictionRequest request)
+    public List<TournamentPredictionTeamUserEntity> createUserPrediction( Integer userId, Integer predictionId, PredictionAnswerRequest request)
             throws TimestampNotAllowedException {
         TournamentPredictionEntity prediction =
                 tournamentPredictionRepository.findById(predictionId).filter(v -> v.getSystemEndTimestamp()
@@ -172,4 +178,30 @@ public class TournamentService
         ett.setTournamentId(tournamentId);
         return tournamentOtherFeeRepository.save(ett);
     }
+
+    @Transactional
+    public List<TournamentPredictionTeamAnswerEntity> writeAnswerForPreidction(final Integer predictionId, PredictionAnswerRequest request)
+            throws ResourceNotFoundException, InvalidDataException {
+        TournamentPredictionEntity predition = tournamentPredictionRepository.findById(predictionId).orElseThrow(() -> new ResourceNotFoundException("Prediction Id does not exist"));
+        if(predition.getNoOfTeam() != request.getTeamIds().size())
+            throw new InvalidDataException("Number of selected teams not equals to number of allowed teams for this prediction");
+
+        List<Integer> teamIds = request.getTeamIds();
+        List<TournamentPredictionTeamAnswerEntity> answers =
+                teamIds.stream()
+                        .map(teamId -> new TournamentPredictionTeamAnswerEntity.TournamentPredictionTeamAnswerId(predictionId, teamId))
+                        .map(answerId -> new TournamentPredictionTeamAnswerEntity(answerId, LocalDateTime.now()))
+                        .collect(Collectors.toList());
+        //delete old one
+        tournamentPredictionAnswerRepository.deleteAnswersByTournamentPredictionId(predictionId);
+
+        //write new answer
+        answers = tournamentPredictionAnswerRepository.saveAll(answers);
+
+        //check who win / lose
+        //userAnswerRepository.countByTournamentPredictionId()
+
+        return answers;
+    }
+
 }

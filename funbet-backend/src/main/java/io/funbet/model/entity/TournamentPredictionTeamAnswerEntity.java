@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tournament_prediction_team_answer")
+@AllArgsConstructor
+@NoArgsConstructor
 public class TournamentPredictionTeamAnswerEntity
 {
     @EmbeddedId

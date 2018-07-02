@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class UserPredictionRequest
+public class PredictionAnswerRequest
 {
     List<Integer> teamIds;
 }

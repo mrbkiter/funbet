@@ -1,10 +1,12 @@
 package io.funbet.controller;
 
+import io.funbet.exception.InvalidDataException;
+import io.funbet.exception.ResourceNotFoundException;
 import io.funbet.exception.TimestampNotAllowedException;
 import io.funbet.exception.UpdateNotAllowException;
 import io.funbet.model.dto.OtherFeeRequestCreation;
 import io.funbet.model.dto.TournamentOtherFeeRequest;
-import io.funbet.model.dto.UserPredictionRequest;
+import io.funbet.model.dto.PredictionAnswerRequest;
 import io.funbet.model.entity.*;
 import io.funbet.service.FinanceService;
 import io.funbet.service.TournamentService;
@@ -149,7 +151,7 @@ public class TournamentController {
 
     @PostMapping("/prediction/{predictionId}/user")
     public List<TournamentPredictionTeamUserEntity>
-    createUserPrediction(@PathVariable("predictionId") Integer predictionId, @RequestBody @Validated UserPredictionRequest request) throws TimestampNotAllowedException {
+    createUserPrediction(@PathVariable("predictionId") Integer predictionId, @RequestBody @Validated PredictionAnswerRequest request) throws TimestampNotAllowedException {
         UserEntity user = WebUtils.getLoggedInUser();
 
         return tournamentService.createUserPrediction( user.getId(), predictionId,request);
@@ -188,5 +190,11 @@ public class TournamentController {
                                                  @Validated @RequestBody TournamentOtherFeeRequest request)
     {
         return tournamentService.saveTournamentOtherFee(tournamentId, request);
+    }
+
+    @PostMapping("/prediction/{predictionId}/answer")
+    public void writeAnswerForPrediction(@PathVariable("id") Integer predictionId,
+                                         @RequestBody @Validated PredictionAnswerRequest request) throws ResourceNotFoundException, InvalidDataException {
+        tournamentService.writeAnswerForPreidction(predictionId, request);
     }
 }
