@@ -26,4 +26,6 @@ public interface TournamentUserOtherFeeRepository
             "WHERE userId = :userId AND tournamentId = :tournamentId ")
     @Transactional
     void clearBonusForUser(@Param("tournamentId") Integer tournamentId, @Param("userId") Integer userId);
+
+    void deleteByTournamentPredictionId(Integer tournamentPredictionId);
 }

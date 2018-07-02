@@ -107,10 +107,24 @@
                 <td>{{t.noOfTeam}}</td>
                 <td>{{t.endTimestamp}}</td>
                 <td>{{t.bonusAmount}}</td>
-                <td><button v-on:click="editBonus(t)">Edit</button></td>
+                <td>
+                    <span>
+                        <button v-on:click="editBonus(t)">Edit</button>
+                        <button v-on:click="openPredictionAnswerDialog(t)">Write Answer</button>
+                    </span>
+                    <div  v-if="t.enableAnswerDialog">
+                        <div id="answer-team-list" v-for="team in teams">
+                            <input name="answerTeam" type="checkbox" :value="team.id" v-model="t.selectedTeamIds">
+                            <span><label>{{team.name}}</label> </span>
+                        </div>
+                        <button v-on:click="savePredictionAnswer(t)">Save</button>
+                    </div>
+
+                </td>
             </tr>
         </tbody>
     </table>
+
     <br />
     <div>
         <input type="hidden" v-model="currentBonus.id"/>

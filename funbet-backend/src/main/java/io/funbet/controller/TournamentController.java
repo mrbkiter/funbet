@@ -193,7 +193,7 @@ public class TournamentController {
     }
 
     @PostMapping("/prediction/{predictionId}/answer")
-    public void writeAnswerForPrediction(@PathVariable("id") Integer predictionId,
+    public void writeAnswerForPrediction(@PathVariable("predictionId") Integer predictionId,
                                          @RequestBody @Validated PredictionAnswerRequest request) throws ResourceNotFoundException, InvalidDataException {
         tournamentService.writeAnswerForPreidction(predictionId, request);
     }

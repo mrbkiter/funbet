@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Column;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -53,6 +54,9 @@ public class TournamentService
 
     @Autowired
     TournamentPredictionAnswerRepository tournamentPredictionAnswerRepository;
+
+    @Autowired
+    TournamentUserOtherFeeRepository tournamentUserOtherFeeRepository;
 
     public List<TournamentEntity> getAll()
     {
@@ -199,7 +203,22 @@ public class TournamentService
         answers = tournamentPredictionAnswerRepository.saveAll(answers);
 
         //check who win / lose
-        //userAnswerRepository.countByTournamentPredictionId()
+        List<Integer> rightUsers = userAnswerRepository.findUserAnsweredCorrectly(predictionId, predition.getNoOfTeam(), request.getTeamIds());
+
+        //now update bonus
+        final String note = "Bonus for correctly predicting [" + predition.getName() + "]";
+        List<TournamentUserOtherFeeEntity> bonuses = rightUsers.stream().map(userId -> {
+            TournamentUserOtherFeeEntity ett = new TournamentUserOtherFeeEntity();
+            ett.setUserId(userId);
+            ett.setNote(note);
+            ett.setBonus(predition.getBonusAmount());
+            ett.setTournamentId(predition.getTournamentId());
+            return ett;
+        }).collect(Collectors.toList());
+        //delete related bonus
+        tournamentUserOtherFeeRepository.deleteByTournamentPredictionId(predictionId);
+        //save bonuses
+        tournamentUserOtherFeeRepository.saveAll(bonuses);
 
         return answers;
     }

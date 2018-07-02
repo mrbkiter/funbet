@@ -15,6 +15,9 @@ public class TournamentUserOtherFeeEntity
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     Integer id;
 
+    @Column(name = "tournament_prediction_id")
+    Integer tournamentPredictionId;
+
     @Column(name = "user_id")
     Integer userId;
     @Column(name = "tournament_id")

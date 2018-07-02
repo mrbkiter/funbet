@@ -51,6 +51,9 @@ var tournaments = new Vue({
                 var url = '/tournament/' + $tournament.id + '/prediction';
                 axios.get(url).then(response => {
                     bonuses.bonuses = response.data;
+                    bonuses.bonuses.map(item => {
+                        Vue.set(item, 'selectedTeamIds', []);
+                    });
                 });
             }
         }
@@ -144,11 +147,31 @@ var bonuses = new Vue({
             id: null,
             name: null,
             bonusAmount: null,
-            endTimestamp: null
+            endTimestamp: null,
+            selectedTeamIds: []
         },
-        tournament: null
+        tournament: null,
+        teams: []
     },
     methods: {
+        openPredictionAnswerDialog: function($bonus)
+        {
+            bonuses.teams = matches.teams;
+            Vue.set($bonus, 'enableAnswerDialog', !$bonus.enableAnswerDialog);
+        },
+        savePredictionAnswer: function($bonus)
+        {
+            var url = '/tournament/prediction/' + $bonus.id + '/answer';
+            var body = {
+                teamIds: $bonus.selectedTeamIds
+            };
+
+            axios.post(url, body).then({
+
+            }).catch(function(e){
+                alert(e.response.data);
+            });
+        },
         saveBonus: function(event)
         {
             var url = '/tournament/' + this.tournament.id + '/prediction';
