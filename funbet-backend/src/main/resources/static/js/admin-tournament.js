@@ -166,8 +166,9 @@ var bonuses = new Vue({
                 teamIds: $bonus.selectedTeamIds
             };
 
-            axios.post(url, body).then({
-
+            axios.post(url, body).then(response => {
+                Vue.set($bonus, 'enableAnswerDialog', !$bonus.enableAnswerDialog);
+                $bonus.teamNames = response.data.teamNames;
             }).catch(function(e){
                 alert(e.response.data);
             });

@@ -98,6 +98,7 @@
             <th>No of teams</th>
             <th>End Time (UTC +07)</th>
             <th>Amount of bonus</th>
+            <th>Selected Teams</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -107,6 +108,7 @@
                 <td>{{t.noOfTeam}}</td>
                 <td>{{t.endTimestamp}}</td>
                 <td>{{t.bonusAmount}}</td>
+                <td>{{t.teamNames}}</td>
                 <td>
                     <span>
                         <button v-on:click="editBonus(t)">Edit</button>

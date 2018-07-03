@@ -10,6 +10,7 @@ import io.funbet.model.entity.*;
 import io.funbet.repository.*;
 import io.funbet.utils.TimezoneUtils;
 import io.funbet.utils.WebUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,9 @@ public class TournamentService
     @Autowired
     TournamentUserOtherFeeRepository tournamentUserOtherFeeRepository;
 
+    @Autowired
+    TournamentPredictionViewRepository tournamentPredictionViewRepository;
+
     public List<TournamentEntity> getAll()
     {
         return tournamentRepository.findAll();
@@ -105,9 +109,9 @@ public class TournamentService
         return matchViewRepository.findById(matchEntity.getId()).orElse(new MatchView());
     }
 
-    public List<TournamentPredictionEntity> getTournamentPredictionGames(Integer tournamentId)
+    public List<TournamentPredictionView> getTournamentPredictionGames(Integer tournamentId)
     {
-        return tournamentPredictionRepository.findAll();
+        return tournamentPredictionViewRepository.findByTournamentId(tournamentId);
     }
 
     public TournamentPredictionEntity save(TournamentPredictionEntity entity) throws TimestampNotAllowedException {
@@ -184,7 +188,7 @@ public class TournamentService
     }
 
     @Transactional
-    public List<TournamentPredictionTeamAnswerEntity> writeAnswerForPreidction(final Integer predictionId, PredictionAnswerRequest request)
+    public TournamentPredictionView writeAnswerForPreidction(final Integer predictionId, PredictionAnswerRequest request)
             throws ResourceNotFoundException, InvalidDataException {
         TournamentPredictionEntity predition = tournamentPredictionRepository.findById(predictionId).orElseThrow(() -> new ResourceNotFoundException("Prediction Id does not exist"));
         if(predition.getNoOfTeam() != request.getTeamIds().size())
@@ -203,7 +207,8 @@ public class TournamentService
         answers = tournamentPredictionAnswerRepository.saveAll(answers);
 
         //check who win / lose
-        List<Integer> rightUsers = userAnswerRepository.findUserAnsweredCorrectly(predictionId, predition.getNoOfTeam(), request.getTeamIds());
+        List<Integer> rightUsers = userAnswerRepository
+                .findUserAnsweredCorrectly(predictionId, predition.getNoOfTeam(), request.getTeamIds().toArray(new Integer[request.getTeamIds().size()]));
 
         //now update bonus
         final String note = "Bonus for correctly predicting [" + predition.getName() + "]";
@@ -220,7 +225,7 @@ public class TournamentService
         //save bonuses
         tournamentUserOtherFeeRepository.saveAll(bonuses);
 
-        return answers;
+        return tournamentPredictionViewRepository.findById(predictionId).orElse(null);
     }
 
 }

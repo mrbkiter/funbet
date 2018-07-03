@@ -124,9 +124,10 @@ public class TournamentController {
     }
 
     @GetMapping("/{id}/prediction")
-    public List<TournamentPredictionEntity> listAllPrediction(@PathVariable("id") Integer tournamentId)
+    public List<TournamentPredictionView> listAllPrediction(@PathVariable("id") Integer tournamentId)
     {
-        return tournamentService.getTournamentPredictionGames(tournamentId);
+        List<TournamentPredictionView> predictions =  tournamentService.getTournamentPredictionGames(tournamentId);
+        return predictions;
     }
 
     @PostMapping("/{id}/prediction")
@@ -193,8 +194,8 @@ public class TournamentController {
     }
 
     @PostMapping("/prediction/{predictionId}/answer")
-    public void writeAnswerForPrediction(@PathVariable("predictionId") Integer predictionId,
-                                         @RequestBody @Validated PredictionAnswerRequest request) throws ResourceNotFoundException, InvalidDataException {
-        tournamentService.writeAnswerForPreidction(predictionId, request);
+    public TournamentPredictionView writeAnswerForPrediction(@PathVariable("predictionId") Integer predictionId,
+                                                             @RequestBody @Validated PredictionAnswerRequest request) throws ResourceNotFoundException, InvalidDataException {
+        return tournamentService.writeAnswerForPreidction(predictionId, request);
     }
 }
