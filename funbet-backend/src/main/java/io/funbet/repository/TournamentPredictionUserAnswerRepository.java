@@ -26,9 +26,4 @@ public interface TournamentPredictionUserAnswerRepository extends JpaRepository<
 
     @Query(value = "SELECT count(m) FROM TournamentPredictionTeamUserEntity m WHERE m.id.tournamentPredictionId = :id")
     int countByTournamentPredictionId(@Param("id") Integer tournamentPredictionId);
-
-    @Query(value = "SELECT v.user_id FROM user_answer_prediction_view v WHERE v.tournament_prediction_id = :id " +
-            "AND v.no_of_selected_teams = :no AND v.team_ids @> ARRAY[:teamIds]", nativeQuery = true)
-    List<Integer> findUserAnsweredCorrectly(@Param("id") Integer tournamentPredictionId, @Param("no")  Integer noOfSelected,
-                                            @Param("teamIds") Integer[] teamIds);
 }

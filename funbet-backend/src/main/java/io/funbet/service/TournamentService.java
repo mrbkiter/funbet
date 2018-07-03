@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.Column;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.MissingResourceException;
@@ -61,6 +62,9 @@ public class TournamentService
 
     @Autowired
     TournamentPredictionViewRepository tournamentPredictionViewRepository;
+
+    @Autowired
+    UserAnswerPredictionViewRepository userAnswerPredictionViewRepository;
 
     public List<TournamentEntity> getAll()
     {
@@ -188,7 +192,7 @@ public class TournamentService
     }
 
     @Transactional
-    public TournamentPredictionView writeAnswerForPreidction(final Integer predictionId, PredictionAnswerRequest request)
+    public void writeAnswerForPreidction(final Integer predictionId, PredictionAnswerRequest request)
             throws ResourceNotFoundException, InvalidDataException {
         TournamentPredictionEntity predition = tournamentPredictionRepository.findById(predictionId).orElseThrow(() -> new ResourceNotFoundException("Prediction Id does not exist"));
         if(predition.getNoOfTeam() != request.getTeamIds().size())
@@ -207,8 +211,11 @@ public class TournamentService
         answers = tournamentPredictionAnswerRepository.saveAll(answers);
 
         //check who win / lose
-        List<Integer> rightUsers = userAnswerRepository
-                .findUserAnsweredCorrectly(predictionId, predition.getNoOfTeam(), request.getTeamIds().toArray(new Integer[request.getTeamIds().size()]));
+        List<Integer> rightUsers = userAnswerPredictionViewRepository
+                .findUserAnsweredSameNo(predictionId, predition.getNoOfTeam())
+                .filter(u -> u.getTeamIds().stream()
+                        .filter(request.getTeamIds()::contains).collect(Collectors.toList()).size() == request.getTeamIds().size())
+                .map(u -> u.getId().getUserId()).collect(Collectors.toList());
 
         //now update bonus
         final String note = "Bonus for correctly predicting [" + predition.getName() + "]";
@@ -218,14 +225,18 @@ public class TournamentService
             ett.setNote(note);
             ett.setBonus(predition.getBonusAmount());
             ett.setTournamentId(predition.getTournamentId());
+            ett.setTournamentPredictionId(predictionId);
             return ett;
         }).collect(Collectors.toList());
         //delete related bonus
         tournamentUserOtherFeeRepository.deleteByTournamentPredictionId(predictionId);
         //save bonuses
         tournamentUserOtherFeeRepository.saveAll(bonuses);
+    }
 
-        return tournamentPredictionViewRepository.findById(predictionId).orElse(null);
+    public TournamentPredictionView findByTournamentPredictionId(Integer tournamentPredictionId)
+    {
+        return tournamentPredictionViewRepository.findById(tournamentPredictionId).orElse(null);
     }
 
 }
