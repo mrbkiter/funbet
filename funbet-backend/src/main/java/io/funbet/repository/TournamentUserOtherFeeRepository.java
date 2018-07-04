@@ -28,4 +28,8 @@ public interface TournamentUserOtherFeeRepository
     void clearBonusForUser(@Param("tournamentId") Integer tournamentId, @Param("userId") Integer userId);
 
     void deleteByTournamentPredictionId(Integer tournamentPredictionId);
+
+    List<TournamentUserOtherFeeEntity> findByTournamentIdAndUserIdAndOtherFeeGreaterThan(Integer tournamentId, Integer userId, Integer value);
+
+    List<TournamentUserOtherFeeEntity> findByTournamentIdAndUserIdAndBonusGreaterThan(Integer tournamentId, Integer userId, Integer value);
 }

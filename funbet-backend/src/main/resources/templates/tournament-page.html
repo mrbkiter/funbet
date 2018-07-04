@@ -180,7 +180,11 @@
                 </span>
 
             </td>
-            <td>{{t.remainingBonus}}</td>
+            <td>{{t.remainingBonus}}
+                <span  v-if="loggedInUser.role == 'ADMIN'">
+                &nbsp; <button v-on:click="clearBonus(t.userId)">Clear</button>
+            </span>
+            </td>
         </tr>
         </tbody>
     </table>

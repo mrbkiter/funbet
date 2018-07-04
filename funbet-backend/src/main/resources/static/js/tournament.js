@@ -258,6 +258,20 @@ var userReport = new Vue({
             }).catch(function(e){
                 alert(e.response.data);
             });
+        },
+        clearBonus: function(userId)
+        {
+            var body = [
+                userId
+            ];
+
+            var url = '/tournament/' + this.tournament.id + '/finance/user/' + userId + '/bonus/clear';
+            axios.put(url, body).then(response =>
+            {
+                this.buildFinanceReport();
+            }).catch(function(e){
+                alert(e.response.data);
+            });
         }
     },
      computed: {

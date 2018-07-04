@@ -110,6 +110,16 @@ public class FinanceService
         tournamentUserOtherFeeRepository.clearBonusForUser(tournamentId, userId);
     }
 
+    public List<TournamentUserOtherFeeEntity> getFeeDetails(Integer tournamentId, Integer userId)
+    {
+        return tournamentUserOtherFeeRepository.findByTournamentIdAndUserIdAndOtherFeeGreaterThan(tournamentId, userId, 0);
+    }
+
+    public List<TournamentUserOtherFeeEntity> getBonusDetails(Integer tournamentId, Integer userId)
+    {
+        return tournamentUserOtherFeeRepository.findByTournamentIdAndUserIdAndBonusGreaterThan(tournamentId, userId, 0);
+    }
+
     @Data
     @Builder
     public static class FinanceTournamentReportResponse

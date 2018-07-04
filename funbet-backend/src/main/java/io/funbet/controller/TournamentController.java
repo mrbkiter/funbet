@@ -123,6 +123,25 @@ public class TournamentController {
         financeService.clearFee(tournamentId, userId);
     }
 
+    @GetMapping("/{id}/finance/user/{userId}/fee")
+    public List<TournamentUserOtherFeeEntity> getFeeDetails(@PathVariable("id") Integer tournamentId, @PathVariable("userId") Integer userId)
+    {
+        return financeService.getFeeDetails(tournamentId, userId);
+    }
+
+    @PutMapping("/{id}/finance/user/{userId}/bonus/clear")
+    public void clearBonus(@PathVariable("id") Integer tournamentId, @PathVariable("userId") Integer userId)
+    {
+        financeService.clearBonus(tournamentId, userId);
+    }
+
+
+    @GetMapping("/{id}/finance/user/{userId}/bonus")
+    public List<TournamentUserOtherFeeEntity> getBonusDetails(@PathVariable("id") Integer tournamentId, @PathVariable("userId") Integer userId)
+    {
+        return financeService.getBonusDetails(tournamentId, userId);
+    }
+
     @GetMapping("/{id}/prediction")
     public List<TournamentPredictionView> listAllPrediction(@PathVariable("id") Integer tournamentId)
     {
