@@ -3,7 +3,9 @@ package io.funbet.model.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import io.funbet.type.IntArrayType;
 import lombok.Data;
+import org.hibernate.annotations.Type;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
@@ -45,8 +47,9 @@ public class TournamentUserBonusView {
     @Column(name = "bonus_amount")
     Integer bonusAmount;
 
-    @Column(name = "team_ids")
-    String teamIds;
+    @Column(name = "selected_team_ids")
+    @Type(type = IntArrayType.TYPE_NAME)
+    List<Integer> selectedTeamIds;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
@@ -55,8 +58,13 @@ public class TournamentUserBonusView {
     @Transient
     boolean editable;
 
+
+    @Column(name = "prediction_status")
+    @Enumerated(EnumType.STRING)
+    UserMatchBetEntity.BetStatus predictionStatus;
+/*
     public List<String> getSelectedTeamIds() {
 
         return teamIds == null ? new ArrayList<>() : Arrays.asList(teamIds.split(","));
-    }
+    }*/
 }
