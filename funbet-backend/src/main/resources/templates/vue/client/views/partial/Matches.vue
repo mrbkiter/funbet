@@ -39,13 +39,18 @@
                             <span :class="{'line-through': dataItem.row.score2 !=null && (dataItem.row.score1 + dataItem.row.betScore1) > (dataItem.row.score2 + dataItem.row.betScore2)}">{{dataItem.row.teamName2}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="betMoney" label="Stake" width="80"></el-table-column>
+                    <el-table-column pro="betMoney" label="Stake" width="80"></el-table-column>
                     <el-table-column prop="startTime" label="Start Time" width="150" sortable></el-table-column>
                     <el-table-column prop="selectedTeamName" label="Selected Team" width="120"></el-table-column>
                     <el-table-column prop="betStatus" label="Betting Status" width="100" sortable  :render-header="renderBetStatusHeader">
                         <template slot-scope="dataItem">
-                            <span v-if="dataItem.row.betStatus == 'LOSE'">😞 LOSE</span>
-                            <span v-if="dataItem.row.betStatus == 'WIN'">😎 WIN</span>
+                            <div v-if="dataItem.row.betStatus == 'LOSE'" class="flex">
+                                <img :src="assetImgDir('beaten')" width="25" height="25" class="mr-5" /> <span>LOSE</span>
+                            </div>
+
+                            <div v-if="dataItem.row.betStatus == 'WIN'" class="flex">
+                                <img :src="assetImgDir('big-boss')" width="25" height="25" class="mr-5" /> <span>LOSE</span>
+                            </div>
                         </template>
                     </el-table-column>
 
@@ -92,6 +97,8 @@
   import Vue from 'vue';
   import UserReports from 'views/partial/UserReports.vue';
   import Bonus from 'views/partial/Bonus.vue';
+
+  const assetImgDir = (name) => require('@/assets/images/' + name);
 
   export default {
     data() {
