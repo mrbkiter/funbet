@@ -80,9 +80,9 @@
 
         <div class="panel-block">
             <el-table v-loading="financeTableLoader" :data="financeReport.reports" style="width: 100%" empty-text="No record">
-                <el-table-column prop="name" label="Player" width="150"></el-table-column>
-                <el-table-column prop="contribution" label="Contribution" width="200"></el-table-column>
-                <el-table-column prop="remainingDebt" label="Remaining Debt" width="380">
+                <el-table-column prop="name" sortable label="Player" width="150"></el-table-column>
+                <el-table-column prop="contribution" sortable label="Contribution" width="200"></el-table-column>
+                <el-table-column prop="remainingDebt" sortable label="Remaining Debt" width="380">
                     <template slot-scope="dataItem">
                         <span>{{dataItem.row.remainingDebt}}</span>
                         <el-button v-if="loggedInUser.role == 'ADMIN'" @click="clearDebt(dataItem.row.userId)" round>Clear debt</el-button>
@@ -109,7 +109,7 @@
                     </template>
 
                 </el-table-column>
-                <el-table-column prop="remainingBonus" label="Bonus" width="200"></el-table-column>
+                <el-table-column prop="remainingBonus" sortable label="Bonus" width="200"></el-table-column>
             </el-table>
             <!--<table>
                 <thead>

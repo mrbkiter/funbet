@@ -45,11 +45,11 @@
                     <el-table-column prop="betStatus" label="Betting Status" width="100" sortable  :render-header="renderBetStatusHeader">
                         <template slot-scope="dataItem">
                             <div v-if="dataItem.row.betStatus == 'LOSE'" class="flex">
-                                <img :src="assetImgDir('beaten')" width="25" height="25" class="mr-5" /> <span>LOSE</span>
+                                <img :src="assetImgDir('beaten.png')" width="25" height="25" class="mr-5" /> <span class="label-box-danger bold">LOSE</span>
                             </div>
 
                             <div v-if="dataItem.row.betStatus == 'WIN'" class="flex">
-                                <img :src="assetImgDir('big-boss')" width="25" height="25" class="mr-5" /> <span>LOSE</span>
+                                <img :src="assetImgDir('big-boss.png')" width="25" height="25" class="mr-5" /> <span class="label-box-success bold">WIN</span>
                             </div>
                         </template>
                     </el-table-column>
@@ -104,6 +104,7 @@
     data() {
       let vm = this;
       return {
+        assetImgDir,
         activeIndex: 'recentMatches',
         matches: [],
         tableLoader: true,
