@@ -7,7 +7,9 @@
 
         <div class="panel-block">
             <label>User List</label>
-            (Select All <el-checkbox v-model="selectAllUsers"></el-checkbox>)
+            (Select All
+            <el-checkbox v-model="selectAllUsers"></el-checkbox>
+            )
             <ul class="user-list">
                 <li class="user-item" v-for="t in users">
                     <input name="user" type="checkbox" :value="t.id" v-model="selectedUsers">
@@ -57,19 +59,19 @@
                 <thead>
                 <tr class="el-table__row">
                     <td/>
-                    <td class="cell"  v-for="h in matchReport.matchHeaders">{{h.name}}</td>
+                    <td class="cell" v-for="h in matchReport.matchHeaders">{{h.name}}</td>
                 </tr>
                 </thead>
                 <tbody v-for="(r, idx1) in matchReport.matchRows">
-                    <tr class="el-table__row">
-                        <td class="cell" v-for="(ele, idx2) in r" v-if="idx2 == 0">
-                            {{ele.teamName1}} ({{ele.follower1}}) - {{ele.teamName2}} ({{ele.follower2}})
-                        </td>
-                        <td class="cell" v-else>
-                            <span v-if="ele.selectedTeamName == null"> - {{ele.betStatus}}</span>
-                            <span v-else>{{ele.selectedTeamName}} - {{ele.betStatus}}</span>
-                        </td>
-                    </tr>
+                <tr class="el-table__row">
+                    <td class="cell" v-for="(ele, idx2) in r" v-if="idx2 == 0">
+                        {{ele.teamName1}} ({{ele.follower1}}) - {{ele.teamName2}} ({{ele.follower2}})
+                    </td>
+                    <td class="cell" v-else>
+                        <span v-if="ele.selectedTeamName == null"> - {{ele.betStatus}}</span>
+                        <span v-else>{{ele.selectedTeamName}} - {{ele.betStatus}}</span>
+                    </td>
+                </tr>
                 </tbody>
             </table>
 
@@ -79,37 +81,76 @@
         <div class="space-20"></div>
 
         <div class="panel-block">
-            <el-table v-loading="financeTableLoader" :data="financeReport.reports" style="width: 100%" empty-text="No record">
+            <el-table v-loading="financeTableLoader" :data="financeReport.reports" style="width: 100%"
+                      empty-text="No record">
                 <el-table-column prop="name" sortable label="Player" width="150"></el-table-column>
                 <el-table-column prop="contribution" sortable label="Contribution" width="200"></el-table-column>
                 <el-table-column prop="remainingDebt" sortable label="Remaining Debt" width="380">
+
                     <template slot-scope="dataItem">
-                        <span>{{dataItem.row.remainingDebt}}</span>
-                        <el-button v-if="loggedInUser.role == 'ADMIN'" @click="clearDebt(dataItem.row.userId)" round>Clear debt</el-button>
+                        <span v-if="loggedInUser.role != 'ADMIN'">{{dataItem.row.remainingDebt}}</span>
+                        <el-dropdown v-if="loggedInUser.role == 'ADMIN'">
+                            <el-button type="primary">
+                                {{dataItem.row.remainingDebt}}<i class="el-icon-arrow-down el-icon--right"></i>
+                            </el-button>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item>
+                                    <span @click="clearDebt(dataItem.row.userId)">Clear debt</span>
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
                     </template>
                 </el-table-column>
                 <el-table-column prop="remainingDebtOtherFee" label="Other Fee" width="400">
                     <template slot-scope="dataItem">
-                        <span>{{dataItem.row.remainingDebtOtherFee}}</span>
-                        <div v-if="loggedInUser.role == 'ADMIN'">
+                        <span v-if="loggedInUser.role != 'ADMIN'">{{dataItem.row.remainingDebtOtherFee}}</span>
+                        <el-dropdown v-if="loggedInUser.role == 'ADMIN'">
+                            <el-button type="primary">
+                                {{dataItem.row.remainingDebtOtherFee}}<i class="el-icon-arrow-down el-icon--right"></i>
+                            </el-button>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item>
+                                    <span @click="showAddFee(dataItem.row)">Add fee</span>
+                                    <el-dialog title="Add fee" :visible.sync="dataItem.row.enableAddFee" append-to-body>
+                                        <el-form :model="dataItem.row">
+                                            <el-form-item label="Fee">
+                                                <el-input-number v-model="dataItem.row.fee" :min="0"></el-input-number>
+                                            </el-form-item>
+                                            <el-form-item label="Note">
+                                                <el-input placeholder="Note" v-model="dataItem.row.feeNote"></el-input>
+                                            </el-form-item>
 
-
-                            <el-button @click="showAddFee(dataItem.row)" round>Add fee</el-button>
-                            <div v-if="dataItem.row.enableAddFee">
-                                <el-input-number v-model="dataItem.row.fee" :min="0"></el-input-number>
-
-                                <el-input placeholder="Note" v-model="dataItem.row.feeNote"></el-input>
-
-                                <el-button @click="saveFee(dataItem.row)" type="primary" round>Save</el-button>
-                            </div>
-                            <button @click="clearFee(t)">Clear</button>
-
-                        </div>
-                        <el-button v-if="loggedInUser.role == 'ADMIN'" @click="clearDebt(dataItem.row.userId)" round>Clear debt</el-button>
+                                        </el-form>
+                                        <span slot="footer" class="dialog-footer">
+                                                <el-button @click="dataItem.row.enableAddFee = false">Cancel</el-button>
+                                                <el-button type="primary" @click="saveFee(dataItem.row)">Save</el-button>
+                                            </span>
+                                    </el-dialog>
+                                </el-dropdown-item>
+                                <el-dropdown-item>
+                                    <span @click="clearFee(dataItem.row)">Clear fee</span>
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
                     </template>
 
                 </el-table-column>
-                <el-table-column prop="remainingBonus" sortable label="Bonus" width="200"></el-table-column>
+                <el-table-column prop="remainingBonus" sortable label="Bonus" width="200">
+                    <template slot-scope="dataItem">
+                        <span v-if="loggedInUser.role != 'ADMIN'">{{dataItem.row.remainingBonus}}</span>
+                        <el-dropdown v-if="loggedInUser.role == 'ADMIN'">
+                            <el-button type="primary">
+                                {{dataItem.row.remainingBonus}}<i class="el-icon-arrow-down el-icon--right"></i>
+                            </el-button>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item>
+                                    <span @click="clearBonus(dataItem.row.userId)">Clear Bonus</span>
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </template>
+
+                </el-table-column>
             </el-table>
             <!--<table>
                 <thead>
@@ -176,7 +217,6 @@
         </div>
 
 
-
         <label>Total Contribution: </label> {{financeReport.totalContribution}} <br/>
 
         <label>Total remaining debt: </label> {{financeReport.totalRemainingDebt}}
@@ -227,14 +267,17 @@
           : Vue.set(row, 'enableAddFee', !row.enableAddFee);
       },
 
-      saveOtherFee: function(event)
-      {
+      saveOtherFee: function (event) {
         axios.post('/tournament/' + vm.tournament.id + '/otherfee', vm.otherFee)
           .then(response => {
             vm.otherFees.push(response.data);
             vm.buildFinanceReport();
             vm.buildOtherFeeBlock();
-          }).catch(function(e){
+            vm.$notify.success({
+              title: 'Success',
+              message: 'Save change successfully'
+            });
+          }).catch(function (e) {
           alert(e.response.data);
         });
       },
@@ -249,6 +292,10 @@
           + row.userId + '/fee';
         axios.post(url, body).then(response => {
           this.buildFinanceReport();
+          vm.$notify.success({
+            title: 'Success',
+            message: 'Save change successfully'
+          });
         }).catch(function (e) {
           alert(e.response.data);
         });
@@ -258,6 +305,10 @@
         var url = '/tournament/' + this.tournament.id + '/finance/user/'
           + row.userId + '/fee/clear';
         axios.put(url).then(response => {
+          vm.$notify.success({
+            title: 'Success',
+            message: 'Save change successfully'
+          });
           vm.buildFinanceReport();
         });
       },
@@ -266,7 +317,7 @@
 
         vm.selectedMatches = vm.selectedMatches;
 
-        if(vm.selectedUsers.length > 0){
+        if (vm.selectedUsers.length > 0) {
 
           vm.userMatchTableLoader = true;
           var body = {
@@ -283,7 +334,7 @@
           vm.buildFinanceReport();
 
           vm.buildOtherFeeBlock();
-        }else{
+        } else {
           vm.$notify.info({
             title: 'Info',
             message: 'Please tick into the checkbox to select a user for the report.'
@@ -303,7 +354,7 @@
           vm.financeTableLoader = false;
         })
       },
-      buildOtherFeeBlock(){
+      buildOtherFeeBlock() {
         let vm = this;
         axios.get('/tournament/' + vm.tournament.id + '/otherfee').then(response => {
           vm.otherFees = response.data;
@@ -313,19 +364,48 @@
         var url = '/tournament/' + this.tournament.id + '/finance/debt/clear';
         axios.put(url, this.selectedUsers).then(response => {
           this.buildFinanceReport();
+
+          vm.$notify.success({
+            title: 'Success',
+            message: 'Save change successfully'
+          });
         }).catch(function (e) {
           alert(e.response.data);
         });
       },
       clearDebt: function (userId) {
+        let vm = this;
         var body = [
           userId
         ];
 
-        var url = '/tournament/' + this.tournament.id + '/finance/debt/clear';
+        var url = '/tournament/' + vm.tournament.id + '/finance/debt/clear';
         axios.put(url, body).then(response => {
           this.buildFinanceReport();
+
+          vm.$notify.success({
+            title: 'Success',
+            message: 'Save change successfully'
+          });
         }).catch(function (e) {
+          alert(e.response.data);
+        });
+      },
+      clearBonus: function(userId){
+        let vm = this;
+        var body = [
+          userId
+        ];
+
+        var url = '/tournament/' + vm.tournament.id + '/finance/user/' + userId + '/bonus/clear';
+        axios.put(url, body).then(response =>
+        {
+          vm.buildFinanceReport();
+          vm.$notify.success({
+            title: 'Success',
+            message: 'Save change successfully'
+          });
+        }).catch(function(e){
           alert(e.response.data);
         });
       },
@@ -341,14 +421,14 @@
           vm.users = response.data
         });
       },
-      renderHeader(h, { column, $index }){
+      renderHeader(h, {column, $index}) {
 
         let vm = this;
 //        console.log("renderHeader", $index, vm.matchReport.matchHeaders);
-        if(vm.matchReport.matchHeaders.length > 0)
-            return h('div', null, [
-              h('div', null, vm.matchReport.matchHeaders[$index].name)
-            ])
+        if (vm.matchReport.matchHeaders.length > 0)
+          return h('div', null, [
+            h('div', null, vm.matchReport.matchHeaders[$index].name)
+          ])
         else
           return ""
       }
@@ -375,15 +455,17 @@
 </script>
 
 <style lang="scss" scoped>
-    .user-list{
+    .user-list {
         list-style: none;
-        .user-item{
+        .user-item {
             margin-bottom: 18px;
         }
     }
+
     .el-input {
         width: 200px;
     }
+
     .el-input-number {
         width: 200px;
     }
