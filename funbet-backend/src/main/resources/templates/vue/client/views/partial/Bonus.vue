@@ -12,6 +12,7 @@
                 <el-table-column width="200" prop="endTimestamp" label="End Time (UTC +07)"></el-table-column>
                 <el-table-column width="150" prop="bonusAmount" label="Bonus Amt"></el-table-column>
                 <el-table-column prop="teams" label="Selected teams"></el-table-column>
+                <el-table-column width="150" prop="predictionStatus" label="Predict Status"></el-table-column>
 
                 <el-table-column label="Actions" width="120">
                     <template slot-scope="dataItem">
