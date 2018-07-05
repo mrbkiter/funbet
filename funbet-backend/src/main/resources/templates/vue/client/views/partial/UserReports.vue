@@ -188,9 +188,9 @@
                 <!-- /Bonus Dialog Body -->
 
 
-                <span slot="footer" class="dialog-footer">
+                <!--<span slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="showUserBonusDetailDialog = false">Close</el-button>
-                </span>
+                </span>-->
             </el-dialog>
 
             <el-dialog
@@ -220,9 +220,9 @@
                 </el-table>
                 <!-- /Fee Dialog Body -->
 
-                <span slot="footer" class="dialog-footer">
+                <!--<span slot="footer" class="dialog-footer">
                     <el-button type="primary" @click="showUserFeeDetailDialog = false">Close</el-button>
-                </span>
+                </span>-->
             </el-dialog>
             <!--<table>
                 <thead>
