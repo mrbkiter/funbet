@@ -103,7 +103,7 @@
                 </el-table-column>
                 <el-table-column prop="remainingDebtOtherFee" label="Other Fee" width="400">
                     <template slot-scope="dataItem">
-                        <span v-if="loggedInUser.role != 'ADMIN'">{{dataItem.row.remainingDebtOtherFee}}</span>
+                        <a href="javascript:;" v-if="loggedInUser.role != 'ADMIN'" @click="showUserFeeDetail(dataItem.row)">{{dataItem.row.remainingDebtOtherFee}}</a>
                         <el-dropdown v-if="loggedInUser.role == 'ADMIN'">
                             <el-button type="primary">
                                 {{dataItem.row.remainingDebtOtherFee}}<i class="el-icon-arrow-down el-icon--right"></i>
@@ -113,6 +113,9 @@
                                     <span @click="showAddFee(dataItem.row)">Add fee</span>
                                     <el-dialog title="Add fee" :visible.sync="dataItem.row.enableAddFee" append-to-body>
                                         <el-form :model="dataItem.row">
+                                            <el-dropdown-item>
+                                                <span @click="showUserFeeDetail(dataItem.row)">View Other Fee Detail</span>
+                                            </el-dropdown-item>
                                             <el-form-item label="Fee">
                                                 <el-input-number v-model="dataItem.row.fee" :min="0"></el-input-number>
                                             </el-form-item>
@@ -137,12 +140,15 @@
                 </el-table-column>
                 <el-table-column prop="remainingBonus" sortable label="Bonus" width="200">
                     <template slot-scope="dataItem">
-                        <span v-if="loggedInUser.role != 'ADMIN'">{{dataItem.row.remainingBonus}}</span>
+                        <a href="javascript:;" v-if="loggedInUser.role != 'ADMIN'" @click="showUserBonusDetail(dataItem.row)">{{dataItem.row.remainingBonus}}</a>
                         <el-dropdown v-if="loggedInUser.role == 'ADMIN'">
                             <el-button type="primary">
                                 {{dataItem.row.remainingBonus}}<i class="el-icon-arrow-down el-icon--right"></i>
                             </el-button>
                             <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item>
+                                    <span @click="showUserBonusDetail(dataItem.row)">View Bonus Detail</span>
+                                </el-dropdown-item>
                                 <el-dropdown-item>
                                     <span @click="clearBonus(dataItem.row.userId)">Clear Bonus</span>
                                 </el-dropdown-item>
@@ -152,6 +158,72 @@
 
                 </el-table-column>
             </el-table>
+
+            <el-dialog
+                    title="User's Bonus Details"
+                    :visible.sync="showUserBonusDetailDialog"
+                    width="75%">
+
+
+                <!-- Bonus Dialog Body -->
+                <el-table :data="userBonusDetailList" style="width: 100%" empty-text="No record">
+
+                    <el-table-column prop="otherFee" sortable label="Other Fee"></el-table-column>
+                    <el-table-column prop="bonus" sortable label="Bonus"></el-table-column>
+                    <el-table-column prop="note" label="Note" width="150"></el-table-column>
+                    <el-table-column  sortable label="Fee Paid">
+                        <template slot-scope="dataItem">
+                            <span v-if="dataItem.row.otherFeePaid == true">Yes</span>
+                            <span v-else>No</span>
+                        </template>
+
+                    </el-table-column>
+                    <el-table-column prop="bonusPaid" sortable label="Bonus Paid">
+                        <template slot-scope="dataItem">
+                            <span v-if="dataItem.row.bonusPaid == true">Yes</span>
+                            <span v-else>No</span>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <!-- /Bonus Dialog Body -->
+
+
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="showUserBonusDetailDialog = false">Close</el-button>
+                </span>
+            </el-dialog>
+
+            <el-dialog
+                    title="User's Fee Details"
+                    :visible.sync="showUserFeeDetailDialog"
+                    width="75%">
+                <!-- Fee Dialog Body -->
+                <el-table :data="userFeeDetailList" style="width: 100%" empty-text="No record">
+
+                    <el-table-column prop="otherFee" sortable label="Other Fee"></el-table-column>
+                    <el-table-column prop="bonus" sortable label="Bonus"></el-table-column>
+                    <el-table-column prop="note" label="Note" width="150"></el-table-column>
+                    <el-table-column prop="otherFeePaid" sortable label="Paid"></el-table-column>
+                    <el-table-column  sortable label="Fee Paid">
+                        <template slot-scope="dataItem">
+                            <span v-if="dataItem.row.otherFeePaid == true">Yes</span>
+                            <span v-else>No</span>
+                        </template>
+
+                    </el-table-column>
+                    <el-table-column prop="bonusPaid" sortable label="Bonus Paid">
+                        <template slot-scope="dataItem">
+                            <span v-if="dataItem.row.bonusPaid == true">Yes</span>
+                            <span v-else>No</span>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <!-- /Fee Dialog Body -->
+
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="showUserFeeDetailDialog = false">Close</el-button>
+                </span>
+            </el-dialog>
             <!--<table>
                 <thead>
                 <tr>
@@ -248,7 +320,14 @@
         otherFee: {
           amount: 0,
           note: null
-        }
+        },
+
+        showUserBonusDetailDialog: false,
+        userBonusDetailList: [],
+
+
+        showUserFeeDetailDialog: false,
+        userFeeDetailList: []
       }
     },
     props: ['tournament', 'selectedMatches'],
@@ -431,6 +510,41 @@
           ])
         else
           return ""
+      },
+      
+      showUserBonusDetail(item){
+        let vm = this;
+        vm.userBonusDetailList = [];
+
+        var url = `tournament/${vm.tournament.id}/finance/user/${item.userId}/bonus`;
+        axios.get(url).then(response =>
+        {
+           vm.userBonusDetailList = response.data
+           vm.showUserBonusDetailDialog = true;
+        }).catch(function(e){
+          vm.$notify.error({
+            title: 'Error',
+            message: e.response.data
+          });
+
+        });
+      },
+      showUserFeeDetail(item){
+        let vm = this;
+        vm.userFeeDetailList = [];
+
+        var url = `tournament/${vm.tournament.id}/finance/user/${item.userId}/fee`;
+        axios.get(url).then(response =>
+        {
+           vm.userFeeDetailList = response.data
+           vm.showUserFeeDetailDialog = true;
+        }).catch(function(e){
+          vm.$notify.error({
+            title: 'Error',
+            message: e.response.data
+          });
+
+        });
       }
     },
     computed: {
