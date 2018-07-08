@@ -51,9 +51,10 @@ var tournaments = new Vue({
                 var url = '/tournament/' + $tournament.id + '/prediction';
                 axios.get(url).then(response => {
                     bonuses.bonuses = response.data;
-                    /*bonuses.bonuses.map(item => {
-                        Vue.set(item, 'selectedTeamIds', []);
-                    });*/
+                    bonuses.bonuses.map(item => {
+                        if(item.selectedTeamIds == null)
+                            Vue.set(item, 'selectedTeamIds', []);
+                    });
                 });
             }
         }
