@@ -34,6 +34,7 @@
     <table>
         <thead>
         <tr>
+            <th></th>
             <th>Team 1</th>
             <th>Match Betting</th>
             <th>Team 2</th>
@@ -45,6 +46,7 @@
         </thead>
         <tbody v-for="(t, index) in matches">
         <tr>
+            <td>{{index + 1}}</td>
             <td>{{t.teamName1}}</td>
             <td>{{t.betScore1}} - {{t.betScore2}}</td>
             <td>{{t.teamName2}}</td>
