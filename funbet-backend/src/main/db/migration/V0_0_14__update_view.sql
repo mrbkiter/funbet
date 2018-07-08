@@ -14,7 +14,7 @@ WITH tmp AS
 SELECT row_number() OVER () as id, tp."id" AS tournament_prediction_id, tp.name AS name, tp.tournament_id, tp.bonus_amount, tp.end_timestamp, tp.no_of_team, tp.system_end_timestamp
 ,tpt.user_id, ua.name as user_name, tpt.selected_team_ids, tpt.teams, tp.team_names AS answered_teams,
 CASE WHEN tp.team_ids IS NOT NULL AND tp.no_of_team = tpt.no_of_selected_teams AND tp.team_ids @> tpt.selected_team_ids THEN 'WIN'
- WHEN tp.team_ids IS NOT NULL AND tpt.selected_team_ids IS NOT NULL THEN 'LOSE'
+ WHEN tp.team_ids IS NOT NULL THEN 'LOSE'
 ELSE null END AS prediction_status
 , ua.id AS user_id1, ua.role
  FROM
