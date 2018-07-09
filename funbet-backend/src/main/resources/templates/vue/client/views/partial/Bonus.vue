@@ -122,24 +122,36 @@
       },
       saveUserPrediction() {
         let vm = this;
-        var url = '/tournament/prediction/' + vm.currentPrediction.tournamentPredictionId + '/user';
-        var body = {
-          teamIds: Object.values(vm.currentPrediction.selectedTeamIds)
-        };
 
-        axios.post(url, body).then((response) => {
-          vm.showAnswerSection = !vm.showAnswerSection;
-          vm.showBonusDetail(vm.tournament);
-          vm.showAnswerSection = false;
-          vm.currentPrediction = null;
-
-          vm.$notify.success({
-            title: 'Success',
-            message: 'Save change successfully'
+        let teamIds = Object.values(vm.currentPrediction.selectedTeamIds);
+        if(teamIds.length > vm.currentPrediction.noOfTeam){
+          vm.$notify.error({
+            title: 'Error',
+            message: `Only ${vm.currentPrediction.noOfTeam} teams can be selected. Please uncheck other teams`
           });
-        }).catch(function (e) {
-          alert(e);
-        });
+          return false;
+        }else{
+          var url = '/tournament/prediction/' + vm.currentPrediction.tournamentPredictionId + '/user';
+          var body = {
+            teamIds: teamIds
+          };
+
+          axios.post(url, body).then((response) => {
+            vm.showAnswerSection = !vm.showAnswerSection;
+            vm.showBonusDetail(vm.tournament);
+            vm.showAnswerSection = false;
+            vm.currentPrediction = null;
+
+            vm.$notify.success({
+              title: 'Success',
+              message: 'Save change successfully'
+            });
+          }).catch(function (e) {
+            alert(e);
+          });
+        }
+
+
       },
       showOtherPredict: function (prediction) {
         let vm = this;
