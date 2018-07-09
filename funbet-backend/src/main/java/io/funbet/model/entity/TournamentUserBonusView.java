@@ -62,6 +62,9 @@ public class TournamentUserBonusView {
     @Column(name = "prediction_status")
     @Enumerated(EnumType.STRING)
     UserMatchBetEntity.BetStatus predictionStatus;
+
+    @Column(name = "answered_teams")
+    String asnweredTeams;
 /*
     public List<String> getSelectedTeamIds() {
 
