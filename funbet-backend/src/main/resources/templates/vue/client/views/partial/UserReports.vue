@@ -199,7 +199,6 @@
                     width="75%">
                 <!-- Fee Dialog Body -->
                 <el-table :data="userFeeDetailList" style="width: 100%" empty-text="No record">
-
                     <el-table-column prop="otherFee" sortable label="Other Fee"></el-table-column>
                     <el-table-column prop="bonus" sortable label="Bonus"></el-table-column>
                     <el-table-column prop="note" label="Note" width="150"></el-table-column>
@@ -209,7 +208,6 @@
                             <span v-if="dataItem.row.otherFeePaid == true">Yes</span>
                             <span v-else>No</span>
                         </template>
-
                     </el-table-column>
                     <el-table-column prop="bonusPaid" sortable label="Bonus Paid">
                         <template slot-scope="dataItem">
@@ -224,45 +222,8 @@
                     <el-button type="primary" @click="showUserFeeDetailDialog = false">Close</el-button>
                 </span>-->
             </el-dialog>
-            <!--<table>
-                <thead>
-                <tr>
-                    <td>Player</td>
-                    <td>Contribution</td>
-                    <td>Remaining Debt</td>
-                    <td>Other fee</td>
-                    <td>Bonus</td>
-                    &lt;!&ndash;<td v-if="loggedInUser.role == 'ADMIN'">
-                        <button v-on:click="clearAllDebt">Clear all debt</button>
-                    </td>&ndash;&gt;
-                </tr>
-                </thead>
-                <tbody v-for="t in financeReport.reports">
-                <tr>
-                    <td>{{t.name}}</td>
-                    <td>{{t.contribution}}</td>
-                    <td>{{t.remainingDebt}}
-                        <span v-if="loggedInUser.role == 'ADMIN'">
-                    &nbsp; <button v-on:click="clearDebt(t.userId)">Clear debt</button>
-                </span>
-                    </td>
-                    <td>{{t.remainingDebtOtherFee}}
-                        <span v-if="loggedInUser.role == 'ADMIN'">
-                         &nbsp;
-                        <button v-on:click="showAddFee(t)">Add fee</button>
-                        <div v-if="t.enableAddFee">
-                            <input type="number" v-model="t.fee" placeholder="How much"/>
-                            <input type="text" v-model="t.feeNote" placeholder="Note"/>
-                            <button v-on:click="saveFee(t)">Save</button>
-                        </div>
-                        <button v-on:click="clearFee(t)">Clear</button>
-                    </span>
 
-                    </td>
-                    <td>{{t.remainingBonus}}</td>
-                </tr>
-                </tbody>
-            </table>-->
+
         </div>
         <div class="space-20"></div>
 

@@ -30,29 +30,51 @@
         <div class="space-20"></div>
         <div class="space-20"></div>
 
-        <div class="panel-block" v-if="showAnswerSection">
-            <div>
+        <el-dialog v-if="currentPrediction"
+                title="Predict Team"
+                :visible.sync="showAnswerSection"
+                width="75%">
+            <!-- Dialog Body -->
+            <div class="panel-block">
                 <label>Please select {{currentPrediction.noOfTeam}} team(s)</label>
-                <div id="answer-team-list" v-for="t in teams">
-                    <input name="answerTeam" type="checkbox" :value="t.id" v-model="currentPrediction.selectedTeamIds">
-                    <span><label>{{t.name}}</label> </span>
-                </div>
-                <button v-on:click="saveUserPrediction">Save</button>
-            </div>
-        </div>
-        <div class="panel-block" v-if="showAllSection">
-            <div>
-                <h2>Other predictions</h2>
-
                 <div class="space-20"></div>
 
-                <el-table v-loading="allPredictionTableLoader" :data="allPredictions" style="width: 100%" empty-text="No record">
-                    <el-table-column width="300" prop="userName" label="Name"></el-table-column>
-                    <el-table-column prop="teams" label="Selected teams"></el-table-column>
-                </el-table>
-
+                <!--<ul class="user-list">
+                    <li class="user-item" v-for="t in users">
+                        <input name="user" type="checkbox" :value="t.id" v-model="selectedUsers">
+                        &lt;!&ndash;<el-checkbox v-model="t.id" name="user"></el-checkbox>&ndash;&gt;
+                        <span><label>{{t.name}}</label> <span v-if="t.lock">(Locked)</span></span>
+                    </li>
+                </ul>-->
+                <el-checkbox-group v-model="currentPrediction.selectedTeamIds">
+                    <el-checkbox v-for="t in teams" :label="t.id">{{t.name}}</el-checkbox>
+                </el-checkbox-group>
             </div>
-        </div>
+            <!-- /Dialog Body -->
+
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="saveUserPrediction">Save</el-button>
+            </span>
+        </el-dialog>
+
+
+
+        <el-dialog
+                title="Other predictions"
+                :visible.sync="showAllSection"
+                width="75%">
+            <!-- Dialog Body -->
+            <el-table v-loading="allPredictionTableLoader" :data="allPredictions" style="width: 100%" empty-text="No record">
+                <el-table-column width="300" prop="userName" label="Name"></el-table-column>
+                <el-table-column prop="teams" label="Selected teams"></el-table-column>
+                <el-table-column prop="predictionStatus" label="Predict Status"></el-table-column>
+            </el-table>
+            <!--  Dialog Body -->
+
+            <!--<span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="showUserFeeDetailDialog = false">Close</el-button>
+            </span>-->
+        </el-dialog>
     </div>
 </template>
 
@@ -93,21 +115,30 @@
       predictNow: function (prediction) {
         let vm = this;
         vm.showAnswerSection = !vm.showAnswerSection;
+        if(!prediction.selectedTeamIds){
+          prediction.selectedTeamIds = [];
+        }
         vm.currentPrediction = prediction;
       },
-      saveUserPrediction: function () {
+      saveUserPrediction() {
         let vm = this;
         var url = '/tournament/prediction/' + vm.currentPrediction.tournamentPredictionId + '/user';
         var body = {
-          teamIds: vm.currentPrediction.selectedTeamIds
+          teamIds: Object.values(vm.currentPrediction.selectedTeamIds)
         };
 
-        axios.post(url, body).then(response => {
+        axios.post(url, body).then((response) => {
           vm.showAnswerSection = !vm.showAnswerSection;
-          tournaments.showBonusDetail(vm.tournament);
+          vm.showBonusDetail(vm.tournament);
+          vm.showAnswerSection = false;
           vm.currentPrediction = null;
+
+          vm.$notify.success({
+            title: 'Success',
+            message: 'Save change successfully'
+          });
         }).catch(function (e) {
-          alert(e.response.data);
+          alert(e);
         });
       },
       showOtherPredict: function (prediction) {
