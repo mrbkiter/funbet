@@ -85,7 +85,7 @@
                       empty-text="No record">
                 <el-table-column prop="name" sortable label="Player" width="150"></el-table-column>
                 <el-table-column prop="contribution" sortable label="Contribution" width="200"></el-table-column>
-                <el-table-column prop="remainingDebt" sortable label="Remaining Debt" width="380">
+                <el-table-column prop="remainingDebt" sortable label="Remaining Debt" width="160">
 
                     <template slot-scope="dataItem">
                         <span v-if="loggedInUser.role != 'ADMIN'">{{dataItem.row.remainingDebt}}</span>
@@ -99,6 +99,11 @@
                                 </el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
+                    </template>
+                </el-table-column>
+                <el-table-column sortable label="Lost Total" width="160">
+                    <template slot-scope="dataItem">
+                        {{dataItem.row.contribution + dataItem.row.remainingDebt}}
                     </template>
                 </el-table-column>
                 <el-table-column prop="remainingDebtOtherFee" label="Other Fee" width="400">
