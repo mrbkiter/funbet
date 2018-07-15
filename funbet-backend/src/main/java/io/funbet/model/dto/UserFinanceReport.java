@@ -18,4 +18,9 @@ public class UserFinanceReport
     long paidBonus;
     long remainingDebt;
     long contribution;
+
+    public Long getTotal()
+    {
+        return (contribution + remainingDebt + otherFeeContribution + remainingDebtOtherFee) - remainingBonus;
+    }
 }
