@@ -162,11 +162,7 @@
                     </template>
 
                 </el-table-column>
-                <el-table-column prop="total" sortable label="Total" width="200">
-                    <template slot-scope="dataItem">
-                        {{dataItem.row.total * 1000}}
-                    </template>
-                </el-table-column>
+                <el-table-column prop="total" sortable label="Total" width="200"></el-table-column>
             </el-table>
 
             <el-dialog
