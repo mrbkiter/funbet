@@ -106,7 +106,7 @@
                         {{dataItem.row.contribution + dataItem.row.remainingDebt}}
                     </template>
                 </el-table-column>
-                <el-table-column prop="remainingDebtOtherFee" label="Other Fee" width="400">
+                <el-table-column prop="remainingDebtOtherFee" label="Other Fee" width="160">
                     <template slot-scope="dataItem">
                         <a href="javascript:;" v-if="loggedInUser.role != 'ADMIN'" @click="showUserFeeDetail(dataItem.row)">{{dataItem.row.remainingDebtOtherFee}}</a>
                         <el-dropdown v-if="loggedInUser.role == 'ADMIN'">
@@ -161,6 +161,11 @@
                         </el-dropdown>
                     </template>
 
+                </el-table-column>
+                <el-table-column prop="total" sortable label="Total" width="200">
+                    <template slot-scope="dataItem">
+                        {{dataItem.row.total * 1000}}
+                    </template>
                 </el-table-column>
             </el-table>
 
