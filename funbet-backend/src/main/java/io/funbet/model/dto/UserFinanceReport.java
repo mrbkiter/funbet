@@ -21,6 +21,6 @@ public class UserFinanceReport
 
     public Long getTotal()
     {
-        return (contribution + remainingDebt + otherFeeContribution + remainingDebtOtherFee) - remainingBonus;
+        return (contribution + remainingDebt + remainingDebtOtherFee) - remainingBonus;
     }
 }
