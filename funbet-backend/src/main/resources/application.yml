@@ -1,0 +1,30 @@
+# create and drop tables and sequences, loads import.sql
+spring:
+  resources.static-locations: /static/**, /resources/static/**
+  devtools.restart:
+      exclude: static/**,public/**
+      enabled: true
+  datasource:
+    url: ${JDBC_URL:jdbc:postgresql://localhost/funbet}
+    username: ${USER_NAME:dbapplication_user}
+    password: ${PASSWORD:dbapplication_user}
+    driver-class-name: org.postgresql.Driver
+    jpa.database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+
+    hikari:
+      connection-timeout: 60000
+      maximum-pool-size: 15
+  security.user:
+    name: admin
+    password: secret
+
+  flyway:
+    enabled: true
+    validate-on-migrate: false
+    locations: classpath:/migration
+    url: ${JDBC_URL:jdbc:postgresql://localhost/funbet}
+    username: ${USER_NAME:dbapplication_user}
+    password: ${PASSWORD:dbapplication_user}
+
+server:
+  port: ${SERVER_PORT:9111}

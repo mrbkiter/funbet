@@ -1,0 +1,93 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "flexboxgrid-less",
+        "scope": null,
+        "escapedName": "flexboxgrid-less",
+        "name": "flexboxgrid-less",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/Users/apple/Documents/mamp.root/html/vue2"
+    ]
+  ],
+  "_from": "flexboxgrid-less@latest",
+  "_id": "flexboxgrid-less@0.0.1",
+  "_inCache": true,
+  "_location": "/flexboxgrid-less",
+  "_nodeVersion": "0.10.36",
+  "_npmUser": {
+    "name": "bassjobsen",
+    "email": "bass@w3masters.nl"
+  },
+  "_npmVersion": "2.1.17",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "flexboxgrid-less",
+    "scope": null,
+    "escapedName": "flexboxgrid-less",
+    "name": "flexboxgrid-less",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/flexboxgrid-less/-/flexboxgrid-less-0.0.1.tgz",
+  "_shasum": "46d93b8a170e7db37aaac9d9d13486cc6cd01f92",
+  "_shrinkwrap": null,
+  "_spec": "flexboxgrid-less",
+  "_where": "/Users/apple/Documents/mamp.root/html/vue2",
+  "author": {
+    "name": "Bass Jobsen",
+    "email": "bass@w3masters.nl"
+  },
+  "bugs": {
+    "url": "https://github.com/bassjobsen/flexboxgrid-less/issues"
+  },
+  "contributors": [],
+  "dependencies": {},
+  "description": "Less code for the gridsystem of flexboxgrid.com",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "46d93b8a170e7db37aaac9d9d13486cc6cd01f92",
+    "tarball": "https://registry.npmjs.org/flexboxgrid-less/-/flexboxgrid-less-0.0.1.tgz"
+  },
+  "gitHead": "acfac3fade093b005ba05d2a5ef4f9f10a74f89c",
+  "homepage": "https://github.com/bassjobsen/flexboxgrid-less",
+  "keywords": [
+    "grid",
+    "less",
+    "ccs3",
+    "flexbox",
+    "flexboxgrid.com",
+    "grid system",
+    "responsive grid system"
+  ],
+  "licenses": [
+    {
+      "type": "Apache v2",
+      "url": "https://github.com/bassjobsen/flexboxgrid-less/LICENSE"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "bassjobsen",
+      "email": "bass@w3masters.nl"
+    }
+  ],
+  "name": "flexboxgrid-less",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bassjobsen/flexboxgrid-less.git"
+  },
+  "scripts": {},
+  "version": "0.0.1"
+}

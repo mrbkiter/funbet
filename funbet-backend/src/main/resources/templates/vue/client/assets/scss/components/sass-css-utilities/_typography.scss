@@ -1,0 +1,90 @@
+
+.#{$scu-val-prefix}normal {
+    font-weight: normal#{$scu-val-important};
+}
+.#{$scu-val-prefix}bold {
+    font-weight: bold#{$scu-val-important};
+}
+
+.#{$scu-val-prefix}italic {
+    font-style: italic#{$scu-val-important};
+}
+
+.#{$scu-val-prefix}line-through{
+    text-decoration: line-through#{$scu-val-important};
+}
+
+.#{$scu-val-prefix}text-break{
+    word-wrap: break-word#{$scu-val-important};
+}
+
+@if $scu-build-tablet-classes{
+    @include if-device(tablet) {
+        .#{$scu-val-prefix-tablet}normal {
+            font-weight: normal#{$scu-val-important};
+        }
+        .#{$scu-val-prefix-tablet}bold {
+            font-weight: bold#{$scu-val-important};
+        }
+
+        .#{$scu-val-prefix-tablet}italic {
+            font-style: italic#{$scu-val-important};
+        }
+
+        .#{$scu-val-prefix-tablet}line-through{
+            text-decoration: line-through#{$scu-val-important};
+        }
+
+        .#{$scu-val-prefix-tablet}text-break{
+            word-wrap: break-word#{$scu-val-important};
+        }
+    }
+}
+
+@if $scu-build-phone-tablet-classes{
+    @include if-device(phone-tablet) {
+        .#{$scu-val-prefix-phone-tablet}normal {
+            font-weight: normal#{$scu-val-important};
+        }
+
+        .#{$scu-val-prefix-phone-tablet}bold {
+            font-weight: bold#{$scu-val-important};
+        }
+
+        .#{$scu-val-prefix-phone-tablet}italic {
+            font-style: italic#{$scu-val-important};
+        }
+
+        .#{$scu-val-prefix-phone-tablet}line-through{
+            text-decoration: line-through#{$scu-val-important};
+        }
+
+        .#{$scu-val-prefix-phone-tablet}text-break{
+            word-wrap: break-word#{$scu-val-important};
+        }
+    }
+}
+
+@if $scu-build-phone-classes{
+    @include if-device(phone) {
+        .#{$scu-val-prefix-phone}normal {
+            font-weight: normal#{$scu-val-important};
+        }
+
+        .#{$scu-val-prefix-phone}bold {
+            font-weight: bold#{$scu-val-important};
+        }
+
+        .#{$scu-val-prefix-phone}italic {
+            font-style: italic#{$scu-val-important};
+        }
+
+        .#{$scu-val-prefix-phone}line-through{
+            text-decoration: line-through#{$scu-val-important};
+        }
+
+        .#{$scu-val-prefix-phone}text-break{
+            word-wrap: break-word#{$scu-val-important};
+        }
+    }
+}

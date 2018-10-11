@@ -1,0 +1,97 @@
+$color_shark: #1D1D1F;
+$color_mischka: rgba(223,225,230,0.5);
+$header-height: 80px;
+$color-success: #67c23a;
+$color-danger: #f56c6a;
+
+.wrapper{
+  background-color: #F8FAFF;
+  .page-header{
+    position: relative !important;
+    height: $header-height;
+    &.collapse {
+      background-color: #fff;
+      box-shadow: 0 10px 60px 0 rgba(29,29,31,0.07);
+      opacity: 0.98;
+    }
+  }
+  .nav-container {
+      margin: 0 auto;
+      width: 90%;
+      color: $color_shark;
+       .nav-left {
+        float: left;
+         .logo {
+           position: relative;
+           height: $header-height;
+           line-height: $header-height;
+         }
+
+         .nav-icon {
+           display: none;
+           position: absolute;
+           top: 50%;
+           right: 0;
+           margin-top: -10px;
+           font-size: 20px;
+         }
+      }
+      .nav-right{
+        float: right;
+        height: $header-height;
+        display: flex;
+        .navbar {
+          display: inline-block;
+          margin: 0;
+          padding: 0;
+          height: 80px;
+          font-size: 14px;
+          line-height: 80px;
+          list-style-type: none;
+          li{
+            position: relative;
+            display: inline-block;
+            margin: 0 24px;
+            cursor: pointer;
+            transition: color .3s;
+          }
+          a{
+            display: inline-block;
+            color: #1D1D1F;
+          }
+        }
+
+        .btn-logout {
+          display: inline-block;
+          margin: 0 24px;
+          padding: 2px 12px;
+          border-radius: 2px;
+          cursor: pointer;
+          transition: color .3s, border .3s;
+          align-self: center;
+        }
+      }
+    }
+
+  .at-container {
+    position: relative;
+    overflow: auto;
+    margin: 2% auto;
+    width: 94%;
+    background-color: #fff;
+    box-shadow: 0 4px 30px 0 $color_mischka;
+  }
+
+  .label-box-success{
+    padding: 2px 4px;
+    background-color: rgba(103,194,58,.1);
+    color: $color-success;
+    border: 1px solid $color-success;
+  }
+  .label-box-danger{
+    padding: 2px 4px;
+    background-color: rgba(245,108,108,.4);
+    color: $color-danger;
+    border: 1px solid $color-danger;
+  }
+}
