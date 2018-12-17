@@ -19,7 +19,7 @@ public interface UserMatchBetRepository
 
     @Modifying
     @Query(value = "UPDATE user_match_bet AS um SET paid = true FROM match AS m " +
-            "WHERE um.user_id IN (:userIds) AND um.bet_status = 'LOSE' AND m.tournament_id = :tournamentId " +
+            "WHERE um.user_id IN (:userIds) AND um.bet_status IN ('LOSE', 'DRAW') AND m.tournament_id = :tournamentId " +
             "AND m.id = um.match_id", nativeQuery = true)
     @Transactional
     void clearDebtForUsers(@Param("tournamentId") Integer tournamentId, @Param("userIds") List<Integer> userIds);
