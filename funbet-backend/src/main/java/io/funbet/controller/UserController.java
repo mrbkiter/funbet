@@ -64,6 +64,9 @@ public class UserController
         UserEntity user = WebUtils.getLoggedInUser();
 
         user = userService.findUserById(user.getId());
+        if(!user.getEmail().equalsIgnoreCase(request.getEmail())) {
+            throw new IllegalStateException("useraccount could not be changed");
+        }
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
