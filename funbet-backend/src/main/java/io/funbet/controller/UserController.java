@@ -32,6 +32,9 @@ public class UserController
         if(user.getId() != null)
         {
             UserEntity oldValue = userService.findUserById(user.getId());
+            if(!user.getEmail().equalsIgnoreCase(oldValue.getEmail())) {
+                throw new IllegalStateException("useraccount is not allowed to change");
+            }
             oldValue.setEmail(user.getEmail());
             oldValue.setName(user.getName());
             oldValue.setPassword(user.getPassword());
