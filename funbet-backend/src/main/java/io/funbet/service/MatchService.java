@@ -149,7 +149,7 @@ public class MatchService {
             }
             UserMatchView firstEle = (UserMatchView) table.getRows()[rowIdx][0];
             //set no of selected on team
-            if (m.getSelectedTeamId() != null) {
+            if (m.getSelectedTeamId() != null && m.getSystemStartTime().isBefore(LocalDateTime.now())) {
                 if (m.getSelectedTeamId() == m.getTeamId1())
                     firstEle.setFollower1(firstEle.getFollower1() + 1);
                 else
