@@ -108,7 +108,7 @@ var matches = new Vue({
                     _match.selectedTeamName = _match.teamName1;
                 else
                     _match.selectedTeamName = _match.teamName2;
-
+                alert('You selected ' + _match.selectedTeamName);
             }).catch(function(e){
                 alert(e.response.data);
             }).finally(() => {
