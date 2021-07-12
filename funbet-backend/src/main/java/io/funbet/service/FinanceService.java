@@ -70,7 +70,7 @@ public class FinanceService
 
         Collection<UserFinanceReport> totalReports = userFinanceReportMap.values();
         Long totalRemainingDebt = totalReports.stream()
-                .map(r -> r.getRemainingDebt() + r.getRemainingDebtOtherFee())
+                .map(r -> r.getTotal())
                 .reduce((x, y)-> x + y).get();
         Long totalContribution = totalReports.stream().map(r -> r.getContribution())
                 .reduce((x, y)-> x + y).get();
