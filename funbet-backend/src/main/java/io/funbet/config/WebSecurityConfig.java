@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
         String[] adminUrls = {"/match/**", "/team/**", "/tournament/**", "/user/**"};
 
         http.authorizeRequests() //
-                .antMatchers("/static/**", "/js/**", "/css/**").permitAll()
+                .antMatchers("/static/**", "/js/**", "/css/**", "/health-check").permitAll()
                 .antMatchers(HttpMethod.PUT, "/match/**/bet").authenticated()
                 .antMatchers(HttpMethod.POST, "/tournament/**/report", "/tournament/**/user").authenticated()
                 .antMatchers(HttpMethod.PUT, "/user/**/loggingUser").authenticated()

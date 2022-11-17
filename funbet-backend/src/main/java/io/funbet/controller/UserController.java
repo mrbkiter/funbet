@@ -5,6 +5,7 @@ import io.funbet.exception.ResourceNotFoundException;
 import io.funbet.model.dto.UserLockRequest;
 import io.funbet.model.dto.UserUpdateRequest;
 import io.funbet.model.entity.UserEntity;
+import io.funbet.model.entity.UserEntity.Role;
 import io.funbet.service.UserService;
 import io.funbet.utils.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,14 @@ public class UserController
     @GetMapping
     List<UserEntity> listAll()
     {
-        return userService.listAllExcludeAdmin();
+        List<UserEntity> users = userService.listAllExcludeAdmin();
+        UserEntity loggedInUser = WebUtils.getLoggedInUser();
+        users.forEach(u -> {
+            if(loggedInUser.getRole() == Role.USER) {
+                u.setEmail("Loading........................................................................");
+            }
+        });
+        return users;
     }
 
     @PostMapping
@@ -45,6 +53,10 @@ public class UserController
     @GetMapping(value = "/{id}")
     UserEntity getUserById(@PathVariable("id") Integer id) throws ResourceNotFoundException
     {
+        UserEntity loggedInUser = WebUtils.getLoggedInUser();
+        if(loggedInUser.getRole() != Role.ADMIN || !loggedInUser.getId().equals(id)) {
+            throw new RuntimeException("You dont have permission to see this user info");
+        }
         return userService.findUserById(id);
     }
 
