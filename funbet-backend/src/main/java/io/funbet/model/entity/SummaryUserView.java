@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 public class SummaryUserView
 {
     Integer id;
-    String email;
     String name;
 }

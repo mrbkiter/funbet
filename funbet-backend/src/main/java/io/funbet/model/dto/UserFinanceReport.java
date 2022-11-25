@@ -10,7 +10,6 @@ public class UserFinanceReport
     Integer tournamentId;
 
     String name;
-    String email;
     long remainingDebtOtherFee;
     long otherFeeContribution;
 

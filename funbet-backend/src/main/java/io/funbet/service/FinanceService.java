@@ -48,7 +48,6 @@ public class FinanceService
                 reports.stream().collect(Collectors.toMap(x -> x.getUserId(), x -> {
                     UserFinanceReport converted = new UserFinanceReport();
                     converted.setName(x.getName());
-                    converted.setEmail(x.getEmail());
                     converted.setUserId(x.getUserId());
                     converted.setRemainingDebt(x.getRemainingDebt());
                     converted.setContribution(x.getContribution());
