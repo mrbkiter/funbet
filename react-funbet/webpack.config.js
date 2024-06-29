@@ -12,7 +12,6 @@ const config = {
   mode: modeEnv,
   entry: {
     bundle: join(__dirname, 'src', 'index.js'),
-    microBundle: join(__dirname, 'src', 'micro.js'),
   },
   output: {
     filename: '[name].js',
@@ -162,7 +161,6 @@ switch (process.env.MODE.trim()) {
       new HtmlWebpackPlugin({
         template: 'public/index.html',
         inject: 'body',
-        excludeChunks: ['microBundle'],
       }),
       new webpack.ProvidePlugin({
         React: 'react',
