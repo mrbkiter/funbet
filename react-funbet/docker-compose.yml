@@ -4,7 +4,7 @@ services:
   funbetReact:
     image: nginx:1.12
     ports:
-      - '81:80'
+      - '83:80'
     volumes:
       - ./nginx/:/etc/nginx/conf.d/:ro
       - ./dist/:/usr/share/nginx/html/
