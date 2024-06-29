@@ -1,0 +1,28 @@
+import { api } from 'utils/helper';
+import { get{{pascalCase name}} } from '../requests';
+import { MOCK_DATA } from '../__mocks__/mockData';
+
+jest.mock('utils/helper', () => {
+  return {
+    __esModule: true,
+    api: {
+      get: jest.fn(),
+    },
+  };
+});
+
+const mockData = {
+  data: MOCK_DATA,
+};
+
+describe('{{dashCase name}} > requests', () => {  
+  it('requests > get{{pascalCase name}} with payload', async () => {
+    const mockPayload = {
+      id: 1,
+    };
+
+    api.get.mockResolvedValueOnce(mockData);
+    const result = await get{{pascalCase name}}(mockPayload);
+    expect(result).toEqual(mockData.data);
+  });
+});

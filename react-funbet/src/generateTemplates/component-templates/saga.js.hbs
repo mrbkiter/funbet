@@ -1,0 +1,29 @@
+import { put, call, takeLatest } from 'redux-saga/effects';
+import noti from 'utils/noti';
+import { {{camelCase name}}Constants } from './constants';
+import { {{camelCase name}}Actions } from './actions';
+import * as Api from './requests';
+
+export function* get{{pascalCase name}}Saga(action) {
+  try {
+    const res = yield call(Api.get{{pascalCase name}}, action.payload);
+    if (res.status === 'success') {
+      yield put(
+        {{camelCase name}}Actions.getSuccess({
+          payload: res.result,
+        }),
+      );
+    } else {
+      noti.someThingWentWrong();
+      yield put({{camelCase name}}Actions.getFailure(res));
+    }
+  } catch (e) {
+    console.error(e);
+    noti.someThingWentWrong();
+    yield put({{camelCase name}}Actions.getFailure(e));
+  }
+}
+
+export default function* saga{{pascalCase name}}() {
+  yield takeLatest({{camelCase name}}Constants.GET_REQUEST, get{{pascalCase name}}Saga);
+}

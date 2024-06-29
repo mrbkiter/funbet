@@ -1,0 +1,89 @@
+import React, { useEffect, useCallback, useRef } from 'react';
+import PropTypes from 'prop-types';
+import {
+  useMessageResource,
+  withLazyMessageResource,
+} from 'pages/MessageResource';
+
+import DialogBody from '{{importParentPath}}/{{pascalCase name}}/components/DialogBody';
+import use{{pascalCase name}} from '{{importParentPath}}/{{pascalCase name}}/hooks/use{{pascalCase name}}';
+import { PROGRESS } from '{{importParentPath}}/{{pascalCase name}}/constants';
+import * as S from './index.styles';
+import { Label } from 'components/Label';
+import { IconButton } from 'components/IconButton';
+import { AwesomeIcon } from 'components/AwesomeIcon';
+import { Tooltip } from '@mui/material';
+
+const index = ({
+  isOpen,
+  data,
+  onOpened,
+  onClose,
+}) => {
+  const t = useMessageResource();
+
+  const self = useRef({}).current;
+  self.onClose = onClose;
+  const { actions } = use{{pascalCase name}}();
+  const handleClose = useCallback(() => {
+    onClose();
+  }, [onClose]);
+
+  useEffect(() => {
+    if (isOpen === true) {
+      // handle to close modal dialog
+      actions.setProgress(PROGRESS.STARTING);
+      onOpened && onOpened();
+    }
+  }, [isOpen]);
+
+  return (
+    <>
+      <S.CustomFormDrawer
+        hideBackdrop={false}
+        className={`small-drawer`}
+        openDrawer
+        width={500}
+        zIndex="var(--zindex-entity-qv-tsheet)"
+        {{{{raw}}}}
+        sx={{ // <== please bear with me to manually remove this char / which caused the error in template. Havent found solution to fix this bug on handlebars
+              '& .MuiPaper-root': {
+                overflowY: 'hidden',
+              },
+            }}
+        {{{{/raw}}}}
+      >
+        <S.BoxWrapper>
+          <Label bold text={t('{{ msgResourceKey }}.title')} />
+          <Tooltip title={t('common.close')}>
+            <span>
+              <IconButton
+                itemProp="dialog-time-sheet-detail-dialog-close-button"
+                noBorder
+                btnType="secondary"
+                size="small"
+                icon={<AwesomeIcon iconName="fal fa-times" size={20} />}
+                onClick={onClose}
+              />
+            </span>
+          </Tooltip>
+        </S.BoxWrapper>
+        <DialogBody detailData={data} handleClose={handleClose} />
+      </S.CustomFormDrawer>
+    </>
+  );
+};
+
+index.displayName = 'index';
+index.propTypes = {
+  isOpen: PropTypes.bool,
+  data: PropTypes.shape({
+    id: PropTypes.oneOf([PropTypes.number, PropTypes.string]),
+  }),
+  onOpened: PropTypes.func,
+  onClose: PropTypes.func,
+};
+
+export default withLazyMessageResource(['{{msgResourceKey}}'])(
+  index,
+);

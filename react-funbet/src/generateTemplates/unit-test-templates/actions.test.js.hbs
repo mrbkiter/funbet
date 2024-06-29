@@ -1,0 +1,31 @@
+import { {{camelCase name}}Actions } from '../actions';
+import { {{camelCase name}}Constants } from '../constants';
+import { MOCK_DATA } from '../__mocks__/mockData';
+
+describe('{{dashCase name}} > actions', () => {
+  it('actions > getRequest', () => {
+    const payload = { roleId: 1 };
+    expect({{camelCase name}}Actions.getRequest(payload)).toEqual({
+      type: {{camelCase name}}Constants.GET_REQUEST,
+      payload,
+    });
+  });
+
+  it('actions > getFailure', () => {
+    expect({{camelCase name}}Actions.getFailure()).toEqual({
+      response: {},
+      type: {{camelCase name}}Constants.GET_FAILURE,
+    });
+  });
+
+  it('actions > getSuccess', () => {
+    const mockPayload = {
+      payload: MOCK_DATA,
+    };
+    expect({{camelCase name}}Actions.getSuccess(mockPayload)).toEqual({
+      payload: MOCK_DATA,
+      response: {},
+      type: {{camelCase name}}Constants.GET_SUCCESS,
+    });
+  });
+});

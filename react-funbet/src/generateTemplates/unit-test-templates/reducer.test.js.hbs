@@ -1,0 +1,75 @@
+import { runListActionTestForReducer } from 'utils/test';
+import {{camelCase name}}Reducer, { initialState } from '../reducer';
+import { {{camelCase name}}Constants } from '../constants';
+import { MOCK_DATA } from '../__mocks__/mockData';
+
+const mockResponseSuccess = {
+  status: 200,
+  message: 'Success',
+};
+const mockResponseFailure = {
+  status: 403,
+  message: 'Authentication failed',
+};
+
+describe('{{camelCase name}}Reducer', () => {
+  const LIST_ACTION = [
+    {
+      type: null,
+      resultExpect: {
+        ...initialState,
+      }
+    },
+    {
+      type: {{camelCase name}}Constants.GET_REQUEST,
+      resultExpect: {
+        ...initialState,
+        loaders: {
+          ...initialState.loaders,
+          isLoading: true,
+          isSuccess: false,
+          isError: false,
+          response: {},
+        },
+      },
+    },
+    {
+      type: {{camelCase name}}Constants.GET_SUCCESS,
+      payload: MOCK_DATA,
+      response: mockResponseSuccess,
+      payloadKey: ['response', 'payload'],
+      resultExpect: {
+        ...initialState,
+        loaders: {
+          ...initialState.loaders,
+          isLoading: false,
+          isSuccess: true,
+          isError: false,
+          response: mockResponseSuccess,
+        },
+        data: MOCK_DATA,
+      },
+    },
+    {
+      type: {{camelCase name}}Constants.GET_FAILURE,
+      response: mockResponseFailure,
+      payloadKey: ['response'],
+      resultExpect: {
+        ...initialState,
+        loaders: {
+          ...initialState.loaders,
+          isLoading: false,
+          isSuccess: false,
+          isError: true,
+          response: mockResponseFailure,
+        },
+      },
+    },
+  ];
+
+  runListActionTestForReducer(
+    LIST_ACTION,
+    initialState,
+    {{camelCase name}}Reducer,
+  );
+});

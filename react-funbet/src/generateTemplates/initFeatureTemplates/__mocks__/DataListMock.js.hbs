@@ -1,0 +1,49 @@
+import { DEFAULT_PAGE_SIZE } from 'utils/constant';
+export const MockData = [
+  {
+    id: 112,
+    addedDate: '10/12/1995',
+    extension: 'pdf',
+    uploadedFilename: 'resume.pdf',
+    filesize: 12345678,
+  },
+  {
+    id: 113,
+    addedDate: '10/12/1995',
+    extension: 'docx',
+    uploadedFilename: 'qualifiers.docx',
+    filesize: 98786754,
+  },
+  {
+    id: 114,
+    addedDate: '11/12/1995',
+    extension: 'xlsx',
+    uploadedFilename: 'driver-license.xlsx',
+    filesize: 98786754,
+  },
+];
+
+// AttachmentsFilter
+export const DataListFilterPayLoad = {
+  take: DEFAULT_PAGE_SIZE,
+  pageSize: DEFAULT_PAGE_SIZE,
+  skip: 0,
+  page: 1,
+  summarySearch: '',
+  summaryFields: '',
+};
+
+export const DataListPagination = {
+  pageNumber: 1,
+  totalItems: 0,
+  pageItems: [],
+  hasNext: false,
+};
+
+// AttachmentsPagination
+export default {
+  pageNumber: 1,
+  totalItems: 20,
+  pageItems: MockData,
+  hasNext: true,
+};

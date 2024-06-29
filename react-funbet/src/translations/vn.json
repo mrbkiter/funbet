@@ -1,0 +1,385 @@
+{
+  "general": {
+    "title": "Vincere",
+    "description": "Welcome to Vincere - React Application",
+    "search": "Search...",
+    "language": {
+      "english": "English",
+      "vietnam": "Vietnamese"
+    },
+    "notfound": {
+      "title": "Oops, 404 - You're far from home",
+      "backHome": "Back to Home Page"
+    },
+    "back": "Back",
+    "accept": "Accept",
+    "reload": "Reload",
+    "to": "To",
+    "cc": "CC",
+    "subject": "Subject",
+    "choose": "Choose",
+    "btnCancel": "Cancel",
+    "btnSave": "Save",
+    "btnEdit": "Edit",
+    "btnShowMore": "Show More",
+    "btnShowLess": "Show Less",
+    "btnAddNew": "Add New",
+    "btnReset": "Reset",
+    "btnFilter": "Filter",
+    "btnPreview": "Preview",
+    "btnYes": "Yes",
+    "btnNo": "No",
+    "buttons": {
+      "cancel": "Cancel",
+      "save": "Save",
+      "edit": "Edit",
+      "close": "Close",
+      "showMore": "Show More",
+      "showLess": "Show Less",
+      "delete": "Delete"
+    },
+    "messages": {
+      "noData": "No Data",
+      "resourceNotFound": "Resource not found"
+    },
+    "errorNotiMessage": "Some thing went wrong!",
+    "successNotiMessage": "Your changes have been applied.",
+    "noResultFound": "No result found",
+    "howThisWorks": "How this works"
+  },
+  "sidebar": {
+    "home": "Home",
+    "styleguide": "Styleguide",
+    "dashboard": "Dashboard",
+    "job": "Jobs",
+    "candidate": "Candidates"
+  },
+  "email": {
+    "wildcard": {}
+  },
+  "jobs": {
+    "title": "Job list",
+    "table": {
+      "header": {
+        "id": "No",
+        "positionName": "Job",
+        "companyName": "Company",
+        "agencyConsultantNames": "Job Owner",
+        "daysOpen": "Days Open",
+        "activeApplications": "Active Applications",
+        "sentNum": "Sent"
+      }
+    }
+  },
+  "candidate": {
+    "title": "Candidate list",
+    "table": {
+      "header": {
+        "id": "ID",
+        "candidatePhotoURL": "Photo",
+        "candidateFullName": "Name",
+        "currentJobTitle": "Current Job Title",
+        "currentEmployer": "Current Employer",
+        "totalJobs": "Jobs",
+        "sentNum": "Sent"
+      }
+    },
+    "profile": {
+      "id": "Candidate ID: ",
+      "shortcuts": {
+        "search": "Search Candidate's fields",
+        "personalInfo": {
+          "heading": "Personal Information",
+          "regDate": "Reg. Date",
+          "firstName": "First Name",
+          "lastName": "Last Name",
+          "title": "Title",
+          "gender": "Gender",
+          "source": "Source",
+          "dob": "Date of Birth",
+          "age": "Age",
+          "jobType": "Job Type",
+          "empType": "Emp Type",
+          "url": "URL",
+          "talentPools": "Talen Pools"
+        }
+      },
+      "chevrons": {
+        "floated": "Floated",
+        "shortlisted": "Shortlisted",
+        "sent": "Sent",
+        "interviews": "Interviews",
+        "offers": "Offers",
+        "placed": "Placed",
+        "tasks": "Tasks"
+      },
+      "userInfo": {
+        "profile": "Profile",
+        "owner": "Owner",
+        "status": {
+          "active": "Active"
+        }
+      },
+      "experience": {
+        "applications": "Active Applications",
+        "applicationHint": "Below is the list of active applications from Floated stages to Offered stages, not including placed/rejected applications",
+        "candidateBrief": "Candidate Brief",
+        "editCandidateBrief": "Edit Candidate Brief",
+        "work": "Work",
+        "editWork": {
+          "heading": "Edit Work",
+          "fields": {
+            "company": "Employer (Company)",
+            "address": "Address",
+            "jobTitle": "Job Title",
+            "industry": "Industry",
+            "subIndustry": "Sub Industry",
+            "funcExpertise": "Functional Expertise",
+            "subFuncExpertise": "Sub Functional Expertise",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "experienceAtComp": "Experience At Company",
+            "currentlyWorking": "Currently Working?",
+            "numberOfPreviousEmp": "Number of previous employers",
+            "employmentHistorySummary": "Employment History Summary"
+          }
+        },
+        "workHistory": "Work History",
+        "education": "Education",
+        "editEducation": {
+          "heading": "Edit Education",
+          "fields": {
+            "eduLevel": "Education Level",
+            "schoolName": "School Name",
+            "schoolAddress": "School Address",
+            "institution": "Institution",
+            "institutionAddress": "Institution Address",
+            "course": "Course",
+            "startDate": "Start Date",
+            "graduationDate": "Graduation Date",
+            "training": "Training",
+            "degreeName": "DegreeName",
+            "qualification": "Qualification",
+            "department": "Department",
+            "thesis": "Thesis",
+            "description": "Description",
+            "grade": "Grade",
+            "gpa": "GPA",
+            "honorific": "Honorific",
+            "honors": "Honors",
+            "major": "Major",
+            "minor": "Minor"
+          }
+        }
+      },
+      "onBoarding": {
+        "tabs": {
+          "fields": {
+            "heading": "Onboarding Fields",
+            "country": "Country",
+            "branches": "Branches",
+            "brands": "Brands",
+            "personalInfo": "Personal Information",
+            "bankName": "Bank Name",
+            "accountNumber": "Account Number",
+            "accountName": "Account Name",
+            "bankBranch": "Bank Branch",
+            "swiftCode": "Swift Code",
+            "bsbNumber": "BSB Number",
+            "licences": "Licences",
+            "driversLicenseNumber": "Drivers License Number",
+            "licenseExpiryDate": "License Expiry Date",
+            "licenseType": "License Type",
+            "privateHeathPension": "Private Heath Pension",
+            "fund": "Fund",
+            "pensionNumber": "Pension Number",
+            "tax": "Tax",
+            "nationalInsuranceNumber": "National Insurance Number",
+            "employeeId": "Employee ID",
+            "dbsCheck": "DBS Check",
+            "dbsCheckLevel": "DBS Check Level",
+            "dbsProgress": "DBS Progress",
+            "backOffice": "Back Office",
+            "companyDetails": "Company Details",
+            "companyName": "Company Name",
+            "dateOfIncorporation": "Date Of Incorporation",
+            "vatRegistered": "VAT Registered",
+            "vatNumber": "VAT Number",
+            "companyNumber": "Company Number",
+            "address": "Address"
+          },
+          "docChecks": {
+            "heading": "Onboarding Doc Checks",
+            "searchPlaceholder": "Search onboarding doc checks only",
+            "industries": "Industries",
+            "subIndustry": "Sub Industry",
+            "no": "No.",
+            "ext": "Ext",
+            "dateAdded": "Date Added",
+            "fileName": "File Name",
+            "type": "Type",
+            "expiryDate": "Expiry Date",
+            "reminder": "Reminder",
+            "requested": "Requested",
+            "verifiedStatus": "Verified Status",
+            "verifiedDate": "Verified Date",
+            "verifier": "Verifier",
+            "verifiedBy": "Verified By",
+            "job": "job",
+            "industry": "Industry",
+            "hint": "Select industry to populate required docs & checks list for Onboarding in the table below"
+          }
+        }
+      },
+      "availability": {
+        "nextDate": "Next Available Date: "
+      }
+    }
+  },
+  "styleguide": {
+    "title": "Styleguide : Vincere Application",
+    "content": {
+      "grid": "Columns",
+      "buttons": "Buttons",
+      "modal": "Modals",
+      "tag": "Tags",
+      "loading": "Loading",
+      "typo": "Typography",
+      "table": "Table",
+      "dropdownButton": "Dropdown button",
+      "label": "Label",
+      "color": "Color",
+      "actionButton": "Action button",
+      "tableGrid": "Table grid",
+      "editor": "Editor",
+      "emailForm": "Action: Email",
+      "dropdownSelect": "Dropdown select",
+      "modalEmailTemplate": "Modal Email Template",
+      "modalValidationEmail": "Modal Validation Email Open/ Link Click",
+      "modalEmailOpen": "Modal Validation Email Open",
+      "editGroupBtn": "Edit Group Button"
+    }
+  },
+  "dashboard": {
+    "title": "My Automation",
+    "sortBy": "Sort by",
+    "table": {
+      "header": {
+        "no": "No",
+        "name": "Name",
+        "status": "Status",
+        "creationDate": "Creation Date",
+        "action": "Action"
+      }
+    }
+  },
+  "emailTemplate": {
+    "modal": {
+      "placeholder": "Select Template",
+      "title": "Action: Email - Template",
+      "label": "Template",
+      "or": "OR",
+      "createButton": "Create New Template",
+      "emailOpen": "Validation: E-Mail Open",
+      "emailLinkClick": "Validation: E-Mail Link Click",
+      "fromEmail": "From the E-mail:",
+      "when": "When",
+      "validationTrigger": "NO validation trigger after",
+      "triggerClickYes": "link is clicked. This will trigger YES",
+      "triggerOpenYes": "is opened trigger YES validation",
+      "timeLabel": "Time",
+      "linkLabel": "Link",
+      "titleLabel": "Title",
+      "numberLabel": "Number"
+    }
+  },
+  "algorithm": {
+    "menu": {
+      "list": "List algorithm"
+    }
+  },
+  "yup": {
+    "errors": {
+      "required": "The input should not empty."
+    }
+  },
+  "facetSearch": {
+    "panel": "Faceted Search",
+    "hideFacets": "Hide facets",
+    "jobsTitle": "Jobs title",
+    "skills": "Skills",
+    "industry": "Industry",
+    "functionalExpertise": "Functional Expertise",
+    "age": "Age",
+    "employers": "Employers",
+    "resetFacets": "Reset facets",
+    "showCandidates": "Show Candidates"
+  },
+  "gdpr": {
+    "consentForm": "Consent Form",
+    "consentManagement": "Consent Management",
+    "durationFromToday": "Duration From Today",
+    "consentToKeep": "Consent to keep",
+    "rightToRepresent": "Right to represent",
+    "privacyPolicy": "Privacy Policy",
+    "notToGiveConsent": "No, I would not like to give consent",
+    "withdrawConsent": "Widthdraw consent",
+    "consentToKeepLabel": "Yes, I consent to my provided data being stored so that it can be taken into account in the selection process for suitable positions.",
+    "rightToRepresentLabel": "Yes, I consent to my profile being shared with third parties wishing to fill a suitable position.",
+    "threeMonth": "3 months",
+    "sixMonth": "6 months",
+    "oneYear": "1 year",
+    "twoYear": "2 years",
+    "threeYear": "3 years",
+    "fiveYear": "5 years",
+    "tenYear": "10 years",
+    "untilFurtherNotice": "Until further notice",
+    "thanksForYourConsent": "Thank you for your consent!",
+    "updateConsentRequestSuccess": "Your consent status has been updated successfully.",
+    "youHaveProvidedUsWith": "You have provided us with the following response:",
+    "storeYourPersonalData": "Store your personal data ",
+    "representYouToClients": "Represent you to clients for ",
+    "youCanCloseThisTab": "You can close this tab now or you can edit your settings.",
+    "editMySettings": "Edit my settings",
+    "lastSaved": "Last saved",
+    "for": "For",
+    "at": "at",
+    "sorryToSeeYouGo": "We’re sorry to see you go!",
+    "dontStoreYourPersonalData": "Do not store your personal data",
+    "dontRepresentYouToClients": "Do not represent you to clients",
+    "attention": "Attention",
+    "pleaseProvideUsConsentToKeep": "In order to represent you to third parties, we need to store and process your personal data. Please provide us Consent to Keep to fulfil your request.",
+    "youreAlmostThere": "You’re almost there!",
+    "pleaseUpldateYourRigtToRepresentSettings": "If you would like your profile to be put forward for jobs, please update your right to represent settings."
+  },
+  "emailTemplateSettings": {
+    "languages": "Languages",
+    "emailTemplate": "Email Template",
+    "searchTemplate": "Search email templates",
+    "filter": "Filter",
+    "logText": "Last updated by {{name}} on {{date}}",
+    "content": "Content",
+    "default": "Default",
+    "hintTitle": "How this works",
+    "hintDescFirst": "Wildcards are used to call information from the system and place it in your email.",
+    "hintDescSecond": "Wildcards with a blue border indicate that the wildcard is already being used in your template, however you may wish to use the same wildcard more than once.",
+    "searchWildcard": "Search wildcards",
+    "nameRequired": "Name is a required field",
+    "addNew": "Add new email template",
+    "delete": "Delete email template",
+    "fieldName": "Name",
+    "addressTo": "To",
+    "addressCC": "CC",
+    "subject": "Subject",
+    "confirmDelete": "Are you sure you want to delete {{name}}?",
+    "preview": "Preview",
+    "entity": "Entity"
+  },
+  "candidateSuitability": {
+    "howThisWork_description": "Candidate Suitabilty is the list of companies and the locations  where:",
+    "howThisWork_step_one": "Preference: companies where the candidate prefers to work.",
+    "howThisWork_step_two": "Exclusion:  companies where the candidate does not prefer to work.",
+    "tabPreference": "Preference",
+    "tabExclusion": "Exclusion"
+  }
+}

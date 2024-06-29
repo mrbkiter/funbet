@@ -1,0 +1,52 @@
+import React from 'react';
+import { mountToJson } from 'enzyme-to-json';
+import { renderComponentWithRedux } from 'utils/test';
+import {{pascalCase name}} from '../index';
+import { MOCK_DATA } from '../__mocks__/mockData';
+
+describe('{{dashCase name}}', () => {
+  const initProps = {};
+
+  const {{camelCase name}}State = {
+    data: MOCK_DATA,
+    loaders: {
+      isLoading: false,
+      isError: false,
+      isSuccess: false,
+      response: {},
+    },
+    actions: {
+      get{{pascalCase name}}: jest.fn(),
+    },
+  };
+
+  const mountComponent = (props) => {
+    const innerProps = {
+      ...initProps,
+      ...props,
+    };
+
+    return renderComponentWithRedux(
+      <{{pascalCase name}} {...innerProps}/>,
+      {
+        {{camelCase name}}: {{camelCase name}}State,
+      },
+    );
+  };
+
+  const mockProps = {};
+
+  let wrapper;
+
+  beforeEach(() => {
+    wrapper = mountComponent(mockProps);
+  });
+
+  afterEach(() => {
+    wrapper.unmount();
+  });
+
+  it('render {{titleCase name}} correctly', () => {
+    expect(mountToJson(wrapper)).toMatchSnapshot();
+  });
+});

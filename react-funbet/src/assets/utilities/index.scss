@@ -1,0 +1,17 @@
+.tailwind-react {
+  @import './flexbox/index';
+  @import './spacing';
+  @import './width';
+  @import './height';
+  @import './cursor';
+  @import './font-size';
+  @import './font-weight';
+  @import './font-family';
+  @import './text-align';
+  @import './text-transform';
+  @import './ul.scss';
+  @import './color.scss';
+}
+
+// Global styles
+@import './max-width';

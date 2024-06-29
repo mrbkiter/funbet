@@ -1,0 +1,42 @@
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { PROGRESS } from '{{importParentPath}}/{{pascalCase name}}/constants';
+import { Loading } from 'components/Loading';
+import * as S from './index.styles';
+import { Grid } from '@mui/material';
+import use{{pascalCase name}} from '{{importParentPath}}/{{pascalCase name}}/hooks/use{{pascalCase name}}';
+const DialogBody = ({ detailData }) => {
+  const { id } = detailData;
+
+  const { data: hookData, actions } = use{{pascalCase name}}();
+  const { progress } = hookData;
+
+  useEffect(() => {
+    actions.getDataList({
+      id,
+      filterPayload: hookData.dataListFilterPayload,
+    });
+  }, []);
+
+  return (
+    <>
+      {progress === PROGRESS.LOADING && <Loading className="floated" />}
+      <Grid container spacing={0}>
+        <Grid item xs={12}>
+          <S.TabsContainer className="tabs-container">
+            <p>DialogBody content</p>
+          </S.TabsContainer>
+        </Grid>
+      </Grid>
+    </>
+  );
+};
+
+DialogBody.displayName = 'DialogBody';
+DialogBody.propTypes = {
+  detailData: PropTypes.shape({
+    id: PropTypes.oneOf([PropTypes.number, PropTypes.string]),
+  }),
+};
+
+export default DialogBody;

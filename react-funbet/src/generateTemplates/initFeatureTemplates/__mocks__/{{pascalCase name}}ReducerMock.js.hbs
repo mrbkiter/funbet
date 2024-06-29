@@ -1,0 +1,15 @@
+import { PROGRESS } from '{{importParentPath}}/{{pascalCase name}}/constants';
+import {
+  DataListFilterPayLoad,
+  DataListPagination,
+} from '../__mocks__/DataListMock';
+
+export const {{pascalCase name}}ReducerMock = {
+  {{pascalCase name}}Reducer: {
+    isLoading: false,
+    dataListFilterPayload: Object.assign(DataListFilterPayLoad),
+    dataListPagination: Object.assign(DataListPagination),
+    progress: PROGRESS.IDLE,
+    currentRequestId: 123,
+  },
+};

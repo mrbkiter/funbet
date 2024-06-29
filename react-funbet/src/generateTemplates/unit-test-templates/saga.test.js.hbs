@@ -1,0 +1,94 @@
+import { takeLatest, put } from 'redux-saga/effects';
+import { {{camelCase name}}Constants } from '../constants';
+import { {{camelCase name}}Actions } from '../actions';
+import saga{{pascalCase name}}, { get{{pascalCase name}}Saga } from '../saga';
+import noti from 'utils/noti';
+
+describe('{{dashCase name}} > Saga', () => {
+  let notifyError;
+
+  beforeEach(() => {
+    notifyError = jest.spyOn(noti, 'someThingWentWrong');
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('Saga > root', () => {
+    it('should work correctly', () => {
+      const generator = saga{{pascalCase name}}();
+
+      const next = generator.next();
+      expect(next.value).toEqual(
+        takeLatest(
+          {{camelCase name}}Constants.GET_REQUEST,
+          get{{pascalCase name}}Saga,
+        ),
+      );
+    });
+  });
+
+  describe('Saga > get{{pascalCase name}}Saga', () => {
+    it('should work correctly', () => {
+      const apiParams = {
+        id: 1,
+      };
+
+      const generator = get{{pascalCase name}}Saga({ payload: { id: 1} });
+      let next = generator.next({ payload: apiParams });
+
+      const response = {
+        status: 'success',
+        result: {},
+      };
+
+      next = generator.next(response);
+
+      expect(next.value).toEqual(
+        put(
+          {{camelCase name}}Actions.getSuccess({
+            payload: response.result,
+          }),
+        ),
+      );
+    });
+
+    it('should handle properly when get failure', () => {
+      const apiParams = {
+        id: 1,
+      };
+
+      const generator = get{{pascalCase name}}Saga({ payload: { id: 1} });
+      let next = generator.next({ payload: apiParams });
+
+      const response = {
+        status: 'false',
+        result: {},
+      };
+
+      next = generator.next(response);
+
+      expect(notifyError).toHaveBeenCalled();
+      expect(next.value).toEqual(
+        put(
+          {{camelCase name}}Actions.getFailure({
+            payload: response,
+          }),
+        ),
+      );
+    });
+
+    it('should handle errors properly', () => {
+      const generator = get{{pascalCase name}}Saga({});
+      generator.next();
+
+      expect(generator.throw('').value).toEqual(
+        put({{camelCase name}}Actions.getFailure()),
+      );
+
+      generator.next();
+      expect(notifyError).toHaveBeenCalled();
+    });
+  });
+});

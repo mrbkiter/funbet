@@ -1,0 +1,32 @@
+import { createSelector } from 'reselect';
+
+export const {{pascalCase name}}ReducerSelector = (state) =>
+  state.{{pascalCase name}}Reducer;
+
+export const isLoadingApiSelector = createSelector(
+  {{pascalCase name}}ReducerSelector,
+  (state) => {
+    return state.isLoading;
+  },
+);
+export const progressSelector = createSelector(
+  {{pascalCase name}}ReducerSelector,
+  (state) => {
+    return state.progress;
+  },
+);
+
+
+export const dataListPaginationSelector = createSelector(
+  {{pascalCase name}}ReducerSelector,
+  (state) => {
+    return state.dataListPagination;
+  },
+);
+
+export const dataListFilterPayloadSelector = createSelector(
+  {{pascalCase name}}ReducerSelector,
+  (state) => {
+    return state.dataListFilterPayload;
+  },
+);

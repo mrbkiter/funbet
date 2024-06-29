@@ -1,0 +1,42 @@
+/* eslint-disable consistent-return */
+import { get } from 'lodash';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { api, handleAsyncThunkLoader } from 'utils/helper';
+import { {{pascalCase name}}ReducerSelector } from '{{importParentPath}}/{{pascalCase name}}/selectors';
+
+export const requestGetDataList = (
+  loaderPropName = 'isLoading',
+) =>
+  createAsyncThunk(
+    '{{pascalCase name}}/requestGetDataList',
+    async (payload, callBackProps) => {
+      const url = `/api/${payload.id}/exampleRequest.do`;
+      const isLoading = handleAsyncThunkLoader(
+        {
+          ...callBackProps,
+          loaderPropName,
+        },
+        {{pascalCase name}}ReducerSelector,
+      );
+      if (isLoading !== true) {
+        const response = await api.post({
+          url,
+          data: payload.filterPayload,
+        });
+
+        const responseData = get(response, 'data', {
+          pageNumber: 0,
+          pagesAvailable: 0,
+          totalItems: 0,
+          pageItems: [],
+          hasNext: false,
+        });
+
+        // BE data would not return pageItems if there is empty data
+        responseData.pageItems = get(response, 'data.pageItems', []);
+
+        return responseData || null;
+      }
+      return undefined;
+    },
+  );

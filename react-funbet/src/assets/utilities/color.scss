@@ -1,0 +1,28 @@
+.text-blue {
+    color: #428BCA;
+}
+
+.text-success {
+	color: #36a300 !important;
+}
+
+.text-red {
+	color:  #E90000;
+}
+
+.text-gray {
+	color: var(--neutral-gray-08, #999);
+}
+
+
+.bg-danger {
+	background: #ffe7e7 !important;
+}
+
+.bg-white {
+	background-color: #FFFFFF;
+}
+
+.bg-gray {
+	background: var(--neutral-gray-02, #F8F8F8);
+}

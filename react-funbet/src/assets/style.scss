@@ -1,0 +1,723 @@
+@import './utilities/index';
+
+.vincere-panel-extra-small {
+  width: 20%;
+  min-width: 360px;
+}
+
+.vincere-panel-small {
+  width: 30%;
+  min-width: 520px;
+}
+
+.vincere-panel-medium {
+  width: 50%;
+  min-width: 920px;
+}
+
+.vincere-panel-large {
+  width: 65%;
+  min-width: 1160px;
+}
+
+.vincere-panel-extra-large {
+  width: calc(100% - 56px);
+}
+
+html {
+  font-size: 15px;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+a,
+ul,
+li,
+.edit-text {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+// KENDO UI CUSTOM FOR VINCERE REACT APP
+body {
+  position: relative;
+  height: 100%;
+  $primary-color: #101010;
+  $white: #fff;
+  margin: 0;
+  .MuiPaper-root {
+    ul,
+    li {
+      font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+    }
+  }
+  .react-app {
+    .k-grid {
+      .k-icon {
+        color: var(--gray-color-heavy);
+      }
+    }
+  }
+  .react-content-activities {
+    ul,
+    ol {
+      padding: revert;
+      list-style-type: revert;
+    }
+  }
+
+  .entity-removed-color * {
+    color: var(--negative-button);
+  }
+
+  .MuiPopover-paper {
+    z-index: var(--zindex-popover) !important;
+  }
+  .MuiDialog-root {
+    z-index: 10004 !important;
+  }
+  .MuiPopover-root {
+    z-index: 10005 !important;
+  }
+}
+
+.react-app {
+  background-color: var(--secondary-background);
+  ul,
+  li {
+    list-style: none;
+    // padding: 0;
+  }
+  p {
+    margin: 0;
+    color: var(--gray-color-heavy);
+  }
+  &.only-content {
+    .sidebar,
+    .app-header {
+      display: none;
+    }
+    .content-wrapper {
+      padding: 20px;
+      .main-content {
+        padding: 20px;
+      }
+    }
+  }
+  &.activities-react {
+    .content-wrapper {
+      .main-content {
+        padding-top: 68px;
+      }
+    }
+  }
+}
+.text-medium-grey {
+  color: var(--gray-color-medium) !important;
+}
+
+.app-header {
+  .top-bar-wrapper {
+    background-color: #252d47;
+    color: #fff;
+    .MuiToolbar-regular {
+      height: 56px;
+    }
+  }
+  .menu-button {
+    margin-right: 20px;
+  }
+  .title {
+    font-size: 16px;
+  }
+  .search {
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.15);
+    margin-right: 20px;
+    margin-left: 10px;
+    width: 200px;
+    position: absolute;
+    right: 150px;
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+    }
+  }
+  .search-icon {
+    width: 35px;
+    height: 100%;
+    position: absolute;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .input-wrapper {
+    padding: 5px 5px 5px 40px;
+    width: 100%;
+    input {
+      color: #fff;
+    }
+  }
+  .section-desktop {
+    display: block;
+    position: absolute;
+    right: 15px;
+  }
+}
+.sidebar {
+  .MuiDrawer-paper {
+    .scrollbar-menu {
+      height: 1;
+      display: flex;
+      flex-direction: column;
+      padding-left: 16px;
+      padding-right: 16px;
+      .list-group-item {
+        -webkit-tap-highlight-color: transparent;
+        background-color: transparent;
+        outline: 0px;
+        border: 0px;
+        margin: 0px;
+        cursor: pointer;
+        user-select: none;
+        vertical-align: middle;
+        appearance: none;
+        display: flex;
+        -webkit-box-flex: 1;
+        flex-grow: 1;
+        -webkit-box-pack: start;
+        justify-content: flex-start;
+        -webkit-box-align: center;
+        align-items: center;
+        position: relative;
+        text-decoration: none;
+        min-width: 0px;
+        box-sizing: border-box;
+        text-align: left;
+        padding: 8px 16px;
+        transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+        min-height: 44px;
+        border-radius: 6px;
+        line-height: 1.57143;
+        font-size: 0.875rem;
+        font-family: "Public Sans", sans-serif;
+        font-weight: 500;
+        color: rgb(99, 115, 129);
+        text-transform: capitalize;
+          &.active {
+              color: rgb(24, 119, 242);
+              text-transform: capitalize;
+              background-color: rgba(24, 119, 242, 0.08);
+          }
+        }
+    }
+  }
+  .menu-items {
+    padding: 0;
+  }
+  .list-item {
+    display: block;
+    padding: 0;
+    span {
+      display: block;
+      text-align: center;
+    }
+    .icons {
+      .MuiSvgIcon-root {
+        font-size: 1.5rem;
+      }
+    }
+    .name {
+      font-size: 12px;
+      margin: 5px;
+    }
+  }
+}
+.content-wrapper {
+  padding: 0 0 0 280px;
+  background-color: var(--secondary-background);
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  flex-direction: column;
+  .styleguide,
+  .main-content,
+  .home,
+  .dashboard {
+    padding: 90px 30px 0;
+  }
+  .logo {
+    display: block;
+    margin: 0 auto;
+  }
+  .full-image {
+    width: 100%;
+    height: auto;
+  }
+  .MuiPaper-root {
+    padding: 8px;
+    &.MuiDrawer-paper {
+      padding: 0;
+    }
+  }
+  .mg-10 {
+    margin: 10px 0;
+  }
+  .mg-20 {
+    margin: 20px 0;
+  }
+  .color-primary {
+    color: #252d47;
+  }
+  .photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    display: block;
+    overflow: hidden;
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+  .MuiTableRow-head {
+    .MuiTableCell-head {
+      border-right: 1px solid #ebebeb;
+    }
+  }
+}
+.form-drawer {
+  .MuiDrawer-paper {
+    width: 300px;
+    .form-title {
+      margin: 20px 20px 10px;
+    }
+    .close-form {
+      position: absolute;
+      padding: 5px;
+      top: 3px;
+      right: 5px;
+      font-size: 1.2rem;
+      svg {
+        font-size: 20px;
+      }
+    }
+    .text-field {
+      width: 100%;
+      margin-bottom: 10px;
+      .MuiInputBase-input {
+        height: auto;
+      }
+    }
+    .label-error {
+      color: #f44336;
+      font-size: 13px;
+    }
+    .MuiGrid-item {
+      padding-top: 0;
+    }
+  }
+  .MuiPaper-root {
+    padding: 20px;
+  }
+}
+.drawer-with-content-scrolling {
+  height: calc(100vh - 16px);
+  .scrolling-content {
+    // flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 8px;
+    position: relative;
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      background-color: #f5f5f5;
+    }
+    &::-webkit-scrollbar {
+      width: 6px;
+      background-color: #f5f5f5;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+      background-color: #ccc;
+    }
+    &.empty-content {
+      padding-top: 0;
+      padding-bottom: 8px;
+    }
+  }
+}
+.MuiFormControl-root.text-field {
+  width: 100%;
+  label {
+    font-weight: bold;
+  }
+  &.input-email-form {
+    margin-bottom: 10px;
+    input {
+      font-size: 13px;
+      height: auto;
+      &::-webkit-input-placeholder {
+        font-size: 13px;
+        font-style: italic;
+      }
+      &::-moz-placeholder {
+        font-size: 13px;
+        font-style: italic;
+      }
+      &:-ms-input-placeholder {
+        font-size: 13px;
+        font-style: italic;
+      }
+      &:-moz-placeholder {
+        font-size: 13px;
+        font-style: italic;
+      }
+    }
+  }
+}
+
+.MuiButton-root {
+  &.buttons {
+    background-color: #fff;
+    color: #333;
+    border-radius: 0;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    padding: 5px 16px;
+    font-size: 13px;
+    text-transform: capitalize;
+    &.primary {
+      color: #fff;
+      background-color: #428bca;
+      &.MuiButton-outlined {
+        background-color: transparent;
+        border: 1px solid #428bca;
+        color: #428bca;
+      }
+    }
+  }
+  &:hover {
+    box-shadow: none;
+  }
+  .icons {
+    margin-right: 5px;
+    display: inline-flex;
+    vertical-align: middle;
+    svg {
+      font-size: 17px;
+    }
+  }
+  &.primary.MuiButton-outlined {
+    background-color: transparent;
+    border: 1px solid #428bca;
+    color: #428bca;
+  }
+}
+
+.loading {
+  position: relative;
+  .MuiLinearProgress-root {
+    height: 2px;
+  }
+}
+
+.MuiTable-root {
+  .MuiTableHead-root {
+    background-color: var(--table-header-bg-color);
+  }
+  .MuiTableBody-root {
+    .loading-row {
+      padding: 0;
+      position: relative;
+      top: -3px;
+    }
+    .MuiTableRow-root {
+      &:hover {
+        background-color: #f8f8f8;
+      }
+      &:nth-child(even) {
+        background-color: #f7f9fc;
+      }
+      .MuiTableCell-root {
+        .action-button-wrapper {
+          > button {
+            padding: 0px 20px 0px 0px;
+            &:hover {
+              background-color: transparent;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.MuiInputBase-formControl {
+  &.MuiOutlinedInput-root {
+    border-radius: 0;
+  }
+}
+.text-center {
+  text-align: center;
+}
+.bold {
+  font-weight: bold !important;
+}
+.uppercase {
+  text-transform: uppercase;
+}
+.flex {
+  display: flex;
+}
+.ali-start {
+  align-items: flex-start !important;
+}
+.als-center {
+  align-self: center;
+}
+.flex-column {
+  flex-flow: column;
+}
+.border-radius-0 {
+  border-radius: 0 !important;
+}
+.text-primary {
+  color: var(--cutie-blue-color);
+}
+.text-danger {
+  color: var(--negative-button) !important;
+}
+.hidden {
+  display: none !important;
+}
+.MuiFormControl-root.min-w-100 {
+  min-width: 100% !important;
+}
+.gdpr-section {
+  background-color: var(--white-color-heavy);
+  margin-bottom: 22px;
+  .MuiTextField-root {
+    &:first-child {
+      margin-top: 16px;
+    }
+    &:last-child {
+      margin-bottom: 0px;
+    }
+  }
+}
+
+.chips {
+  display: 'flex';
+  justify-content: 'center';
+  flex-wrap: 'wrap';
+  & > * {
+    margin: 5px;
+  }
+}
+
+// Spacing for tag showing in Input field
+.MuiInputBase-input {
+  &.MuiInput-input,
+  &.MuiFilledInput-input {
+    font-size: 13px;
+  }
+}
+
+//Style for Material Picker
+.MuiPickersBasePicker-container {
+  .MuiPickersDay-day {
+    border-radius: 0;
+  }
+  .MuiPickersToolbar-toolbar,
+  .MuiPickersDay-daySelected,
+  .MuiPickersDay-daySelected:hover {
+    background-color: var(--primary-button);
+  }
+
+  .MuiTypography-colorPrimary {
+    color: var(--primary-button);
+  }
+}
+.MuiPickersCalendarHeader-switchHeader {
+  padding: 0 8px;
+  .MuiIconButton-root {
+    padding: 8px;
+    border-radius: 0;
+  }
+}
+
+// Style dropdown select item
+.dropdown-item.MuiMenuItem-root {
+  font-size: 13px;
+}
+.MuiAutocomplete-popper {
+  z-index: var(--zindex-autocomplete) !important;
+}
+.ats-page.scheduler-view {
+  .MuiSnackbar-root {
+    z-index: var(--zindex-action-panel);
+  }
+}
+
+.scolling-content,
+.mui-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: rgb(245, 245, 245);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: var(--gray-color-normal) 0px 0px 5px inset;
+    background-color: rgb(204, 204, 204);
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: var(--gray-color-normal) 0px 0px 5px inset;
+    border-radius: 10px;
+    background-color: rgb(245, 245, 245);
+  }
+}
+
+.react-multi-carousel-track {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform, transition;
+}
+.react-multiple-carousel__arrow {
+  position: absolute;
+  outline: 0;
+  border: 0;
+  transition: all 0.5s;
+  border-radius: 50%;
+  z-index: 1000;
+  background-color: var(--gray-color-semibold);
+  min-width: 32px;
+  min-height: 32px;
+  opacity: 1;
+  cursor: pointer;
+}
+.react-multiple-carousel__arrow::before {
+  font-size: 16px;
+  color: #fff;
+  display: block;
+  text-align: center;
+  z-index: 2;
+  position: relative;
+  font-family: 'FontAwesome', sans-serif;
+}
+.react-multiple-carousel__arrow:disabled {
+  cursor: default;
+  background: rgba(0, 0, 0, 0.5);
+}
+.react-multiple-carousel__arrow--left::before {
+  content: '\f053';
+}
+.react-multiple-carousel__arrow--right::before {
+  content: '\f054';
+}
+.react-multi-carousel-dot-list {
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  left: 0;
+  right: 0;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: center;
+}
+.react-multi-carousel-dot button {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  opacity: 1;
+  box-shadow: none;
+  transition: background 0.5s;
+  border-width: 2px;
+  border-style: solid;
+  border-color: grey;
+  padding: 0;
+  margin: 0;
+  margin-right: 6px;
+  outline: 0;
+  cursor: pointer;
+}
+.react-multi-carousel-dot button:hover:active {
+  background: #080808;
+}
+.react-multi-carousel-dot--active button {
+  background: #080808;
+}
+.react-multi-carousel-item {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+.react-no-data{
+  font-style: italic;
+  color: #bababa;
+}
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .react-multi-carousel-item {
+    flex-shrink: 0 !important;
+  }
+  .react-multi-carousel-track {
+    overflow: visible !important;
+  }
+}
+
+.react-multi-carousel-list {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  .react-multiple-carousel__arrow {
+    opacity: 0;
+    z-index: 0;
+    transition: all 0.2s ease;
+    &.react-multiple-carousel__arrow--left {
+      left: 8px;
+    }
+    &.react-multiple-carousel__arrow--right {
+      right: 8px;
+    }
+  }
+  &:hover {
+    .react-multiple-carousel__arrow {
+      opacity: 1;
+      z-index: 1;
+    }
+  }
+}
+
+.MuiAutocomplete-popper .MuiAutocomplete-listbox .MuiAutocomplete-option[aria-selected='true'] {
+  background-color: var(--active-chevron-bg);
+}
+
+
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('./fonts/OpenSans-Regular.eot');
+  src: url('./fonts/OpenSans-Regular.eot?#iefix') format('embedded-opentype'),
+    url('./fonts/OpenSans-Regular.woff2') format('woff2'),
+    url('./fonts/OpenSans-Regular.woff') format('woff'),
+    url('./fonts/OpenSans-Regular.ttf') format('truetype'),
+    url('./fonts/OpenSans-Regular.svg#svgFontName') format('svg');
+}

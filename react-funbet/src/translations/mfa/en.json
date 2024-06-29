@@ -1,0 +1,73 @@
+{
+  "login": {
+    "signIn": "Sign in",
+    "email": "Email address",
+    "emailPlaceHolder": "Enter Your Email address",
+    "password": "Password",
+    "passwordPlaceHolder": "Enter Your Password",
+    "rememberEmail": "Remember this email address",
+    "forgotPwd": "Forgot your password?",
+    "incorrectEmailPassword": "Incorrect email address or password",
+    "loginLimitExceedTime": "You have exceeded the rate limit of our authentication. Please try again after",
+    "next": "Next",
+    "signinWithDifferentAccount": "Sign in with a different account",
+    "copyright": "© 2011 - 2023 Vincere. All rights reserved.",
+    "code_expired": "Your login session has expired. Please try again."
+  },
+  "logout": {
+    "signedOut": "Signed Out",
+    "signedOutVincereDesc": "You have signed out of Vincere",
+    "signedOutTimetempDesc": "You have signed out of TimeTemp",
+    "signOutOfAccess": "Sign out of Access"
+  },
+  "error": {
+    "SSOFailed": "SSO FAILED",
+    "MisMatchDesc1Vincere": "You're signing in Vincere with a different email address while you already sign in as",
+    "MisMatchDesc1Timetemp": "You're signing in TimeTemp with a different email address while you already sign in as",
+    "MisMatchDesc2": "in Access Identity",
+    "MisMatchDesc3": "Please use the same email address to continue SSO.",
+    "NotFoundDesc1": "The email address",
+    "NotFoundDesc2": "does not exist in your account",
+    "NotFoundDesc3": "Please try again with another email address or contact your Administrator for more support.",
+    "invalidToken": "INVALID TOKEN",
+    "invalidTokenDesc1": "You're following an invalid URL with an expiry token.",
+    "invalidTokenDesc2": "Please try again with the original URL of your account. Continue with the link below:",
+    "linkExpired": "LINK EXPIRED",
+    "createAccountUrlExpired": "Link was expired, please contact your admin to resend a new link.",
+    "securedLoginUrlExpired": "The link was expired. If you wish to generate a new secured login link, please contact Vincere support."
+  },
+  "button": {
+    "next": "Next",
+    "back": "Back",
+    "confirm": "Confirm"
+  },
+  "forgotPassword": {
+    "forgotPassword": "Forgot Password",
+    "resetPassword": "Reset Password",
+    "emailBlank": "Email address cannot be blank",
+    "emailIncorrect": "Invalid email address",
+    "verifyCode": "Verification code",
+    "verifyCodePlaceHolder": "Enter Verification Code",
+    "verifyCodeBlank": "Verification Code cannot be blank",
+    "newPassword": "New Password",
+    "newPasswordPlaceHolder": "Enter your new password",
+    "passwordBlank": "New Password cannot be blank",
+    "confirmPasswordBlank": "Confirm password cannot be blank",
+    "confirmPassword": "Confirm new password",
+    "confirmPasswordPlaceHolder": "Enter your new password",
+    "confirmPasswordError": "Confirm password is not the same as New password",
+    "passordVerifyTitle": "The password must contain at least:",
+    "minLength": "6 characters",
+    "minNumber": "2 numbers",
+    "minUppercase": "1 uppercase",
+    "forgotPwdDesc": "Enter your email address to continue",
+    "resetPwdDesc1": "We have sent a verification code by email to",
+    "resetPwdDesc2": "Enter it below to reset your password:",
+    "code_mismatch": "Incorrect Verification code",
+    "code_expired": "Verification code expired"
+  },
+  "firstLoginPassword": {
+    "changePassword": "Change password",
+    "description": "For first time use, please set a new password for your account."
+  }
+}

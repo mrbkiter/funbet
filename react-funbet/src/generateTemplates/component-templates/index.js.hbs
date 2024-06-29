@@ -1,0 +1,24 @@
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import use{{pascalCase name}} from './use{{pascalCase name}}';
+
+const {{pascalCase name}} = ({ id }) => {
+  //const { data, actions, loaders } = use{{pascalCase name}}();
+  const { actions } = use{{pascalCase name}}();
+
+  useEffect(() => {
+    actions.get{{pascalCase name}}({ id });
+  }, []);
+
+  return <h1>Welcome to {{pascalCase name}}</h1>;
+};
+
+{{pascalCase name}}.propTypes = {
+  id: PropTypes.number,
+};
+
+{{pascalCase name}}.defaultProps = {
+  id: 1
+};
+
+export default {{pascalCase name}};

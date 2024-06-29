@@ -1,0 +1,54 @@
+import { {{camelCase name}}Constants } from './constants';
+
+export const initialState = {
+  data: [],
+  loaders: {
+    isLoading: false,
+    isError: false,
+    isSuccess: false,
+    response: {},
+  },
+};
+
+const {{camelCase name}}Reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case {{camelCase name}}Constants.GET_REQUEST:
+      return {
+        ...state,
+        loaders: {
+          ...state.loaders,
+          isLoading: true,
+          isSuccess: false,
+          isError: false,
+          response: {},
+        },
+      };
+    case {{camelCase name}}Constants.GET_SUCCESS:
+      return {
+        ...state,
+        loaders: {
+          ...state.loaders,
+          isLoading: false,
+          isSuccess: true,
+          isError: false,
+          response: action.response,
+        },
+        data: action.payload,
+      };
+    case {{camelCase name}}Constants.GET_FAILURE:
+      return {
+        ...state,
+        loaders: {
+          ...state.loaders,
+          isLoading: false,
+          isSuccess: false,
+          isError: true,
+          response: action.response,
+        },
+      };
+    default:
+      return state;
+  }
+};
+
+export default {{camelCase name}}Reducer;

@@ -1,0 +1,37 @@
+import use{{pascalCase name}} from '../use{{pascalCase name}}';
+import { renderHookWithRedux } from 'utils/test';
+import { {{camelCase name}}Constants } from '../constants';
+import { MOCK_DATA } from '../__mocks__/mockData';
+
+const renderHook = () => {
+  return renderHookWithRedux(use{{pascalCase name}}, {
+    {{camelCase name}}: {
+      data: MOCK_DATA,
+      loaders: {
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+        response: {},
+      },
+      actions: {
+        get{{pascalCase name}}: jest.fn(),
+      },
+    },
+  });
+};
+describe('use{{pascalCase name}}', () => {
+  const [data] = renderHook();
+  it('use{{pascalCase name}} > layout data', () => {
+    expect(data.data.id).toEqual(1);
+  });
+
+  it('use{{pascalCase name}} > get{{pascalCase name}}', () => {
+    const action = data.actions.get{{pascalCase name}}({
+      id: 1,
+    });
+    expect(action).toEqual({
+      type: {{camelCase name}}Constants.GET_REQUEST,
+      payload: { id: 1 },
+    });
+  });
+});

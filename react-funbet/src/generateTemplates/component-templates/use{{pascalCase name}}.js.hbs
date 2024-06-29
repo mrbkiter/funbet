@@ -1,0 +1,23 @@
+import { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { {{camelCase name}} } from './selectors';
+import { {{camelCase name}}Actions } from './actions';
+
+export default () => {
+  const { loaders, data } = useSelector({{camelCase name}});
+  const dispatch = useDispatch();
+  const get{{pascalCase name}} = useCallback(
+    (payload) => {
+      return dispatch({{camelCase name}}Actions.getRequest(payload));
+    },
+    [dispatch],
+  );
+
+  return {
+    data,
+    loaders,
+    actions: {
+      get{{pascalCase name}},
+    },
+  };
+};

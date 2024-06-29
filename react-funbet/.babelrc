@@ -1,0 +1,16 @@
+{
+  "presets": ["@babel/env", "@babel/react"],
+  "plugins": [
+    "react-hot-loader/babel",
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-transform-react-jsx",
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-transform-regenerator",
+    "@babel/plugin-transform-react-jsx-source",
+    "@babel/plugin-transform-react-jsx-self",
+    "@babel/plugin-transform-parameters",
+    "@babel/plugin-transform-block-scoping"
+  ]
+}

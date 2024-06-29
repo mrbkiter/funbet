@@ -1,0 +1,15 @@
+import { lazyLoadPages } from 'utils/helper';
+import { pageImport } from '../lazy';
+
+jest.mock('utils/helper', () => {
+  return {
+    lazyLoadPages: jest.fn(),
+  };
+});
+
+describe('{{dashCase name}} > lazyLoadPages', () => {
+  it('lazyLoadPages', () => {
+    lazyLoadPages.mockImplementation(() => jest.fn());
+    expect(pageImport()).toEqual(import('../'));
+  });
+});

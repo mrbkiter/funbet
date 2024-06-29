@@ -1,0 +1,17 @@
+import { {{camelCase name}}Constants } from './constants';
+
+export const {{camelCase name}}Actions = {
+  getRequest: (payload) => ({
+    payload,
+    type: {{camelCase name}}Constants.GET_REQUEST,
+  }),
+  getFailure: () => ({
+    response: {},
+    type: {{camelCase name}}Constants.GET_FAILURE,
+  }),
+  getSuccess: ({ payload }) => ({
+    payload,
+    response: {},
+    type: {{camelCase name}}Constants.GET_SUCCESS,
+  }),
+};

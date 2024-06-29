@@ -1,0 +1,46 @@
+.flex-1 {
+  flex: 1 1 0 !important;
+}
+
+.flex-auto {
+  flex: 1 1 auto !important;
+}
+
+.flex-initial {
+  flex: 0 1 auto !important;
+}
+
+.flex-none {
+  flex: none !important;
+}
+
+.flex-grow {
+  flex-grow: 1 !important;
+}
+
+.flex-shrink {
+  flex-shrink: 1 !important;
+}
+
+.flex-no-grow {
+  flex-grow: 0 !important;
+}
+
+.flex-no-shrink {
+  flex-shrink: 0 !important;
+}
+
+$default-gap: 16px;
+$columns: 1, 2, 3, 4;
+
+@each $column in $columns {
+  $gap: $default-gap * ($column - 1);
+  .flex-grow-column-#{$column} {
+    flex: 1 calc((100% / $column) - $gap) !important;
+    min-width: 0;
+  }
+}
+
+.flex-gap {
+  gap: $default-gap;
+}

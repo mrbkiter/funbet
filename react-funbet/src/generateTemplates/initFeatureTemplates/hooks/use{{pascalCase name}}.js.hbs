@@ -1,0 +1,45 @@
+import { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  dataListFilterPayloadSelector,
+  dataListPaginationSelector,
+  progressSelector,
+} from '{{importParentPath}}/{{pascalCase name}}/selectors/{{pascalCase name}}Selector';
+import {
+  getDataListThunk,
+  actions,
+} from '{{importParentPath}}/{{pascalCase name}}/reducer';
+
+export default () => {
+  const progress = useSelector(progressSelector);
+  const dataListPagination = useSelector(dataListPaginationSelector);
+  const dataListFilterPayload = useSelector(
+    dataListFilterPayloadSelector,
+  );
+  const dispatch = useDispatch();
+  const getDataList = useCallback((payload) => {
+    return dispatch(getDataListThunk(payload));
+  }, []);
+
+  const { setNextProgress } = actions;
+  const setProgress = useCallback((payload) => {
+    return dispatch(setNextProgress(payload));
+  }, []);
+
+  const setDataListFilterPayload = useCallback((payload) => {
+    return dispatch(setDataListFilterPayload(payload));
+  }, []);
+
+  return {
+    data: {
+      progress,
+      dataListPagination,
+      dataListFilterPayload,
+    },
+    actions: {
+      setProgress,
+      getDataList,
+      setDataListFilterPayload,
+    },
+  };
+};

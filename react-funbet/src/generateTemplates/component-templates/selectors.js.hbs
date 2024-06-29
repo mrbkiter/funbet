@@ -1,0 +1,10 @@
+import { createSelector } from 'reselect';
+
+export const {{camelCase name}}ReducerSelector = (state) => state.{{camelCase name}};
+
+export const {{camelCase name}} = createSelector(
+  {{camelCase name}}ReducerSelector,
+  ({{camelCase name}}Reducer) => {
+    return {{camelCase name}}Reducer;
+  },
+);

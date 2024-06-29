@@ -1,0 +1,65 @@
+/* eslint-disable no-param-reassign */
+import { createSlice } from '@reduxjs/toolkit';
+import { PROGRESS } from '{{importParentPath}}/{{pascalCase name}}/constants';
+import {
+  requestGetDataList,
+} from '{{importParentPath}}/{{pascalCase name}}/api/requests';
+import {
+  DataListFilterPayLoad,
+  DataListPagination,
+} from '{{importParentPath}}/{{pascalCase name}}/__mocks__/DataListMock';
+const loaderPropName = 'isLoading';
+export const getDataListThunk =
+  requestGetDataList(loaderPropName);
+export const initialState = {
+  [loaderPropName]: false,
+  dataListFilterPayload: Object.assign(DataListFilterPayLoad),
+  dataListPagination: Object.assign(DataListPagination),
+  progress: PROGRESS.IDLE,
+};
+
+const {{pascalCase name}}Slice = createSlice({
+  name: '{{pascalCase name}}',
+  initialState,
+  reducers: {
+    // handle non-async reducers
+    setNextProgress(state, action) {
+      state.progress = action.payload;
+    },
+    setDataListFilterPayload(state, action) {
+      state.dataListFilterPayload = action.payload;
+    },
+  },
+  extraReducers: {
+    // handle async reducers
+    [getDataListThunk.fulfilled.type]: (state, action) => {
+      const {
+        pageNumber,
+        totalItems,
+        pageItems: postFetchList,
+        hasNext,
+      } = action.payload;
+
+      const preFetchList = state.dataListPagination.pageItems;
+      let finalList;
+      if (pageNumber <= 1) {
+        finalList = [...postFetchList];
+      } else {
+        finalList = [...preFetchList, ...postFetchList];
+      }
+      state.dataListPagination = {
+        pageNumber,
+        totalItems,
+        pageItems: finalList,
+        hasNext,
+      };
+      state.progress = PROGRESS.LOADED;
+    },
+  },
+});
+
+// Extract the action creators object and the reducer
+export const { actions, reducer: {{pascalCase name}}Reducer } =
+  {{pascalCase name}}Slice;
+
+export default {{pascalCase name}}Reducer;

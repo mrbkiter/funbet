@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "jsx": "react",
+    "moduleResolution": "node",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "allowJs": true,
+    "checkJs": true,
+    "paths": {
+      "assets/*": [
+        "./src/assets/*"
+      ],
+      "components/*": [
+        "./src/components/*"
+      ],
+      "configs/*": [
+        "./src/configs/*"
+      ],
+      "pages/*": [
+        "./src/pages/*"
+      ],
+      "sharedModules/*": [
+        "./src/sharedModules/*"
+      ],
+      "translations/*": [
+        "./src/translations/*"
+      ],
+      "utils/*": [
+        "./src/utils/*"
+      ],
+      "fixtures/*": [
+        "./src/fixtures/*"
+      ]
+    }
+  }
+}

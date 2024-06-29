@@ -1,0 +1,4 @@
+import { lazyLoadPages } from 'utils/helper';
+
+export const pageImport = () => import('.');
+export default lazyLoadPages(pageImport);

@@ -1,0 +1,56 @@
+import React, { useState, useCallback, useImperativeHandle } from 'react';
+import PropTypes from 'prop-types';
+import {{pascalCase name}}Lazy from '{{importParentPath}}/{{pascalCase name}}/lazy';
+import withWCPortal from 'utils/withWCPortal';
+
+export const {{pascalCase name}}Fr = React.forwardRef(
+  ({ data, onOpened, onClosed }, ref) => {
+    const [isOpen, setOpen] = useState(false);
+
+    const onClose = useCallback(() => {
+      setOpen(false);
+      onClosed && onClosed();
+    }, [setOpen, onClosed]);
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        onClose,
+        setOpen,
+      }),
+      [setOpen],
+    );
+
+    return (
+      <div
+        data-is-open={isOpen ? 'true' : 'false'}
+        data-id="{{pascalCase name}}SharedDialog"
+      >
+        {isOpen && (
+          <{{pascalCase name}}Lazy
+            isOpen={isOpen}
+            onOpened={onOpened}
+            onClose={onClose}
+            data={data}
+          />
+        )}
+      </div>
+    );
+  },
+);
+{{pascalCase name}}Fr.propTypes = {
+  data: PropTypes.object,
+  onOpened: PropTypes.func,
+  onClosed: PropTypes.func,
+};
+
+const {{pascalCase name}}Shared = withWCPortal({{pascalCase name}}Fr, {
+  tagName: '{{wcName}}',
+  defaultProps: {
+    data: {},
+    onClosed: () => {},
+    onContinue: () => {},
+  },
+});
+
+export default {{pascalCase name}}Shared;

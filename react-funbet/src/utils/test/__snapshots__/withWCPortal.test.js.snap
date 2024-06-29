@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`withWCPortal does not render the portal component when ref.current is not available 1`] = `
+<div>
+  <test-tag1>
+    abc
+  </test-tag1>
+</div>
+`;
+
+exports[`withWCPortal renders the portal component when ref.current is available 1`] = `
+<div>
+  <test-tag>
+    abc
+    <div>
+      Test Component
+    </div>
+  </test-tag>
+</div>
+`;
