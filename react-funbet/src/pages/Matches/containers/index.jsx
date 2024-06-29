@@ -17,7 +17,7 @@ export default function Matches() {
   };
 
   return (
-    <div>
+    <div style={{ padding: 16 }}>
       <Typography variant="h4" style={{ marginBottom: 20 }}>
         All Matches
       </Typography>

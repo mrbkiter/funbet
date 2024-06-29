@@ -15,8 +15,6 @@ export default function Forecast() {
   }, []);
 
   const [value, setValue] = useState(0);
-  console.log(data);
-  console.log('value', value);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -30,6 +28,9 @@ export default function Forecast() {
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs
+              allowScrollButtonsMobile
+              variant="scrollable"
+              scrollButtons
               value={value}
               onChange={handleChange}
               aria-label="tabs prediction"

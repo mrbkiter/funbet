@@ -14,6 +14,7 @@ import { AwesomeIcon } from 'components/AwesomeIcon';
 import Scrollbar from 'components/Scrollbar';
 import avatarAccount from 'assets/images/avatar/avatar_25.jpg';
 import useGamblers from 'pages/Gamblers/hooks/useGamblers';
+import { useResponsive } from 'hooks/use-responsive';
 
 const icon = (name) => <AwesomeIcon iconName={name} />;
 
@@ -56,89 +57,110 @@ function RenderListItem({ icons, translationKey, link }) {
   );
 }
 
-export function Sidebar() {
+// eslint-disable-next-line react/prop-types
+export function Sidebar({ openNav, onCloseNav }) {
   const { data, actions } = useGamblers();
+  const upLg = useResponsive('up', 'lg');
 
   useEffect(() => {
     actions.getUserAccount();
   }, []);
-  return (
-    <Drawer
-      className="sidebar"
-      variant="permanent"
-      PaperProps={{
-        sx: {
-          width: 280,
-        },
+
+  const renderContent = (
+    <Scrollbar
+      sx={{
+        height: 1,
       }}
+      className={`scrollbar-menu ${upLg ? '' : 'mobile'}`}
     >
       <Box
         sx={{
-          height: 1,
-          position: 'fixed',
-          width: 280,
-          borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
+          my: 3,
+          mx: 2.5,
+          py: 2,
+          px: 2.5,
+          display: 'flex',
+          borderRadius: 1.5,
+          alignItems: 'center',
+          bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
         }}
       >
-        <Scrollbar
-          sx={{
-            height: 1,
-          }}
-          className="scrollbar-menu"
-        >
-          <Box
-            sx={{
-              my: 3,
-              mx: 2.5,
-              py: 2,
-              px: 2.5,
-              display: 'flex',
-              borderRadius: 1.5,
-              alignItems: 'center',
-              bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
-            }}
-          >
-            <Avatar src={avatarAccount} alt="Account" />
-            <Box sx={{ ml: 2 }}>
-              {data && data.accountGambler && (
-                <Typography variant="subtitle2">
-                  {data.accountGambler.name}
-                </Typography>
-              )}
-            </Box>
-          </Box>
-          <Stack
-            component="nav"
-            spacing={0.5}
-            sx={{ px: 2 }}
-            style={{ position: 'relative' }}
-          >
-            <RenderListItem
-              icons={icon('fas fa-analytics')}
-              translationKey={'Dashboard Funbet'}
-              link={routes.home}
-            />
-
-            <RenderListItem
-              icons={icon('fas fa-dice-d12')}
-              translationKey="Matches"
-              link={routes.match}
-            />
-            <RenderListItem
-              icons={icon('fas fa-users-crown')}
-              translationKey="Gamblers"
-              link={routes.gamblers}
-            />
-            <RenderListItem
-              icons={icon('fas fa-users-crown')}
-              translationKey="Forecast"
-              link={routes.predict}
-            />
-          </Stack>
-          <Box sx={{ flexGrow: 1 }} />
-        </Scrollbar>
+        <Avatar src={avatarAccount} alt="Account" />
+        <Box sx={{ ml: 2 }}>
+          {data && data.accountGambler && (
+            <Typography variant="subtitle2">
+              {data.accountGambler.name}
+            </Typography>
+          )}
+        </Box>
       </Box>
-    </Drawer>
+      <Stack
+        component="nav"
+        spacing={0.5}
+        sx={{ px: 2 }}
+        style={{ position: 'relative' }}
+      >
+        <RenderListItem
+          icons={icon('fas fa-analytics')}
+          translationKey={'Dashboard Funbet'}
+          link={routes.home}
+        />
+
+        <RenderListItem
+          icons={icon('fas fa-dice-d12')}
+          translationKey="Matches"
+          link={routes.match}
+        />
+        <RenderListItem
+          icons={icon('fas fa-users-crown')}
+          translationKey="Gamblers"
+          link={routes.gamblers}
+        />
+        <RenderListItem
+          icons={icon('fas fa-users-crown')}
+          translationKey="Forecast"
+          link={routes.predict}
+        />
+      </Stack>
+      <Box sx={{ flexGrow: 1 }} />
+    </Scrollbar>
+  );
+
+  return (
+    <Box
+      sx={{
+        flexShrink: { lg: 0 },
+        width: { lg: 280 },
+      }}
+    >
+      {upLg ? (
+        <Drawer
+          className="sidebar"
+          variant="permanent"
+          PaperProps={{
+            sx: {
+              width: 280,
+            },
+          }}
+        >
+          {renderContent}
+        </Drawer>
+      ) : (
+        <Drawer
+          open={openNav}
+          onClose={onCloseNav}
+          className="sidebar mobile"
+          // variant="permanent"
+          PaperProps={{
+            sx: {
+              width: 280,
+            },
+          }}
+        >
+          {renderContent}
+        </Drawer>
+      )}
+    </Box>
   );
 }
 

@@ -16,7 +16,7 @@ export default function Gamblers() {
   };
 
   return (
-    <div>
+    <div style={{ padding: 16 }}>
       <Typography variant="h4" style={{ marginBottom: 20 }}>
         All Gamblers
       </Typography>

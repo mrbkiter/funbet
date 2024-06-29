@@ -19,7 +19,7 @@ export default function Predict() {
   };
 
   return (
-    <div>
+    <div style={{ padding: 16 }}>
       <Forecast />
       <Typography variant="h5" style={{ marginTop: 20, marginBottom: 20 }}>
         Forecast List

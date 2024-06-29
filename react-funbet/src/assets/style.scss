@@ -170,6 +170,14 @@ body {
   }
 }
 .sidebar {
+  &.mobile {
+    .MuiDrawer-paper {
+      .scrollbar-menu {
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+  }
   .MuiDrawer-paper {
     .scrollbar-menu {
       height: 1;
@@ -245,6 +253,9 @@ body {
   justify-content: space-between;
   align-content: center;
   flex-direction: column;
+  &.mobile {
+    padding: 0;
+  }
   .styleguide,
   .main-content,
   .home,

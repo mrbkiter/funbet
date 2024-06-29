@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "latestNode": "nvm use 18",
-    "dev": "cross-env MODE=localhost webpack-dev-server --host funbet.vinceredev.com",
+    "dev": "cross-env MODE=localhost webpack-dev-server --host funbet.vinceredev.local",
     "build": "cross-env webpack --config webpack.config.js",
     "build:funbet": "MODE=funbet yarn build",
     "test:sonar": "node ./sonarqube.js",

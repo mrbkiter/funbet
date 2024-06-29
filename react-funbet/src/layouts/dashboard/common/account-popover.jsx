@@ -9,11 +9,13 @@ import { alpha } from '@mui/material/styles';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import TextField from '@mui/material/TextField';
+// import TextField from '@mui/material/TextField';
 import avatarAccount from 'assets/images/avatar/avatar_25.jpg';
 import useGamblers from 'pages/Gamblers/hooks/useGamblers';
 import { navigate } from 'utils/navigate';
 import { routes } from 'utils/routes';
+import { LoginView } from 'sections/login';
+import AwesomeIcon from 'components/AwesomeIcon';
 
 export default function AccountPopover() {
   const [openDialogProfile, setOpenDialogProfile] = useState(null);
@@ -103,41 +105,23 @@ export default function AccountPopover() {
           </Popover>
           <div>
             <Drawer
-              anchor={'right'}
+              anchor={'bottom'}
               open={openProfile}
               onClose={() => setOpenProfile(false)}
-              width={400}
             >
-              <Box
-                sx={{
-                  width: 400,
-                  padding: 3,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 2,
+              <AwesomeIcon
+                size={36}
+                color="rgb(99, 115, 129)"
+                iconName="fal fa-times"
+                onClick={() => setOpenProfile(false)}
+                style={{
+                  position: 'absolute',
+                  right: 30,
+                  top: 30,
+                  cursor: 'pointer',
                 }}
-              >
-                <Typography>Profile</Typography>
-                <TextField
-                  required
-                  fullWidth
-                  id="standard-required"
-                  label="User Name"
-                  defaultValue={data.accountGambler.name}
-                  value={data.accountGambler.name}
-                  variant="standard"
-                  style={{ marginBottom: 20 }}
-                />
-                <TextField
-                  fullWidth
-                  id="standard-password-input"
-                  label="Password"
-                  type="password"
-                  autoComplete="current-password"
-                  variant="standard"
-                  style={{ marginBottom: 20 }}
-                />
-              </Box>
+              />
+              <LoginView />
             </Drawer>
           </div>
         </>
