@@ -131,7 +131,7 @@
 				<resource>
 					<targetPath>/</targetPath>
 					<directory>${project.build.directory}</directory>
-					<include>funbet-app.jar</include>
+					<include>app.jar</include>
 				</resource>
 			</resources>
 		</configuration>

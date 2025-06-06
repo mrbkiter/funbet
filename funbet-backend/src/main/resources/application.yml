@@ -19,7 +19,8 @@ spring:
     password: secret
 
 flyway:
-  validate-on-migrate: false
+  validateOnMigrate: false
+  ignoreMissingMigrations: true
   locations: classpath:db/migration
   url: ${JDBC_URL:jdbc:postgresql://localhost/funbet}
   user: ${USER_NAME:dbapplication_user}
