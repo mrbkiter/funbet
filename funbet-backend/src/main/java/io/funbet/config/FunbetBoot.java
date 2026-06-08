@@ -30,6 +30,11 @@ public class FunbetBoot
     }
 
     @Bean
+    public static EarlyDatabaseCreator earlyDatabaseCreator() {
+        return new EarlyDatabaseCreator();
+    }
+
+    @Bean
     public CacheManager cacheManager() {
         return new ConcurrentMapCacheManager("funbet");
     }
